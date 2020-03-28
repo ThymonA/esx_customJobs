@@ -1,0 +1,93 @@
+{
+    "JobName": "Camorra",
+    "Job": "camorra",
+    "Whitelisted": true,
+    "Grades": [
+        {
+            "Grade": 0,
+            "Name": "picciotti",
+            "Label": "Picciotti",
+            "Salary": 650,
+            "Denied": [
+                "safe.item.buy",
+                "safe.weapon.*",
+                "safe.dirtymoney.*"
+            ]
+        },
+        {
+            "Grade": 1,
+            "Name": "sgarrista",
+            "Label": "Sgarrista",
+            "Salary": 700,
+            "Denied": [
+                "safe.item.buy",
+                "safe.weapon.buy",
+                "safe.dirtymoney.remove"
+            ]
+        },
+        {
+            "Grade": 2,
+            "Name": "santista",
+            "Label": "Santista",
+            "Salary": 750,
+            "Denied": [
+                "safe.dirtymoney.remove"
+            ]
+        },
+        {
+            "Grade": 3,
+            "Name": "rosettacutolo",
+            "Label": "Rosetta Cutolo",
+            "Salary": 800,
+            "Denied": []
+        },
+        {
+            "Grade": 4,
+            "Name": "boss",
+            "Label": "Vangelo",
+            "Salary": 850,
+            "Denied": []
+        }
+    ],
+    "Wehbooks": {
+        "Actions": [
+            "https://discordapp.com/api/webhooks/674237370798702633/tgl1ahW1_0XbudKAE0DGfeesIA4ZdaQTcb_sRjBnzuM2BIf8Ij49qccjlF7Zhh2TAWwj"
+        ],
+        "Safe": [
+            "https://discordapp.com/api/webhooks/674237411693297689/573Tl3bZtlUxJ_zz2AVrMspMKoR1nXjoaSwVrREv9F6KLrJWU2XCLxaInj7cxlZD_K1_"
+        ],
+        "Money": [
+            "https://discordapp.com/api/webhooks/674237449819389992/8x0iCwQHvq7td1qUVatcJUcuaLjUcUucJH7cgqYATIS64_q9hS99JfMjMiXqPljJMmE0"
+        ],
+        "Employee": [
+            "https://discordapp.com/api/webhooks/674237484820987915/Qp_DF9l3UCd3pK6fwX4ixnEUfcO-cpiMU9MHI6rvZUhTv_UE9l41y3pOPhpimzUnSV8W"
+        ]
+    },
+    "Allowed": [
+        "safe.item.*",
+        "safe.weapon.*",
+        "safe.dirtymoney.*"
+    ],
+    "Positions": [
+        {
+            "Type": "safe_items",
+            "Name": "Item Kluis #1",
+            "Denied": [],
+            "Public": false,
+            "Position": { "x": -1483.85, "y": -376.01, "z": 39.17 },
+            "Color": { "r": 255, "g": 0, "b": 0 },
+            "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
+            "Marker": 1
+        },
+        {
+            "Type": "safe_weapons",
+            "Name": "Wapen Kluis #1",
+            "Denied": [],
+            "Public": false,
+            "Position": { "x": -1478.93, "y": -375.46, "z": 38.16 },
+            "Color": { "r": 255, "g": 0, "b": 0 },
+            "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
+            "Marker": 1
+        }
+    ]
+}
