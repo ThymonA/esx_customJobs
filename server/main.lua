@@ -1,93 +1,74 @@
 RegisterServerEvent('mlx_jobs:getJobData')
 AddEventHandler('mlx_jobs:getJobData', function()
-    while not Jobs.JobsLoaded do
-        Citizen.Wait(10)
-    end
-
-    local jobInfo = {
-        job = {},
-        job2 = {}
-    }
-
-    local xPlayer = Jobs.ESX.GetPlayerFromId(source)
-
-    if (xPlayer ~= nil and xPlayer.job ~= nil) then
-        local jobName = string.lower(xPlayer.job.name)
-
-        if (Jobs.Jobs ~= nil and Jobs.Jobs[jobName] ~= nil) then
-            local xJob = Jobs.GetJobFromName(jobName)
-            local member = xJob.getMemberByIdentifier(xPlayer.identifier)
-
-            if (member ~= nil) then
-                local grade = member.job_grade
-                local permissions = xJob.getPermissionsByGrade(grade)
-                local positions = xJob.getPositionsByGrade(grade)
-
-                jobInfo.job.permissions = permissions
-                jobInfo.job.positions = positions
-                jobInfo.job.name = xJob.getName()
-                jobInfo.job.label = xJob.getLabel()
-            end
-        end
-    end
-
-    if (xPlayer ~= nil and xPlayer.job2 ~= nil) then
-        local jobName = string.lower(xPlayer.job2.name)
-
-        if (Jobs.Jobs ~= nil and Jobs.Jobs[jobName] ~= nil) then
-            local xJob = Jobs.GetJobFromName(jobName)
-            local member = xJob.getMemberByIdentifier(xPlayer.identifier)
-
-            if (member ~= nil) then
-                local grade = member.job2_grade
-                local permissions = xJob.getPermissionsByGrade(grade)
-                local positions = xJob.getPositionsByGrade(grade)
-
-                jobInfo.job2.permissions = permissions
-                jobInfo.job2.positions = positions
-                jobInfo.job2.name = xJob.getName()
-                jobInfo.job2.label = xJob.getLabel()
-            end
-        end
-    end
-
-    if (xPlayer ~= nil) then
-        xPlayer.triggerEvent('mlx_jobs:setJobData', jobInfo)
-    end
+    Jobs.UpdatePlayerJobData(source)
 end)
 
 AddEventHandler('mlx:setJob', function(source, job, lastJob)
     local xPlayer = Jobs.ESX.GetPlayerFromId(source)
 
-    if (xPlayer ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[job.name] == nil and Jobs.Jobs[lastJob.name] ~= nil and Jobs.Jobs[xPlayer.job2.name] ~= nil) then
+    if (xPlayer ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[lastJob.name] ~= nil and lastJob.name ~= job.name and xPlayer.job2.name ~= lastJob.name) then
         local xJob = Jobs.GetJobFromName(lastJob.name)
 
-        xJob.removeMemberByIdentifier(xPlayer.identifier)
-    elseif(xPlayer ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[job.name] ~= nil and Jobs.Jobs[lastJob.name] == nil and Jobs.Jobs[xPlayer.job2.name] == nil) then
+        xJob.removeMemberByIdentifier(xPlayer.identifier, function()
+            local title = _U('job_removed_title', xPlayer.name)
+            local message = _U('job_removed_description', xPlayer.name, xJob.label)
+
+            xJob.logIdentifierToDiscord(xPlayer.identifier, title, message, 'employee', 15158332)
+        end)
+    elseif(xPlayer ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[job.name] ~= nil and Jobs.Jobs[lastJob.name] == nil and xPlayer.job2.name ~= job.name) then
         local xJob = Jobs.GetJobFromName(job.name)
 
-        xJob.addMemberByIdentifier(xPlayer.identifier)
-    elseif(xPlayer ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[job.name] ~= nil) then
+        xJob.addMemberByIdentifier(xPlayer.identifier, xPlayer.source, function()
+            local title = _U('job_added_title', xPlayer.name)
+            local message = _U('job_added_description', xPlayer.name, xJob.label, job.grade_label, job.grade)
+
+            xJob.logIdentifierToDiscord(xPlayer.identifier, title, message, 'employee', 3066993)
+        end)
+    elseif(xPlayer ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[job.name] ~= nil and job.grade ~= lastJob.grade) then
         local xJob = Jobs.GetJobFromName(job.name)
 
-        xJob.updateMemberByIdentifier(xPlayer.identifier, xPlayer.name, job.name, job.grade, xPlayer.job2.name, xPlayer.job2.grade)
+        xJob.updateMemberByIdentifier(xPlayer.identifier, xPlayer.name, job.name, job.grade, xPlayer.job2.name, xPlayer.job2.grade, xPlayer.source, function()
+            local title = _U('job_updated_title', xPlayer.name)
+            local message = _U('job_updated_description', xPlayer.name, lastJob.grade_label, lastJob.grade, job.grade_label, job.grade)
+
+            xJob.logIdentifierToDiscord(xPlayer.identifier, title, message, 'employee', 15105570)
+        end)
     end
+
+    Jobs.UpdatePlayerJobData(source)
 end)
 
 AddEventHandler('mlx:setJob2', function(source, job, lastJob)
     local xPlayer = Jobs.ESX.GetPlayerFromId(source)
 
-    if (xPlayer ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[job.name] == nil and Jobs.Jobs[lastJob.name] ~= nil and Jobs.Jobs[xPlayer.job.name] ~= nil) then
+    if (xPlayer ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[lastJob.name] ~= nil and lastJob.name ~= job.name and xPlayer.job.name ~= lastJob.name) then
         local xJob = Jobs.GetJobFromName(lastJob.name)
 
-        xJob.removeMemberByIdentifier(xPlayer.identifier)
-    elseif(xPlayer ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[job.name] ~= nil and Jobs.Jobs[lastJob.name] == nil and Jobs.Jobs[xPlayer.job.name] == nil) then
+        xJob.removeMemberByIdentifier(xPlayer.identifier, function()
+            local title = _U('job_removed_title', xPlayer.name)
+            local message = _U('job_removed_description', xPlayer.name, xJob.label)
+
+            xJob.logIdentifierToDiscord(xPlayer.identifier, title, message, 'employee', 15158332)
+        end)
+    elseif(xPlayer ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[job.name] ~= nil and Jobs.Jobs[lastJob.name] == nil and xPlayer.job.name ~= job.name) then
         local xJob = Jobs.GetJobFromName(job.name)
 
-        xJob.addMemberByIdentifier(xPlayer.identifier)
-    elseif(xPlayer ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[job.name] ~= nil) then
+        xJob.addMemberByIdentifier(xPlayer.identifier, xPlayer.source, function()
+            local title = _U('job_added_title', xPlayer.name)
+            local message = _U('job_added_description', xPlayer.name, xJob.label, job.grade_label, job.grade)
+
+            xJob.logIdentifierToDiscord(xPlayer.identifier, title, message, 'employee', 3066993)
+        end)
+    elseif(xPlayer ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[job.name] ~= nil and job.grade ~= lastJob.grade) then
         local xJob = Jobs.GetJobFromName(job.name)
 
-        xJob.updateMemberByIdentifier(xPlayer.identifier, xPlayer.name, xPlayer.job.name, xPlayer.job.grade, job.name, job.grade)
+        xJob.updateMemberByIdentifier(xPlayer.identifier, xPlayer.name, job.name, job.grade, xPlayer.job2.name, xPlayer.job2.grade, xPlayer.source, function()
+            local title = _U('job_updated_title', xPlayer.name)
+            local message = _U('job_updated_description', xPlayer.name, lastJob.grade_label, lastJob.grade, job.grade_label, job.grade)
+
+            xJob.logIdentifierToDiscord(xPlayer.identifier, title, message, 'employee', 15105570)
+        end)
     end
+
+    Jobs.UpdatePlayerJobData(source)
 end)

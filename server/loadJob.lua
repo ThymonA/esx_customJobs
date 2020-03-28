@@ -283,5 +283,5 @@ Jobs.LoadJob = function(rawData)
         Citizen.Wait(10)
     end
 
-    return CreateJob(jobData.name, jobData.label, jobData.whitelisted, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.permissionSystem)
+    return CreateJob(jobData.name, jobData.label, jobData.whitelisted, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.permissionSystem, Jobs.Version or '0.0.0')
 end

@@ -1,4 +1,4 @@
-function CreateJob(name, label, whitelisted, members, permissions, webhooks, grades, positions, permissionSystem)
+function CreateJob(name, label, whitelisted, members, permissions, webhooks, grades, positions, permissionSystem, version)
     local self = {}
 
     self.name = name
@@ -9,7 +9,14 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
     self.webhooks = webhooks
     self.grades = grades
     self.positions = positions
-    self.permissionSystem = permissionSystem
+
+    if (permissionSystem == nil) then
+        self.permissionSystem = CreatePermissions()
+    else
+        self.permissionSystem = permissionSystem
+    end
+
+    self.version = version
 
     self.getName = function()
         return self.name or 'unknown'
@@ -27,7 +34,7 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
         return self.members or {}
     end
 
-    self.addMemberByIdentifier = function(identifier)
+    self.addMemberByIdentifier = function(identifier, source, cb)
         if (self.members ~= nil and self.members[identifier] == nil) then
             MySQL.Async.fetchAll('SELECT * FROM `users` WHERE LOWER(`job`) = @job OR LOWER(`job2`) = @job AND `identifier` = @identifier', {
                 ['@job'] = string.lower(self.name),
@@ -47,20 +54,29 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
                         sex = results[1].sex or 'm',
                         height = results[1].height or 0,
                         phoneNumber = results[1].phone_number or 0,
-                        source = nil,
+                        source = source or nil,
                     }
+
+                    if (cb ~= nil) then
+                        cb()
+                    end
                 end
             end)
         end
     end
 
-    self.updateMemberByIdentifier = function(identifier, name, job, job_grade, job2, job2_grade)
+    self.updateMemberByIdentifier = function(identifier, name, job, job_grade, job2, job2_grade, source, cb)
         if (self.members ~= nil and self.members[identifier] ~= nil) then
             self.members[identifier].name = name or self.members[identifier].name
             self.members[identifier].job = job or self.members[identifier].job
             self.members[identifier].job_grade = job_grade or self.members[identifier].job_grade
             self.members[identifier].job2 = job2 or self.members[identifier].job2
             self.members[identifier].job2_grade = job2_grade or self.members[identifier].job2_grade
+            self.members[identifier].source = source or nil
+
+            if (cb ~= nil) then
+                cb()
+            end
         end
     end
 
@@ -70,9 +86,13 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
         end
     end
 
-    self.removeMemberByIdentifier = function(identifier)
+    self.removeMemberByIdentifier = function(identifier, cb)
         if (self.members ~= nil and self.members[identifier] ~= nil) then
             self.members[identifier] = nil
+
+            if (cb ~= nil) then
+                cb()
+            end
         end
     end
 
@@ -164,6 +184,72 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
         if (gradeData) then
             return gradeData.positions or {}
         end
+    end
+
+    self.logToDiscord = function(title, message, footer, webhookType, color)
+        local webhookValues = self.getWebhooksByType(webhookType)
+
+        for _, webhookValue in pairs(webhookValues or {}) do
+            color = color or 9807270
+
+            local requestInfo = {
+                ['color'] = color,
+                ['type'] = 'rich',
+                ['title'] = title,
+                ['description'] = message,
+                ['footer'] = {
+                    ['text'] = footer
+                }
+            }
+
+            PerformHttpRequest(webhookValue, function(error, text, headers) end, 'POST', json.encode({ username = self.label .. ' | Logs | ' .. self.version, embeds = { requestInfo } }), { ['Content-Type'] = 'application/json' })
+        end
+    end
+
+    self.logIdentifierToDiscord = function(identifier, title, message, webhookType, color)
+        local currentTime = self.getCurrentTimeString()
+
+        self.logToDiscord(title, message, self.label .. ' | ' .. identifier .. ' | ' .. currentTime, webhookType, color)
+    end
+
+    self.logSourceToDiscord = function(source, title, message, webhookType, color)
+        local identifier = self.getIdentifierBySource(source)
+
+        self.logIdentifierToDiscord(identifier, title, message, webhookType, color)
+    end
+
+    self.getIdentifierBySource = function(source)
+        if (source == nil) then
+            return ''
+        end
+
+        local playerId = tonumber(source)
+
+        if (playerId <= 0) then
+            return ''
+        end
+
+        local identifiers, steamIdentifier = GetPlayerIdentifiers(source)
+
+        for _, identifier in pairs(identifiers) do
+            if (string.match(string.lower(identifier), 'steam:')) then
+                steamIdentifier = identifier
+            end
+        end
+
+        return steamIdentifier
+    end
+
+    self.getCurrentTimeString = function()
+        local date_table = os.date("*t")
+        local hour, minute, second = date_table.hour, date_table.min, date_table.sec
+        local year, month, day = date_table.year, date_table.month, date_table.day
+
+        if (string.lower(Config.Locale) == 'nl') then
+            return string.format("%d-%d-%d %d:%d:%d", day, month, year, hour, minute, second)
+        end
+
+        return string.format("%d-%d-%d %d:%d:%d", year, month, day, hour, minute, second)
     end
 
     return self

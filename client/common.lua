@@ -50,8 +50,6 @@ AddEventHandler('mlx:setJob', function(job)
     Jobs.PlayerData.job     = job
     Jobs.JobData            = nil
     Jobs.DrawMarkers        = {}
-
-    TriggerServerEvent('mlx_jobs:getJobData')
 end)
 
 RegisterNetEvent('mlx:setJob2')
@@ -59,6 +57,4 @@ AddEventHandler('mlx:setJob2', function(job)
     Jobs.PlayerData.job2    = job
     Jobs.JobData            = nil
     Jobs.DrawMarkers        = {}
-
-    TriggerServerEvent('mlx_jobs:getJobData')
 end)

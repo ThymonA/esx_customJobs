@@ -11,8 +11,12 @@ Citizen.CreateThread(function()
         local jobInfo = Jobs.JobData.job or {}
         local job2Info = Jobs.JobData.job2 or {}
 
+        Jobs.DrawMarkers = {}
+
         for markerType, markers in pairs(jobInfo.positions or {}) do
-            Jobs.DrawMarkers[markerType] = {}
+            if (Jobs.DrawMarkers[markerType] == nil) then
+                Jobs.DrawMarkers[markerType] = {}
+            end
 
             for _, marker in pairs(markers or {}) do
                 if (marker ~= nil and marker.position ~= nil and GetDistanceBetweenCoords(coords, marker.position.x, marker.position.y, marker.position.z, true) < Config.DrawDistance) then
@@ -31,6 +35,33 @@ Citizen.CreateThread(function()
                         },
                         action = marker.type or 'unknown',
                         actionInfo = jobInfo.label or 'unknown'
+                    })
+                end
+            end
+        end
+
+        for markerType, markers in pairs(job2Info.positions or {}) do
+            if (Jobs.DrawMarkers[markerType] == nil) then
+                Jobs.DrawMarkers[markerType] = {}
+            end
+
+            for _, marker in pairs(markers or {}) do
+                if (marker ~= nil and marker.position ~= nil and GetDistanceBetweenCoords(coords, marker.position.x, marker.position.y, marker.position.z, true) < Config.DrawDistance) then
+                    table.insert(Jobs.DrawMarkers[markerType], {
+                        label = marker.name or 'Unknown',
+                        position = marker.position or { x = 0, y = 0, z = 0 },
+                        type = marker.type or 'unknown',
+                        info = {
+                            x = marker.size.x or 1.5,
+                            y = marker.size.y or 1.5,
+                            z = marker.size.z or 0.5,
+                            r = marker.color.r or 255,
+                            g = marker.color.g or 0,
+                            b = marker.color.b or 0,
+                            type = marker.marker or 25
+                        },
+                        action = marker.type or 'unknown',
+                        actionInfo = job2Info.label or 'unknown'
                     })
                 end
             end
