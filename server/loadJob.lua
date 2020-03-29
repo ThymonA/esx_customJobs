@@ -246,12 +246,6 @@ Jobs.LoadJob = function(rawData)
                         job_grade = user.job_grade or 0,
                         job2 = user.job2 or 'Leeg',
                         job2_grade = user.job2_grade or 0,
-                        firstname = user.firstname or 'Unknown',
-                        lastname = user.lastname or 'Unknown',
-                        dateOfBirth = user.dateofbirth or '01-01-0001',
-                        sex = user.sex or 'm',
-                        height = user.height or 0,
-                        phoneNumber = user.phone_number or 0,
                         source = nil,
                     }
 

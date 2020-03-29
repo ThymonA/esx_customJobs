@@ -1,10 +1,11 @@
-Jobs                    = {}
-Jobs.Jobs               = {}
-Jobs.JobGradesAllowed   = {}
-Jobs.Version            = '0.0.0'
-Jobs.ESX                = nil
-Jobs.ScriptLoaded       = false
-Jobs.JobsLoaded         = false
+Jobs                            = {}
+Jobs.Jobs                       = {}
+Jobs.JobGradesAllowed           = {}
+Jobs.Version                    = '0.0.0'
+Jobs.ESX                        = nil
+Jobs.ScriptLoaded               = false
+Jobs.JobsLoaded                 = false
+Jobs.UpdatePlayerJobDataRequest = {}
 
 TriggerEvent('mlx:getSharedObject', function (object)
     Jobs.ESX = object

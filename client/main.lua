@@ -1,15 +1,11 @@
 -- Store marker information
 Citizen.CreateThread(function()
     while true do
+        local jobData = Jobs.JobData or {}
         local playerPed = GetPlayerPed(-1)
         local coords = GetEntityCoords(playerPed)
-
-        while Jobs.JobData == nil do
-            Citizen.Wait(10)
-        end
-
-        local jobInfo = Jobs.JobData.job or {}
-        local job2Info = Jobs.JobData.job2 or {}
+        local jobInfo = jobData.job or {}
+        local job2Info = jobData.job2 or {}
 
         Jobs.DrawMarkers = {}
 
@@ -67,7 +63,7 @@ Citizen.CreateThread(function()
             end
         end
 
-        Citizen.Wait(5000) -- Every 5 sec
+        Citizen.Wait(2500) -- Every 2.5 sec
     end
 end)
 

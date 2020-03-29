@@ -41,20 +41,38 @@ Jobs.GetJobsData = function()
 end
 
 RegisterNetEvent('mlx_jobs:setJobData')
-AddEventHandler('mlx_jobs:setJobData', function(jobData)
-    Jobs.JobData = jobData
+AddEventHandler('mlx_jobs:setJobData', function(jobData, jobChanged)
+    jobChanged = jobChanged or false
+
+    if (Jobs.JobData == nil or jobChanged) then
+        Jobs.JobData = {}
+    end
+
+    if (jobData == nil) then
+        jobData = {}
+    end
+
+    if (Jobs.JobData.job == nil) then
+        Jobs.JobData.job = jobData.job or {}
+    elseif ((jobData.job or {}) ~= {}) then
+        Jobs.JobData.job = jobData.job or {}
+    end
+
+    if (Jobs.JobData.job2 == nil) then
+        Jobs.JobData.job2 = jobData.job2 or {}
+    elseif ((jobData.job2 or {}) ~= {}) then
+        Jobs.JobData.job2 = jobData.job2 or {}
+    end
 end)
 
 RegisterNetEvent('mlx:setJob')
 AddEventHandler('mlx:setJob', function(job)
     Jobs.PlayerData.job     = job
-    Jobs.JobData            = nil
     Jobs.DrawMarkers        = {}
 end)
 
 RegisterNetEvent('mlx:setJob2')
 AddEventHandler('mlx:setJob2', function(job)
     Jobs.PlayerData.job2    = job
-    Jobs.JobData            = nil
     Jobs.DrawMarkers        = {}
 end)

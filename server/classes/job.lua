@@ -48,12 +48,6 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
                         job_grade = results[1].job_grade or 0,
                         job2 = results[1].job2 or 'Leeg',
                         job2_grade = results[1].job2_grade or 0,
-                        firstname = results[1].firstname or 'Unknown',
-                        lastname = results[1].lastname or 'Unknown',
-                        dateOfBirth = results[1].dateofbirth or '01-01-0001',
-                        sex = results[1].sex or 'm',
-                        height = results[1].height or 0,
-                        phoneNumber = results[1].phone_number or 0,
                         source = source or nil,
                     }
 
@@ -65,6 +59,24 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
         end
     end
 
+    self.addMemberByPlayer = function(xPlayer, cb)
+        if (self.members ~= nil and self.members[xPlayer.identifier] == nil) then
+            self.members[xPlayer.identifier] = {
+                identifier = xPlayer.identifier or 'none',
+                name = xPlayer.name or '',
+                job = xPlayer.job.name or 'Kansloos',
+                job_grade = xPlayer.job.grade or 0,
+                job2 = xPlayer.job2.name or 'Leeg',
+                job2_grade = xPlayer.job2.grade or 0,
+                source = xPlayer.source or nil,
+            }
+
+            if (cb ~= nil) then
+                cb()
+            end
+        end
+    end
+
     self.updateMemberByIdentifier = function(identifier, name, job, job_grade, job2, job2_grade, source, cb)
         if (self.members ~= nil and self.members[identifier] ~= nil) then
             self.members[identifier].name = name or self.members[identifier].name
@@ -73,6 +85,21 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
             self.members[identifier].job2 = job2 or self.members[identifier].job2
             self.members[identifier].job2_grade = job2_grade or self.members[identifier].job2_grade
             self.members[identifier].source = source or nil
+
+            if (cb ~= nil) then
+                cb()
+            end
+        end
+    end
+
+    self.updateMemberByPlayer = function(xPlayer, cb)
+        if (self.members ~= nil and self.members[xPlayer.identifier] ~= nil) then
+            self.members[xPlayer.identifier].name = xPlayer.name or ''
+            self.members[xPlayer.identifier].job = xPlayer.job.name or 'Kansloos'
+            self.members[xPlayer.identifier].job_grade = xPlayer.job.grade or 0
+            self.members[xPlayer.identifier].job2 = xPlayer.job2.name or 'Leeg'
+            self.members[xPlayer.identifier].job2_grade = xPlayer.job2.grade or 0
+            self.members[xPlayer.identifier].source = xPlayer.source or nil
 
             if (cb ~= nil) then
                 cb()

@@ -10,9 +10,17 @@ Jobs.GetJobFromName = function(jobName)
     return Jobs.Jobs[jobName]
 end
 
-Jobs.UpdatePlayerJobData = function(source)
+Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
+    jobChanged = jobChanged or false
+
+    local job_loaded, job2_loaded = false, false
+
     while not Jobs.JobsLoaded do
         Citizen.Wait(10)
+    end
+
+    if (xPlayer == nil) then
+        return
     end
 
     local jobInfo = {
@@ -20,9 +28,7 @@ Jobs.UpdatePlayerJobData = function(source)
         job2 = {}
     }
 
-    local xPlayer = Jobs.ESX.GetPlayerFromId(source)
-
-    if (xPlayer ~= nil and xPlayer.job ~= nil) then
+    if (xPlayer.job ~= nil) then
         local jobName = string.lower(xPlayer.job.name)
 
         if (Jobs.Jobs ~= nil and Jobs.Jobs[jobName] ~= nil) then
@@ -31,6 +37,13 @@ Jobs.UpdatePlayerJobData = function(source)
 
             if (member ~= nil) then
                 local grade = member.job_grade
+
+                if (grade ~= xPlayer.job.grade) then
+                    xJob.updateMemberByPlayer(xPlayer)
+
+                    grade = xPlayer.job.grade
+                end
+
                 local permissions = xJob.getPermissionsByGrade(grade)
                 local positions = xJob.getPositionsByGrade(grade)
 
@@ -38,11 +51,37 @@ Jobs.UpdatePlayerJobData = function(source)
                 jobInfo.job.positions = positions
                 jobInfo.job.name = xJob.getName()
                 jobInfo.job.label = xJob.getLabel()
+
+                job_loaded = true
+            else
+                xJob.addMemberByPlayer(xPlayer, function()
+                    local grade = member.job_grade
+
+                    if (grade ~= xPlayer.job.grade) then
+                        xJob.updateMemberByPlayer(xPlayer)
+
+                        grade = xPlayer.job.grade
+                    end
+
+                    local permissions = xJob.getPermissionsByGrade(grade)
+                    local positions = xJob.getPositionsByGrade(grade)
+
+                    jobInfo.job.permissions = permissions
+                    jobInfo.job.positions = positions
+                    jobInfo.job.name = xJob.getName()
+                    jobInfo.job.label = xJob.getLabel()
+
+                    job_loaded = true
+                end)
             end
+        else
+            job_loaded = true
         end
+    else
+        job_loaded = true
     end
 
-    if (xPlayer ~= nil and xPlayer.job2 ~= nil) then
+    if (xPlayer.job2 ~= nil) then
         local jobName = string.lower(xPlayer.job2.name)
 
         if (Jobs.Jobs ~= nil and Jobs.Jobs[jobName] ~= nil) then
@@ -51,6 +90,13 @@ Jobs.UpdatePlayerJobData = function(source)
 
             if (member ~= nil) then
                 local grade = member.job2_grade
+
+                if (grade ~= xPlayer.job2.grade) then
+                    xJob.updateMemberByPlayer(xPlayer)
+
+                    grade = xPlayer.job2.grade
+                end
+
                 local permissions = xJob.getPermissionsByGrade(grade)
                 local positions = xJob.getPositionsByGrade(grade)
 
@@ -58,11 +104,65 @@ Jobs.UpdatePlayerJobData = function(source)
                 jobInfo.job2.positions = positions
                 jobInfo.job2.name = xJob.getName()
                 jobInfo.job2.label = xJob.getLabel()
+
+                job2_loaded = true
+            else
+                xJob.addMemberByPlayer(xPlayer, function()
+                    local grade = member.job2_grade
+
+                    if (grade ~= xPlayer.job2.grade) then
+                        xJob.updateMemberByPlayer(xPlayer)
+
+                        grade = xPlayer.job2.grade
+                    end
+
+                    local permissions = xJob.getPermissionsByGrade(grade)
+                    local positions = xJob.getPositionsByGrade(grade)
+
+                    jobInfo.job2.permissions = permissions
+                    jobInfo.job2.positions = positions
+                    jobInfo.job2.name = xJob.getName()
+                    jobInfo.job2.label = xJob.getLabel()
+
+                    job2_loaded = true
+                end)
             end
+        else
+            job2_loaded = true
+        end
+    else
+        job2_loaded = true
+    end
+
+    while not job_loaded or not job2_loaded do
+        Citizen.Wait(10)
+    end
+
+    TriggerClientEvent('mlx_jobs:setJobData', xPlayer.source, jobInfo, jobChanged)
+end
+
+Jobs.LoadPlayerDataBySource = function(source)
+    local xPlayer = Jobs.ESX.GetPlayerFromId(source)
+
+    if (xPlayer ~= nil and xPlayer.job ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[xPlayer.job.name] ~= nil) then
+        local xJob = Jobs.GetJobFromName(xPlayer.job.name)
+        local member = xJob.getMemberByIdentifier(xPlayer.identifier)
+
+        if (member == nil) then
+            xJob.addMemberByPlayer(xPlayer)
+        else
+            xJob.updateMemberByPlayer(xPlayer)
         end
     end
 
-    if (xPlayer ~= nil) then
-        xPlayer.triggerEvent('mlx_jobs:setJobData', jobInfo)
+    if (xPlayer ~= nil and xPlayer.job2 ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[xPlayer.job2.name] ~= nil) then
+        local xJob = Jobs.GetJobFromName(xPlayer.job2.name)
+        local member = xJob.getMemberByIdentifier(xPlayer.identifier)
+
+        if (member == nil) then
+            xJob.addMemberByPlayer(xPlayer)
+        else
+            xJob.updateMemberByPlayer(xPlayer)
+        end
     end
 end
