@@ -30,7 +30,7 @@ Citizen.CreateThread(function()
                             type = marker.marker or 25
                         },
                         action = marker.type or 'unknown',
-                        actionInfo = jobInfo.label or 'unknown'
+                        actionInfo = true
                     })
                 end
             end
@@ -57,7 +57,7 @@ Citizen.CreateThread(function()
                             type = marker.marker or 25
                         },
                         action = marker.type or 'unknown',
-                        actionInfo = job2Info.label or 'unknown'
+                        actionInfo = false
                     })
                 end
             end
@@ -97,7 +97,7 @@ Citizen.CreateThread(function()
                 if (GetDistanceBetweenCoords(coords, marker.position.x, marker.position.y, marker.position.z, true) < marker.info.x) then
                     Jobs.IsInMarker = true
                     Jobs.CurrentAction = marker.action
-                    Jobs.CurrentActionInfo = marker.actionInfo
+                    Jobs.CurrentActionInfo = marker.actionInfo or true
                 end
             end
         end
@@ -119,13 +119,46 @@ Citizen.CreateThread(function()
     end
 end)
 
+-- Open menu when in marker
+Citizen.CreateThread(function()
+    while true do
+        if (Jobs.CurrentAction ~= nil and Jobs.IsInMarker) then
+            if (IsControlJustPressed(0, 38)) then
+                Jobs.LastAction     = Jobs.CurrentAction .. ''
+                Jobs.CurrentAction  = nil
+
+                if (Jobs.DoesMenuExists(Jobs.LastAction)) then
+                    Jobs.TriggerMenu(Jobs.LastAction, Jobs.CurrentActionInfo)
+                end
+
+                Jobs.CurrentAction  = nil
+            end
+        end
+
+        Citizen.Wait(0)
+    end
+end)
+
 -- Trigger when player enters marker
 Jobs.HasEnteredMarker = function()
-    Jobs.ESX.ShowHelpNotification(_U('open_' .. Jobs.GetCurrentAction(), Jobs.CurrentActionInfo or 'Unknown'))
+    local isPrimaryJob = Jobs.CurrentActionInfo or true
+    local jobName = 'Unknown'
+
+    if (isPrimaryJob and Jobs.JobData ~= nil and Jobs.JobData.job ~= nil) then
+        jobName = Jobs.JobData.job.label or 'Unknown'
+    elseif (Jobs.JobData ~= nil and Jobs.JobData.job2 ~= nil) then
+        jobName = Jobs.JobData.job2.label or 'Unknown'
+    end
+
+    Jobs.ESX.ShowHelpNotification(_U('open_' .. Jobs.GetCurrentAction(), jobName))
 end
 
 -- Trigger when player left marker
 Jobs.HasExitedMarker = function()
+    Jobs.ESX.UI.Menu.CloseAll()
+    Jobs.CurrentAction = nil
+    Jobs.LastAction = nil
+    Jobs.CurrentActionInfo = nil
 end
 
 Jobs.GetCurrentAction = function()

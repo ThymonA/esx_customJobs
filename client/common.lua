@@ -1,3 +1,4 @@
+-- Core
 Jobs                        = {}
 Jobs.ESX                    = nil
 Jobs.PlayerData             = {}
@@ -9,6 +10,9 @@ Jobs.LastAction             = nil
 Jobs.CurrentActionInfo      = nil
 Jobs.IsInMarker             = false
 Jobs.DrawMarkers            = {}
+
+-- Menus
+Jobs.Menus                  = {}
 
 Citizen.CreateThread(function()
     while Jobs.ESX == nil do
