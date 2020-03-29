@@ -89,5 +89,10 @@
             "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
             "Marker": 1
         }
-    ]
+    ],
+    "Menu": {
+        "PrimaryColor": { "r": 255, "g": 0, "b": 0 },
+        "SecondaryColor": { "r": 0, "g": 0, "b": 0 },
+        "HeaderImage": "camorra.jpg"
+    }
 }

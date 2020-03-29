@@ -1,10 +1,11 @@
-function CreateJob(name, label, whitelisted, members, permissions, webhooks, grades, positions, permissionSystem, version)
+function CreateJob(name, label, whitelisted, members, permissions, webhooks, grades, positions, menu, permissionSystem, version)
     local self = {}
 
     self.name = name
     self.label = label
     self.whitelisted = whitelisted
     self.members = members
+    self.menu = menu
     self.permissions = permissions
     self.webhooks = webhooks
     self.grades = grades
@@ -211,6 +212,22 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
         if (gradeData) then
             return gradeData.positions or {}
         end
+    end
+
+    self.getMenu = function()
+        return self.menu or {}
+    end
+
+    self.getPrimaryColor = function()
+        return self.getMenu().PrimaryColor or { r = 255, g = 0, b = 0 }
+    end
+
+    self.getSecondaryColor = function()
+        return self.getMenu().SecondaryColor or { r = 0, g = 0, b = 0 }
+    end
+
+    self.getJobHeaderImage = function()
+        return self.getMenu().HeaderImage or 'menu_default.jpg'
     end
 
     self.logToDiscord = function(title, message, footer, webhookType, color)

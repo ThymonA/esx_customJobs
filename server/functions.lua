@@ -51,6 +51,9 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
                 jobInfo.job.positions = positions
                 jobInfo.job.name = xJob.getName()
                 jobInfo.job.label = xJob.getLabel()
+                jobInfo.job.primaryColor = xJob.getPrimaryColor()
+                jobInfo.job.secondaryColor = xJob.getSecondaryColor()
+                jobInfo.job.headerImage = xJob.getJobHeaderImage()
 
                 job_loaded = true
             else
@@ -70,6 +73,9 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
                     jobInfo.job.positions = positions
                     jobInfo.job.name = xJob.getName()
                     jobInfo.job.label = xJob.getLabel()
+                    jobInfo.job.primaryColor = xJob.getPrimaryColor()
+                    jobInfo.job.secondaryColor = xJob.getSecondaryColor()
+                    jobInfo.job.headerImage = xJob.getJobHeaderImage()
 
                     job_loaded = true
                 end)
@@ -104,6 +110,9 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
                 jobInfo.job2.positions = positions
                 jobInfo.job2.name = xJob.getName()
                 jobInfo.job2.label = xJob.getLabel()
+                jobInfo.job2.primaryColor = xJob.getPrimaryColor()
+                jobInfo.job2.secondaryColor = xJob.getSecondaryColor()
+                jobInfo.job2.headerImage = xJob.getJobHeaderImage()
 
                 job2_loaded = true
             else
@@ -123,6 +132,9 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
                     jobInfo.job2.positions = positions
                     jobInfo.job2.name = xJob.getName()
                     jobInfo.job2.label = xJob.getLabel()
+                    jobInfo.job2.primaryColor = xJob.getPrimaryColor()
+                    jobInfo.job2.secondaryColor = xJob.getSecondaryColor()
+                    jobInfo.job2.headerImage = xJob.getJobHeaderImage()
 
                     job2_loaded = true
                 end)

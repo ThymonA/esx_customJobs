@@ -44,9 +44,33 @@ client_scripts {
     'shared/functions.lua',
     'client/functions.lua',
 
+    'client/handlers/menu_default.lua',
+
     'client/menus/safe_items.lua',
 
     'client/main.lua'
+}
+
+files {
+    'html/index.html',
+
+    'html/css/menu_default.css',
+    'html/js/mustache.min.js',
+    'html/js/menu_default.js',
+
+    'html/img/headers/*.jpg',
+    'html/img/headers/*.png',
+
+    -- Fonts
+    'html/fonts/BebasNeue/BebasNeueBold.otf',
+    'html/fonts/BebasNeue/BebasNeueBook.otf',
+    'html/fonts/BebasNeue/BebasNeueLight.otf',
+    'html/fonts/BebasNeue/BebasNeueRegular.otf',
+    'html/fonts/BebasNeue/BebasNeueThin.otf'
+}
+
+ui_page {
+    'html/index.html'
 }
 
 dependencies {
