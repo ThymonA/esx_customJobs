@@ -178,3 +178,36 @@ Jobs.LoadPlayerDataBySource = function(source)
         end
     end
 end
+
+Jobs.RegisterServerCallback = function(name, cb)
+    Jobs.ServerCallbacks[name] = cb
+end
+
+Jobs.TriggerServerCallback = function(name, source, isPrimaryJob, cb, ...)
+    if (Jobs.ServerCallbacks == nil or Jobs.ServerCallbacks[name] == nil) then
+        Jobs.Trace(('Server callback "%s" does not exist.'):format(name))
+        return
+    end
+
+    local xPlayer = Jobs.ESX.GetPlayerFromId(source)
+
+    if (xPlayer == nil) then
+        return
+    end
+
+    local jobName = 'unknown'
+
+    if (isPrimaryJob) then
+        jobName = (xPlayer.job or {}).name or 'unknown'
+    else
+        jobName = (xPlayer.job2 or {}).name or 'unknown'
+    end
+
+    local xJob = Jobs.GetJobFromName(jobName)
+
+    if (xJob == nil) then
+        return
+    end
+
+    Jobs.ServerCallbacks[name](xPlayer, xJob, cb, ...)
+end

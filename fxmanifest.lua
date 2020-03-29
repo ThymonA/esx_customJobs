@@ -17,11 +17,12 @@ server_scripts {
 
     'data/config/server_config.lua',
 
-    'server/classes/permissions.lua',
+    'shared/classes/permissions.lua',
     'server/classes/job.lua',
 
     'server/common.lua',
 
+    'shared/formats.lua',
     'shared/functions.lua',
 
     'server/loadJob.lua',
@@ -39,9 +40,13 @@ client_scripts {
 
     'data/config/client_config.lua',
 
+    'shared/classes/permissions.lua',
+
     'client/common.lua',
 
+    'shared/formats.lua',
     'shared/functions.lua',
+
     'client/functions.lua',
 
     'client/handlers/menu_default.lua',

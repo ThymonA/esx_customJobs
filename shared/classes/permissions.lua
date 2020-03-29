@@ -101,6 +101,28 @@ function CreatePermissions()
         return self.tableContainsItem(permissionType, allowedTypes, true)
     end
 
+    self.hasAnyPermission = function(permissions, permission)
+        permissions = permissions or {}
+
+        for _, _permission in pairs(permissions) do
+            if (self.isPermissionGroup(_permission)) then
+                local group = self.getPermissionGroup(_permission)
+
+                for __, __permission in pairs(group.permissions or {}) do
+                    if (string.lower(__permission) == string.lower(permission)) then
+                        return true
+                    end
+                end
+            else
+                if (string.lower(_permission) == string.lower(permission)) then
+                    return true
+                end
+            end
+        end
+
+        return false
+    end
+
     self.isAnyPermissionAllowedToUseType = function(permissions, permissionType)
         for _, permission in pairs(permissions) do
             if (self.isPermissionAllowedToUseType(permission, permissionType)) then

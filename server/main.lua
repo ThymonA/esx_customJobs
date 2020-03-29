@@ -100,3 +100,14 @@ end)
 AddEventHandler('mlx:playerLoaded', function(playerId)
     Jobs.LoadPlayerDataBySource(playerId)
 end)
+
+RegisterServerEvent('mlx_jobs:triggerServerCallback')
+AddEventHandler('mlx_jobs:triggerServerCallback', function(name, requestId, isPrimaryJob, ...)
+    isPrimaryJob = isPrimaryJob or true
+
+    local playerId = source
+
+    Jobs.TriggerServerCallback(name, playerId, isPrimaryJob, function(...)
+        TriggerClientEvent('mlx_jobs:serverCallback', playerId, requestId, ...)
+    end, ...)
+end)

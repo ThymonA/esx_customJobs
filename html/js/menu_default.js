@@ -18,7 +18,7 @@
 		'<style id="menu_default_style">' +
 			'.menu.menu_default .head_menu_default {' +
 				'background-image: url("./img/headers/{{image}}");' +
-			'}'
+			'}' +
 		'</style>'
 
 	window.esx_MENU       = {};
@@ -91,7 +91,20 @@
 		});
 
 		esx_MENU.render();
-		$('#menu_' + namespace + '_' + name).find('.menu-item.selected').not('.disabled')[0].scrollIntoView();
+
+		var elem = $('#menu_' + namespace + '_' + name)
+
+		if (elem.length) {
+			var selectedElem = elem.find('.menu-item.selected')
+
+			if (selectedElem.length) {
+				var firstNotDisabledElem = selectedElem.not('.disabled')
+
+				if (firstNotDisabledElem.length) {
+					firstNotDisabledElem[0].scrollIntoView()
+				}
+			}
+		}
 	};
 
 	esx_MENU.close = function(namespace, name) {

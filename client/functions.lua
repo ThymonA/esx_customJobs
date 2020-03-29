@@ -55,3 +55,27 @@ Jobs.GetCurrentHeaderImage = function(isPrimaryJob)
 
     return ((Jobs.JobData or {}).job2 or {}).headerImage or 'menu_default.jpg'
 end
+
+Jobs.HasPermission = function(permission, isPrimaryJob)
+    isPrimaryJob = isPrimaryJob or true
+
+    if (isPrimaryJob) then
+        return Jobs.Permissions.hasAnyPermission(((Jobs.JobData or {}).job or {}).permissions or {}, permission)
+    end
+
+    return Jobs.Permissions.hasAnyPermission(((Jobs.JobData or {}).job2 or {}).permissions or {}, permission)
+end
+
+Jobs.TriggerServerCallback = function(name, isPrimaryJob, cb, ...)
+    isPrimaryJob = isPrimaryJob or true
+
+    Jobs.ServerCallbacks[Jobs.RequestId] = cb
+
+    TriggerServerEvent('mlx_jobs:triggerServerCallback', name, Jobs.RequestId, isPrimaryJob, ...)
+
+    if (Jobs.RequestId < 65535) then
+        Jobs.RequestId = Jobs.RequestId + 1
+    else
+        Jobs.RequestId = 0
+    end
+end

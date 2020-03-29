@@ -5,7 +5,7 @@ Jobs.Version                    = '0.0.0'
 Jobs.ESX                        = nil
 Jobs.ScriptLoaded               = false
 Jobs.JobsLoaded                 = false
-Jobs.UpdatePlayerJobDataRequest = {}
+Jobs.ServerCallbacks            = {}
 
 TriggerEvent('mlx:getSharedObject', function (object)
     Jobs.ESX = object

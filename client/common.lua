@@ -3,6 +3,9 @@ Jobs                        = {}
 Jobs.ESX                    = nil
 Jobs.PlayerData             = {}
 Jobs.JobData                = nil
+Jobs.Permissions            = CreatePermissions()
+Jobs.ServerCallbacks        = {}
+Jobs.RequestId              = 0
 
 -- Markers
 Jobs.CurrentAction          = nil
@@ -67,6 +70,15 @@ AddEventHandler('mlx_jobs:setJobData', function(jobData, jobChanged)
     elseif ((jobData.job2 or {}) ~= {}) then
         Jobs.JobData.job2 = jobData.job2 or {}
     end
+end)
+
+RegisterNetEvent('mlx_jobs:serverCallback')
+AddEventHandler('mlx_jobs:serverCallback', function(requestId, ...)
+    if (Jobs.ServerCallbacks ~= nil and Jobs.ServerCallbacks[requestId] ~= nil) then
+        Jobs.ServerCallbacks[requestId](...)
+    end
+
+    Jobs.ServerCallbacks[requestId] = nil
 end)
 
 RegisterNetEvent('mlx:setJob')
