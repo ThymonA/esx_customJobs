@@ -26,8 +26,10 @@ Jobs.LoadJob = function(rawData)
         if (allowedPermission ~= nil) then
             allowedPermission = tostring(allowedPermission)
 
-            if (ServerConfig.ExtendedPermissions ~= nil and ServerConfig.ExtendedPermissions[allowedPermission] ~= nil) then
-                for __, subPermission in pairs(ServerConfig.ExtendedPermissions[allowedPermission]) do
+            if (jobData.permissionSystem.isPermissionGroup(allowedPermission)) then
+                local permissionGroup = jobData.permissionSystem.getPermissionGroup(allowedPermission)
+
+                for __, subPermission in pairs(permissionGroup.permissions or {}) do
                     table.insert(jobData.permissions, subPermission)
                 end
             else
@@ -118,9 +120,10 @@ Jobs.LoadJob = function(rawData)
             end
 
             for _, gradeDeniedPermission in pairs(jobGrade.Denied or {}) do
-                if (gradeDeniedPermission ~= nil and ServerConfig.ExtendedPermissions ~= nil and
-                    ServerConfig.ExtendedPermissions[gradeDeniedPermission] ~= nil) then
-                    for __, deniedExtendedPermission in pairs(ServerConfig.ExtendedPermissions[gradeDeniedPermission]) do
+                if (jobData.permissionSystem.isPermissionGroup(gradeDeniedPermission)) then
+                    local permissionGroup = jobData.permissionSystem.getPermissionGroup(gradeDeniedPermission)
+
+                    for __, deniedExtendedPermission in pairs(permissionGroup.permissions or {}) do
                         Jobs.RemoveFromTable(jobData.grades[tostring(jobGrade.Grade or 0)].permissions, deniedExtendedPermission)
                     end
                 elseif (gradeDeniedPermission ~= nil) then
