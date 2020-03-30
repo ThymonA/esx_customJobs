@@ -2,8 +2,7 @@ Jobs.RegisterServerCallback('mlx_jobs:getPlayerInventory', function(xPlayer, xJo
     if (xPlayer == nil and callback ~= nil) then
         callback({
             accounts = {},
-            inventory = {},
-            weapons = {}
+            inventory = {}
         })
 
         return
@@ -12,8 +11,7 @@ Jobs.RegisterServerCallback('mlx_jobs:getPlayerInventory', function(xPlayer, xJo
     if (not xJob.memberHasPermission(xPlayer.identifier, 'safe.item.add')) then
         callback({
             accounts = {},
-            inventory = {},
-            weapons = {}
+            inventory = {}
         })
 
         return
@@ -30,8 +28,7 @@ Jobs.RegisterServerCallback('mlx_jobs:getPlayerInventory', function(xPlayer, xJo
     if (callback ~= nil) then
         callback({
             accounts = accounts,
-            inventory = xPlayer.inventory,
-            weapons = xPlayer.loadout
+            inventory = xPlayer.inventory
         })
     end
 end)
@@ -61,7 +58,7 @@ Jobs.RegisterServerCallback('mlx_jobs:storeItem', function(xPlayer, xJob, callba
     for _, account in pairs(xPlayer.getAccounts(false) or {}) do
         if (string.lower(account.name) == string.lower(item)) then
             if (account.money >= count) then
-                xPlayer.removeAccountMoney(item, count)
+                xPlayer.removeAccountMoney(account.name, count)
 
                 if (string.lower(account.name) == 'money') then
                     item = 'bank'
@@ -76,6 +73,25 @@ Jobs.RegisterServerCallback('mlx_jobs:storeItem', function(xPlayer, xJob, callba
             callback({
                 done = false,
                 message = 'error_no_money'
+            })
+
+            return
+        end
+    end
+
+    for _, inventoryItem in pairs(xPlayer.inventory or {}) do
+        if (string.lower(inventoryItem.name) == string.lower(item)) then
+            if (inventoryItem.count >= count) then
+                xPlayer.removeInventoryItem(inventoryItem.name, count)
+                xJob.addItem(inventoryItem.name, count)
+
+                callback({ done = true })
+                return
+            end
+
+            callback({
+                done = false,
+                message = 'error_no_item'
             })
 
             return

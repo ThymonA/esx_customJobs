@@ -1,4 +1,4 @@
-function CreateJob(name, label, whitelisted, members, permissions, webhooks, grades, positions, accounts, menu, permissionSystem, version)
+function CreateJob(name, label, whitelisted, members, permissions, webhooks, grades, positions, accounts, items, weapons, menu, permissionSystem, version)
     local self = {}
 
     self.name = name
@@ -11,6 +11,8 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
     self.grades = grades
     self.positions = positions
     self.accounts = accounts
+    self.items = items
+    self.weapons = weapons
 
     if (permissionSystem == nil) then
         self.permissionSystem = CreatePermissions()
@@ -278,6 +280,138 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
         else
             self.accounts[accountName] = CreateJobAccount(accountName, 0, _U(accountName), self.name, self.label)
             self.setAccountMoney(accountName, money)
+        end
+    end
+
+    self.getItems = function()
+        return self.items or {}
+    end
+
+    self.getItem = function(itemName)
+        itemName = string.lower(itemName or 'unknown')
+
+        if (self.items ~= nil and self.items[itemName] ~= nil) then
+            return self.items[itemName]
+        end
+    end
+
+    self.addItem = function(itemName, count)
+        itemName = string.lower(itemName or 'unknown')
+        count = self.round(count or 0)
+
+        local item = self.getItem(itemName)
+
+        if (item ~= nil) then
+            item.addItem(count)
+            self.logToDiscord(_U('job_item_added', self.label), _U('job_item_added_description',
+                Jobs.Formats.NumberToFormattedString(count), itemName, _U(itemName)), itemName .. ' | ' .. self.getCurrentTimeString(),
+                'itemtransactions',
+                3066993)
+        else
+            self.items[itemName] = CreateJobItem(itemName, 0, _U(itemName), self.name, self.label)
+            self.addItem(itemName, count)
+        end
+    end
+
+    self.removeItem = function(itemName, count)
+        itemName = string.lower(itemName or 'unknown')
+        count = self.round(count or 0)
+
+        local item = self.getItem(itemName)
+
+        if (item ~= nil) then
+            item.removeItem(count)
+            self.logToDiscord(_U('job_item_removed', self.label), _U('job_item_removed_description',
+                Jobs.Formats.NumberToFormattedString(count), itemName, _U(itemName)), itemName .. ' | ' .. self.getCurrentTimeString(),
+                'itemtransactions',
+                15158332)
+        else
+            self.items[itemName] = CreateJobItem(itemName, 0, _U(itemName), self.name, self.label)
+            self.removeItem(itemName, count)
+        end
+    end
+
+    self.setItem = function(itemName, count)
+        itemName = string.lower(itemName or 'unknown')
+        count = self.round(count or 0)
+
+        local item = self.getItem(itemName)
+
+        if (item ~= nil) then
+            item.setItem(count)
+            self.logToDiscord(_U('job_item_set', self.label), _U('job_item_set_description',
+                Jobs.Formats.NumberToFormattedString(count), itemName, _U(itemName)), itemName .. ' | ' .. self.getCurrentTimeString(),
+                'itemtransactions',
+                15105570)
+        else
+            self.items[itemName] = CreateJobItem(itemName, 0, _U(itemName), self.name, self.label)
+            self.setItem(itemName, count)
+        end
+    end
+
+    self.getWeapons = function()
+        return self.weapons or {}
+    end
+
+    self.getWeapon = function(weaponName)
+        weaponName = string.lower(weaponName or 'unknown')
+
+        if (self.weapons ~= nil and self.weapons[weaponName] ~= nil) then
+            return self.weapons[weaponName]
+        end
+    end
+
+    self.addWeapon = function(weaponName, count)
+        weaponName = string.lower(weaponName or 'unknown')
+        count = self.round(count or 0)
+
+        local weapon = self.getWeapon(weaponName)
+
+        if (weapon ~= nil) then
+            weapon.addWeapon(count)
+            self.logToDiscord(_U('job_weapon_added', self.label), _U('job_weapon_added_description',
+                Jobs.Formats.NumberToFormattedString(count), weaponName, _U(weaponName)), weaponName .. ' | ' .. self.getCurrentTimeString(),
+                'weapontransactions',
+                3066993)
+        else
+            self.weapons[weaponName] = CreateJobWeapon(weaponName, 0, _U(weaponName), self.name, self.label)
+            self.addWeapon(weaponName, count)
+        end
+    end
+
+    self.removeWeapon = function(weaponName, count)
+        weaponName = string.lower(weaponName or 'unknown')
+        count = self.round(count or 0)
+
+        local weapon = self.getWeapon(weaponName)
+
+        if (weapon ~= nil) then
+            weapon.removeWeapon(count)
+            self.logToDiscord(_U('job_weapon_removed', self.label), _U('job_weapon_removed_description',
+                Jobs.Formats.NumberToFormattedString(count), weaponName, weapon.label), weaponName .. ' | ' .. self.getCurrentTimeString(),
+                'weapontransactions',
+                15158332)
+        else
+            self.weapons[weaponName] = CreateJobWeapon(weaponName, 0, _U(weaponName), self.name, self.label)
+            self.removeWeapon(weaponName, count)
+        end
+    end
+
+    self.setWeapon = function(weaponName, count)
+        weaponName = string.lower(weaponName or 'unknown')
+        count = self.round(count or 0)
+
+        local weapon = self.getWeapon(weaponName)
+
+        if (weapon ~= nil) then
+            weapon.setWeapon(count)
+            self.logToDiscord(_U('job_weapon_set', self.label), _U('job_weapon_set_description',
+                Jobs.Formats.NumberToFormattedString(count), weaponName, _U(weaponName)), weaponName .. ' | ' .. self.getCurrentTimeString(),
+                'weapontransactions',
+                15105570)
+        else
+            self.weapons[weaponName] = CreateJobWeapon(weaponName, 0, _U(weaponName), self.name, self.label)
+            self.setWeapon(weaponName, count)
         end
     end
 

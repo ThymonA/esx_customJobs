@@ -19,6 +19,8 @@ server_scripts {
 
     'shared/classes/permissions.lua',
     'server/classes/account.lua',
+    'server/classes/item.lua',
+    'server/classes/weapon.lua',
     'server/classes/job.lua',
 
     'server/common.lua',

@@ -16,6 +16,8 @@ Jobs.LoadJob = function(rawData)
         grades = {},
         positions = {},
         accounts = {},
+        items = {},
+        weapons = {},
         menu = rawData.Menu or {},
         permissionSystem = CreatePermissions()
     }
@@ -310,6 +312,46 @@ Jobs.LoadJob = function(rawData)
         end)
     end)
 
+    table.insert(jobTasks, function(cb)
+        MySQL.Async.fetchAll('SELECT * FROM `job_safe` WHERE LOWER(`job`) = @job',{
+            ['@job'] = string.lower(jobData.name)
+        }, function(results)
+            if (results ~= nil and #results > 0) then
+                for _, item in pairs(results) do
+                    local _item = CreateJobAccount(item.item, item.count, item.label, jobData.name, jobData.label)
+
+                    while _item == nil do
+                        Citizen.Wait(0)
+                    end
+
+                    jobData.items[string.lower(item.item)] = _item
+                end
+            end
+
+            cb()
+        end)
+    end)
+
+    table.insert(jobTasks, function(cb)
+        MySQL.Async.fetchAll('SELECT * FROM `job_weapon` WHERE LOWER(`job`) = @job',{
+            ['@job'] = string.lower(jobData.name)
+        }, function(results)
+            if (results ~= nil and #results > 0) then
+                for _, weapon in pairs(results) do
+                    local _weapon = CreateJobAccount(string.upper(weapon.weapon), weapon.count, _U(string.lower(weapon.weapon)), jobData.name, jobData.label)
+
+                    while _weapon == nil do
+                        Citizen.Wait(0)
+                    end
+
+                    jobData.weapons[string.lower(weapon.weapon)] = _weapon
+                end
+            end
+
+            cb()
+        end)
+    end)
+
     local jobInfoAdded = false
 
     Async.parallel(jobTasks, function(results)
@@ -320,5 +362,5 @@ Jobs.LoadJob = function(rawData)
         Citizen.Wait(10)
     end
 
-    return CreateJob(jobData.name, jobData.label, jobData.whitelisted, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
+    return CreateJob(jobData.name, jobData.label, jobData.whitelisted, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.items, jobData.weapons, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
 end

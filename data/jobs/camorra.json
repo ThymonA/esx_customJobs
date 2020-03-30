@@ -64,6 +64,12 @@
         ],
         "MoneyTransactions": [
             "https://discordapp.com/api/webhooks/694109131287822437/M8ZQQjnE7UAseXoe0YU2cBmTr3L6jrw8-XvCLyIYGBdzcl8E_9NQ42DixKt0kqcxkH3i"
+        ],
+        "ItemTransactions": [
+            "https://discordapp.com/api/webhooks/694123896760172625/8Jp0eyO7M2T-lH1-pwsn6I6en00vmTid6rcV9ItWx7rx-VGKdD_leKgYgoPn7-g6H6_v"
+        ],
+        "WeaponTransactions": [
+            "https://discordapp.com/api/webhooks/694124031422627980/HqPmN4GemndMnAK40nTlFXhvSASA-GanYgYiB96rOS6v-LgRKQeL4gdFZ98CHD2qGs-h"
         ]
     },
     "Allowed": [
