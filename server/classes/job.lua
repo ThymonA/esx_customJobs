@@ -1,4 +1,4 @@
-function CreateJob(name, label, whitelisted, members, permissions, webhooks, grades, positions, menu, permissionSystem, version)
+function CreateJob(name, label, whitelisted, members, permissions, webhooks, grades, positions, accounts, menu, permissionSystem, version)
     local self = {}
 
     self.name = name
@@ -10,6 +10,7 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
     self.webhooks = webhooks
     self.grades = grades
     self.positions = positions
+    self.accounts = accounts
 
     if (permissionSystem == nil) then
         self.permissionSystem = CreatePermissions()
@@ -214,6 +215,80 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
         end
     end
 
+    self.getAccounts = function()
+        return self.accounts or {}
+    end
+
+    self.getAccount = function(accountName)
+        accountName = string.lower(accountName or 'unknown')
+
+        if (self.accounts ~= nil and self.accounts[accountName] ~= nil) then
+            return self.accounts[accountName]
+        end
+    end
+
+    self.addAccountMoney = function(accountName, money)
+        accountName = string.lower(accountName or 'unknown')
+        money = self.round(money or 0)
+
+        local account = self.getAccount(accountName)
+
+        if (account ~= nil) then
+            account.addMoney(money)
+            self.logToDiscord(_U('job_money_added', self.label), _U('job_money_added_description',
+                Jobs.Formats.NumberToCurrancy(money), accountName, _U(accountName)), accountName .. ' | ' .. self.getCurrentTimeString(),
+                'moneytransactions',
+                3066993)
+        else
+            self.accounts[accountName] = CreateJobAccount(accountName, 0, _U(accountName), self.name, self.label)
+            self.addAccountMoney(accountName, money)
+        end
+    end
+
+    self.removeAccountMoney = function(accountName, money)
+        accountName = string.lower(accountName or 'unknown')
+        money = self.round(money or 0)
+
+        local account = self.getAccount(accountName)
+
+        if (account ~= nil) then
+            account.removeMoney(money)
+            self.logToDiscord(_U('job_money_removed', self.label), _U('job_money_removed_description',
+                Jobs.Formats.NumberToCurrancy(money), accountName, _U(accountName)), accountName .. ' | ' .. self.getCurrentTimeString(),
+                'moneytransactions',
+                15158332)
+        else
+            self.accounts[accountName] = CreateJobAccount(accountName, 0, _U(accountName), self.name, self.label)
+            self.removeAccountMoney(accountName, money)
+        end
+    end
+
+    self.setAccountMoney = function(accountName, money)
+        accountName = string.lower(accountName or 'unknown')
+        money = self.round(money or 0)
+
+        local account = self.getAccount(accountName)
+
+        if (account ~= nil) then
+            account.setMoney(money)
+            self.logToDiscord(_U('job_money_set', self.label), _U('job_money_set_description',
+                Jobs.Formats.NumberToCurrancy(money), accountName, _U(accountName)), accountName .. ' | ' .. self.getCurrentTimeString(),
+                'moneytransactions',
+                15105570)
+        else
+            self.accounts[accountName] = CreateJobAccount(accountName, 0, _U(accountName), self.name, self.label)
+            self.setAccountMoney(accountName, money)
+        end
+    end
+
+    self.getBank = function()
+        local account = self.getAccount('bank')
+
+        if (account ~= nil) then
+            return account
+        end
+    end
+
     self.getMenu = function()
         return self.menu or {}
     end
@@ -294,6 +369,15 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
         end
 
         return string.format("%d-%d-%d %d:%d:%d", year, month, day, hour, minute, second)
+    end
+
+    self.round = function(value, numDecimalPlaces)
+        if numDecimalPlaces then
+            local power = 10^numDecimalPlaces
+            return math.floor((value * power) + 0.5) / (power)
+        else
+            return math.floor(value + 0.5)
+        end
     end
 
     return self

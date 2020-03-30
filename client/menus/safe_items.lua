@@ -74,9 +74,46 @@ Jobs.RegisterMenu('safe_items_add', function(isPrimaryJob)
                 image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
             },
             function(data, menu)
+                if (Jobs.HasPermission('safe.item.add', isPrimaryJob)) then
+                    Jobs.TriggerMenu('safe_items_add_count', isPrimaryJob, data.current.value)
+                end
             end,
             function(data, menu)
                 menu.close()
             end)
     end)
+end)
+
+Jobs.RegisterMenu('safe_items_add_count', function(isPrimaryJob, item)
+    if (not Jobs.HasPermission('safe.item.add', isPrimaryJob)) then
+        return
+    end
+
+    Jobs.ESX.UI.Menu.Open(
+        'job_dialog',
+        GetCurrentResourceName(),
+        'safe_items_add_count',
+        {
+            title = _U('safe_items_add_count'),
+            submit = _U('add'),
+            primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
+            secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
+            image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
+        },
+        function(data, menu)
+            Jobs.TriggerServerCallback('mlx_jobs:storeItem', isPrimaryJob, function(result)
+                if ((result.done or false)) then
+                    Jobs.ESX.ShowNotification(_U('safe_item_added'))
+                else
+                    Jobs.ESX.ShowNotification(_U(result.message or 'unknown'))
+                end
+
+                menu.close()
+                Jobs.TriggerMenu('safe_items_add', isPrimaryJob)
+            end, (item or 'unknown'), (data.value or 0))
+        end,
+        function(data, menu)
+            menu.close()
+            Jobs.TriggerMenu('safe_items_add', isPrimaryJob)
+        end)
 end)

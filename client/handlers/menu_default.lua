@@ -10,7 +10,7 @@ Citizen.CreateThread(function()
 
     Jobs.ESX.UI.Menu.RegisterType(MenuType, Jobs.MenuDefault.OpenMenu, Jobs.MenuDefault.CloseMenu)
 
-    RegisterNUICallback('menu_submit', function(data, cb)
+    RegisterNUICallback('job_default_submit', function(data, cb)
 		local menu = Jobs.ESX.UI.Menu.GetOpened(MenuType, data._namespace, data._name)
 
         if menu.submit ~= nil then
@@ -20,7 +20,7 @@ Citizen.CreateThread(function()
         cb('OK')
     end)
 
-    RegisterNUICallback('menu_cancel', function(data, cb)
+    RegisterNUICallback('job_default_cancel', function(data, cb)
 		local menu = Jobs.ESX.UI.Menu.GetOpened(MenuType, data._namespace, data._name)
 
 		if menu.cancel ~= nil then
@@ -30,7 +30,7 @@ Citizen.CreateThread(function()
 		cb('OK')
     end)
 
-    RegisterNUICallback('menu_change', function(data, cb)
+    RegisterNUICallback('job_default_change', function(data, cb)
 		local menu = Jobs.ESX.UI.Menu.GetOpened(MenuType, data._namespace, data._name)
 
 		for i=1, #data.elements, 1 do
@@ -57,7 +57,7 @@ Citizen.CreateThread(function()
 
             if IsControlPressed(0, 18) and GetLastInputMethod(2) and (GetGameTimer() - GUI.Time) > 150 then
 				SendNUIMessage({
-					action  = 'controlPressed',
+					action  = 'controlPressedDefault',
 					control = 'ENTER'
 				})
 
@@ -66,7 +66,7 @@ Citizen.CreateThread(function()
 
 			if IsControlPressed(0, 177) and GetLastInputMethod(2) and (GetGameTimer() - GUI.Time) > 150 then
 				SendNUIMessage({
-					action  = 'controlPressed',
+					action  = 'controlPressedDefault',
 					control = 'BACKSPACE'
 				})
 
@@ -75,7 +75,7 @@ Citizen.CreateThread(function()
 
 			if IsControlPressed(0, 27) and GetLastInputMethod(2) and (GetGameTimer() - GUI.Time) > 200 then
 				SendNUIMessage({
-					action  = 'controlPressed',
+					action  = 'controlPressedDefault',
 					control = 'TOP'
 				})
 
@@ -84,7 +84,7 @@ Citizen.CreateThread(function()
 
 			if IsControlPressed(0, 173) and GetLastInputMethod(2) and (GetGameTimer() - GUI.Time) > 200 then
 				SendNUIMessage({
-					action  = 'controlPressed',
+					action  = 'controlPressedDefault',
 					control = 'DOWN'
 				})
 
@@ -93,7 +93,7 @@ Citizen.CreateThread(function()
 
 			if IsControlPressed(0, 174) and GetLastInputMethod(2) and (GetGameTimer() - GUI.Time) > 150 then
 				SendNUIMessage({
-					action  = 'controlPressed',
+					action  = 'controlPressedDefault',
 					control = 'LEFT'
 				})
 
@@ -102,7 +102,7 @@ Citizen.CreateThread(function()
 
 			if IsControlPressed(0, 175) and GetLastInputMethod(2) and (GetGameTimer() - GUI.Time) > 150 then
 				SendNUIMessage({
-					action  = 'controlPressed',
+					action  = 'controlPressedDefault',
 					control = 'RIGHT'
 				})
 
@@ -114,7 +114,7 @@ end)
 
 Jobs.MenuDefault.OpenMenu = function(namespace, name, data)
     SendNUIMessage({
-        action = 'openMenu',
+        action = 'openMenuDefault',
         namespace = namespace,
         name = name,
         data = data
@@ -123,7 +123,7 @@ end
 
 Jobs.MenuDefault.CloseMenu = function(namespace, name)
     SendNUIMessage({
-        action = 'closeMenu',
+        action = 'closeMenuDefault',
         namespace = namespace,
         name = name,
         data = {}

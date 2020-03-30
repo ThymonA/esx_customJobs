@@ -1,0 +1,200 @@
+* {
+    font-family: 'BebasNeue', 'Arial', 'Helvetica', sans-serif;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'BebasNeue';
+    font-weight: 100;
+    font-style: normal;
+    src: url('../fonts/BebasNeue/BebasNeueThin.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'BebasNeue';
+    font-weight: 200;
+    font-style: normal;
+    src: url('../fonts/BebasNeue/BebasNeueLight.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'BebasNeue';
+    font-weight: 300;
+    font-style: normal;
+    src: url('../fonts/BebasNeue/BebasNeueBook.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'BebasNeue';
+    font-weight: 400;
+    font-style: normal;
+    src: url('../fonts/BebasNeue/BebasNeueRegular.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'BebasNeue';
+    font-weight: 700;
+    font-style: normal;
+    src: url('../fonts/BebasNeue/BebasNeueBold.otf') format('opentype');
+}
+
+#controls {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 3em;
+	color: #FFF;
+	position: absolute;
+	bottom: 40;
+	right: 40;
+}
+
+.controls {
+	display: none;
+}
+
+.dialog {
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: transparent;
+    color: #fff;
+	position: absolute;
+	overflow: hidden;
+	top: 50%;
+	left: 50%;
+    width: 600px;
+    padding-bottom: 2em;
+	transform: translate(-50%, -50%);
+    border-radius: 7px;
+    background-color: rgba(0, 0, 0, 0.7);
+    -webkit-box-shadow: 10px 9px 42px -5px rgba(0, 0, 0, 0.52);
+    -moz-box-shadow: 10px 9px 42px -5px rgba(0, 0, 0, 0.52);
+    box-shadow: 10px 9px 42px -5px rgba(0, 0, 0, 0.52);
+}
+
+.head {
+	display: flex;
+	flex-basis: 100%;
+	align-items: center;
+	color: #2980b9;
+}
+
+.dialog.big {
+	height: 200px;
+}
+
+/** menu_dialog */
+.dialog.menu_dialog .head {
+	background-color: #27272d;
+	text-align: center;
+	height: 40px;
+}
+
+.dialog.menu_dialog .head span::before {
+	content: "";
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+}
+
+.dialog.menu_dialog button {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.dialog.menu_dialog .head {
+    font-family     : Arial, Helvetica, sans-serif;
+    text-transform  : uppercase;
+    font-size       : 28px;
+    background-color: black;
+    text-align      : center;
+    height          : 90px;
+    line-height     : 105px;
+    color           : white;
+    font-style      : oblique;
+    font-weight     : bold;
+}
+
+.dialog.menu_dialog .head_menu_dialog {
+    font-family     : Arial, Helvetica, sans-serif;
+    font-size       : 59px;
+    text-align      : center;
+    height          : 90px;
+    line-height     : 105px;
+    color           : white;
+    font-style      : oblique;
+    background-color: black;
+}
+
+.dialog.menu_dialog .category {
+    font-family     : Arial, Helvetica, sans-serif;
+    font-size       : 23px;
+    height          : 50px;
+    line-height     : 50px;
+    padding         : 20px;
+    color           : red ;
+    background-color: rgba(0, 0, 0, 1);
+    text-transform  : uppercase;
+    font-size       : 18px;
+    font-weight     : bold;
+    padding         : 0 15px;
+    position        : center;
+    text-align      : center;
+    top             : 0px;
+}
+
+.dialog.menu_dialog input[type="text"] {
+    width: 85%;
+	height: 32px;
+    outline: 0;
+    background-color: rgba(0, 0, 0, 0);
+    text-align: center;
+    margin-top: 26px;
+    margin-left: 7.5%;
+    transition: all 0.2s ease-in-out;
+    color: white;
+    border: 2px solid red;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.dialog.menu_dialog input[type="text"]:active,
+.dialog.menu_dialog input[type="text"]:hover {
+    color: white;
+}
+
+.dialog.menu_dialog textarea {
+    width: 100%;
+	height: 128px;
+}
+
+.dialog.menu_dialog button {
+    position: relative;
+    padding: 10px;
+    margin-top: 2em;
+    border-radius: 3px;
+    width: 40%;
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    color: #FFF;
+    text-decoration: none;
+    background-color: transparent;
+    background: transparent;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.dialog.menu_dialog button[name="submit"] {
+    margin-left: 7.5%;
+    color: limegreen;
+    background: transparent;
+    border: 2px solid limegreen;
+}
+
+.dialog.menu_dialog button[name="cancel"] {
+    margin-left: 5%;
+    color: red;
+    background: transparent;
+    border: 2px solid red;
+}
+
+.dialog.menu_dialog button[name="submit"]:hover,
+.dialog.menu_dialog button[name="cancel"]:hover {
+    letter-spacing: 1px;
+}

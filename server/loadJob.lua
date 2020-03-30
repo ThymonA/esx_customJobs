@@ -15,6 +15,7 @@ Jobs.LoadJob = function(rawData)
         webhooks = {},
         grades = {},
         positions = {},
+        accounts = {},
         menu = rawData.Menu or {},
         permissionSystem = CreatePermissions()
     }
@@ -271,6 +272,44 @@ Jobs.LoadJob = function(rawData)
         cb()
     end)
 
+    table.insert(jobTasks, function(cb)
+        MySQL.Async.fetchAll('SELECT * FROM `job_account` WHERE LOWER(`job`) = @job',{
+            ['@job'] = string.lower(jobData.name)
+        }, function(results)
+            local foundedAccounts = {}
+
+            if (results ~= nil and #results > 0) then
+                for _, account in pairs(results) do
+                    foundedAccounts[string.lower(account.account)] = true
+
+                    local _account = CreateJobAccount(account.account, account.money, _U(account.account), jobData.name, jobData.label)
+
+                    while _account == nil do
+                        Citizen.Wait(0)
+                    end
+
+                    jobData.accounts[string.lower(account.account)] = _account
+                end
+            end
+
+            for _, requiredAccount in pairs(ServerConfig.RequiredAccounts) do
+                if (foundedAccounts ~= nil and foundedAccounts[requiredAccount] == nil) then
+                    local _account = CreateJobAccount(requiredAccount, 0, _U(requiredAccount), jobData.name, jobData.label)
+
+                    while _account == nil do
+                        Citizen.Wait(0)
+                    end
+
+                    jobData.accounts[string.lower(requiredAccount)] = _account
+
+                    _account.save()
+                end
+            end
+
+            cb()
+        end)
+    end)
+
     local jobInfoAdded = false
 
     Async.parallel(jobTasks, function(results)
@@ -281,5 +320,5 @@ Jobs.LoadJob = function(rawData)
         Citizen.Wait(10)
     end
 
-    return CreateJob(jobData.name, jobData.label, jobData.whitelisted, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
+    return CreateJob(jobData.name, jobData.label, jobData.whitelisted, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
 end

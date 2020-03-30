@@ -61,6 +61,9 @@
         ],
         "Employee": [
             "https://discordapp.com/api/webhooks/674237484820987915/Qp_DF9l3UCd3pK6fwX4ixnEUfcO-cpiMU9MHI6rvZUhTv_UE9l41y3pOPhpimzUnSV8W"
+        ],
+        "MoneyTransactions": [
+            "https://discordapp.com/api/webhooks/694109131287822437/M8ZQQjnE7UAseXoe0YU2cBmTr3L6jrw8-XvCLyIYGBdzcl8E_9NQ42DixKt0kqcxkH3i"
         ]
     },
     "Allowed": [

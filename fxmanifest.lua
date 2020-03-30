@@ -11,13 +11,14 @@ version '1.0.0'
 server_scripts {
     '@async/async.lua',
     '@mysql-async/lib/MySQL.lua',
-    '@es_extended/locale.lua',
 
+    'shared/locale.lua',
     'locales/nl.lua',
 
     'data/config/server_config.lua',
 
     'shared/classes/permissions.lua',
+    'server/classes/account.lua',
     'server/classes/job.lua',
 
     'server/common.lua',
@@ -34,8 +35,7 @@ server_scripts {
 }
 
 client_scripts {
-    '@es_extended/locale.lua',
-
+    'shared/locale.lua',
     'locales/nl.lua',
 
     'data/config/client_config.lua',
@@ -50,6 +50,7 @@ client_scripts {
     'client/functions.lua',
 
     'client/handlers/menu_default.lua',
+    'client/handlers/menu_dialog.lua',
 
     'client/menus/safe_items.lua',
 
@@ -60,8 +61,9 @@ files {
     'html/index.html',
 
     'html/css/menu_default.css',
+    'html/css/menu_dialog.css',
     'html/js/mustache.min.js',
-    'html/js/menu_default.js',
+    'html/js/menus.js',
 
     'html/img/headers/*.jpg',
     'html/img/headers/*.png',
