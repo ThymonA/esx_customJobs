@@ -1,6 +1,7 @@
 Locales['nl'] = {
     ['open_safe_items'] = 'Druk op ~INPUT_CONTEXT~ om de kluis van ~y~%s~s~ te openen',
     ['open_safe_weapons'] = 'Druk op ~INPUT_CONTEXT~ om de kluis met wapens van ~y~%s~s~ te openen',
+    ['open_wardrobe'] = 'Druk op ~INPUT_CONTEXT~ om de kledingkast van ~y~%s~s~ te openen',
 
     ['job_added_title'] = '%s is toegevoegd aan de organisatie',
     ['job_added_description'] = '**%s** is aan **%s** toegevoegd als **%s** (%s)',
@@ -63,6 +64,9 @@ Locales['nl'] = {
     ['add'] = 'Toevoegen',
     ['back'] = 'Terug',
     ['buy'] = 'Kopen',
+    ['wardrobe'] = 'Kledingkast',
+    ['own_skin'] = 'Eigen kledingstuk',
+    ['skins'] = 'Kledingstukken',
 
     ['item'] = '<strong>%s</strong> %s',
     ['negative'] = 'Waarde mag niet negative zijn, getal moet 0 of groter zijn.',

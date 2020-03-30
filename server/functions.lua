@@ -46,9 +46,11 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
 
                 local permissions = xJob.getPermissionsByGrade(grade)
                 local positions = xJob.getPositionsByGrade(grade)
+                local clothes = xJob.getClothesByGrade(grade)
 
                 jobInfo.job.permissions = permissions
                 jobInfo.job.positions = positions
+                jobInfo.job.clothes = clothes
                 jobInfo.job.name = xJob.getName()
                 jobInfo.job.label = xJob.getLabel()
                 jobInfo.job.primaryColor = xJob.getPrimaryColor()
@@ -70,9 +72,11 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
 
                     local permissions = xJob.getPermissionsByGrade(grade)
                     local positions = xJob.getPositionsByGrade(grade)
+                    local clothes = xJob.getClothesByGrade(grade)
 
                     jobInfo.job.permissions = permissions
                     jobInfo.job.positions = positions
+                    jobInfo.job.clothes = clothes
                     jobInfo.job.name = xJob.getName()
                     jobInfo.job.label = xJob.getLabel()
                     jobInfo.job.primaryColor = xJob.getPrimaryColor()
@@ -109,9 +113,11 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
 
                 local permissions = xJob.getPermissionsByGrade(grade)
                 local positions = xJob.getPositionsByGrade(grade)
+                local clothes = xJob.getClothesByGrade(grade)
 
                 jobInfo.job2.permissions = permissions
                 jobInfo.job2.positions = positions
+                jobInfo.job2.clothes = clothes
                 jobInfo.job2.name = xJob.getName()
                 jobInfo.job2.label = xJob.getLabel()
                 jobInfo.job2.primaryColor = xJob.getPrimaryColor()
@@ -133,9 +139,11 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
 
                     local permissions = xJob.getPermissionsByGrade(grade)
                     local positions = xJob.getPositionsByGrade(grade)
+                    local clothes = xJob.getClothesByGrade(grade)
 
                     jobInfo.job2.permissions = permissions
                     jobInfo.job2.positions = positions
+                    jobInfo.job2.clothes = clothes
                     jobInfo.job2.name = xJob.getName()
                     jobInfo.job2.label = xJob.getLabel()
                     jobInfo.job2.primaryColor = xJob.getPrimaryColor()

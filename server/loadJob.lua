@@ -19,6 +19,7 @@ Jobs.LoadJob = function(rawData)
         items = {},
         weapons = {},
         buyableItems = {},
+        clothes = {},
         menu = rawData.Menu or {},
         permissionSystem = CreatePermissions()
     }
@@ -60,6 +61,31 @@ Jobs.LoadJob = function(rawData)
             size = position.Size or { x = 1.5, y = 1.5, z = 0.5 },
             marker = position.Marker or 25
         })
+    end
+
+    jobData.clothes['male'] = {}
+    jobData.clothes['female'] = {}
+
+    for _, clothes in pairs(rawData.Clothes or {}) do
+        if (clothes ~= nil) then
+            local isMale = string.lower(clothes.Gender or 'M') == 'm'
+
+            if (isMale) then
+                table.insert(jobData.clothes['male'], {
+                    name = clothes.Name or 'Unknown',
+                    allowed = clothes.Allowed or {},
+                    skin = clothes.Skin or {},
+                    gender = 'm'
+                })
+            else
+                table.insert(jobData.clothes['female'], {
+                    name = clothes.Name or 'Unknown',
+                    allowed = clothes.Allowed or {},
+                    skin = clothes.Skin or {},
+                    gender = 'f'
+                })
+            end
+        end
     end
 
     MySQL.Async.fetchAll('SELECT * FROM `jobs` WHERE `name` = @job', {
@@ -117,7 +143,8 @@ Jobs.LoadJob = function(rawData)
                 label = jobGrade.Label or 'Unknown',
                 salary = jobGrade.Salary or 0,
                 permissions = {},
-                positions = {}
+                positions = {},
+                clothes = {}
             }
 
             for _, jobPermission in pairs(jobData.permissions or {}) do
@@ -163,6 +190,47 @@ Jobs.LoadJob = function(rawData)
 
                         table.insert(jobData.grades[tostring(jobGrade.Grade or 0)].positions[positionType], positionValue)
                     end
+                end
+            end
+
+            jobData.grades[tostring(jobGrade.Grade or 0)].clothes['male'] = {}
+            jobData.grades[tostring(jobGrade.Grade or 0)].clothes['female'] = {}
+
+            for _, clothes in pairs ((jobData.clothes or {}).male or {}) do
+                local allowedGrades = clothes.allowed or {}
+                local gradeAllowed = false
+
+                for _, allowedGrade in pairs(allowedGrades) do
+                    if (allowedGrade ~= nil and string.lower(tostring(allowedGrade)) == string.lower(jobData.grades[tostring(jobGrade.Grade or 0)].name)) then
+                        gradeAllowed = true
+                    end
+
+                    if (deniedGrade ~= nil and string.lower(tostring(allowedGrade)) == tostring(jobGrade.Grade or 0)) then
+                        gradeAllowed = true
+                    end
+                end
+
+                if (gradeAllowed or #allowedGrades <= 0) then
+                    table.insert(jobData.grades[tostring(jobGrade.Grade or 0)].clothes['male'], clothes)
+                end
+            end
+
+            for _, clothes in pairs ((jobData.clothes or {}).female or {}) do
+                local allowedGrades = clothes.allowed or {}
+                local gradeAllowed = false
+
+                for _, allowedGrade in pairs(allowedGrades) do
+                    if (allowedGrade ~= nil and string.lower(tostring(allowedGrade)) == string.lower(jobData.grades[tostring(jobGrade.Grade or 0)].name)) then
+                        gradeAllowed = true
+                    end
+
+                    if (deniedGrade ~= nil and string.lower(tostring(allowedGrade)) == tostring(jobGrade.Grade or 0)) then
+                        gradeAllowed = true
+                    end
+                end
+
+                if (gradeAllowed or #allowedGrades <= 0) then
+                    table.insert(jobData.grades[tostring(jobGrade.Grade or 0)].clothes['female'], clothes)
                 end
             end
         end
@@ -389,5 +457,5 @@ Jobs.LoadJob = function(rawData)
         Citizen.Wait(10)
     end
 
-    return CreateJob(jobData.name, jobData.label, jobData.whitelisted, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.items, jobData.weapons, jobData.buyableItems, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
+    return CreateJob(jobData.name, jobData.label, jobData.whitelisted, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.items, jobData.weapons, jobData.buyableItems, jobData.clothes, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
 end

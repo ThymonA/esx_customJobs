@@ -19,6 +19,9 @@ function CreatePermissions()
         ['safe.account.*'] = {
             ['safe.account.add'] = { 'safe_items' },
             ['safe.account.remove'] = { 'safe_banking' },
+        },
+        ['wardrobe.*'] = {
+            ['wardrobe.use'] = { 'wardrobe' }
         }
     }
 
