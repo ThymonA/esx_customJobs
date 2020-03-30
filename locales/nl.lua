@@ -36,9 +36,20 @@ Locales['nl'] = {
     ['safe_item_buy'] = 'Voorwerp kopen voor in kluis',
     ['safe_items_add_count'] = 'Hoeveel wilt u in de voorraadkast leggen?',
     ['safe_item_added'] = 'Uw voorwerp is opgeslagen in de voorraadkast',
+    ['safe_item_removed'] = 'U heeft uw voorwerp uit de voorraadkast gehaald',
+
+    ['safe_account_added_webhook'] = '%s heeft %s gestort',
+    ['safe_account_added_webhook_description'] = '**Player:** %s\n**Bedrag:** %s\n**Soort:** %s',
+    ['safe_item_added_webhook'] = '%s heeft %s in voorraadkast gedaan',
+    ['safe_item_added_webhook_description'] = '**Player:** %s\n**Aantal:** %s\n**Voorwerp:** %s',
+
+    ['safe_account_removed_webhook'] = '%s heeft %s opgenomen',
+    ['safe_account_removed_webhook_description'] = '**Player:** %s\n**Bedrag:** %s\n**Soort:** %s',
+    ['safe_item_removed_webhook'] = '%s heeft %s uit voorraadkast gehaald',
+    ['safe_item_removed_webhook_description'] = '**Player:** %s\n**Aantal:** %s\n**Voorwerp:** %s',
 
     ['accounts'] = 'Geld',
-    ['bank'] = 'Bank',
+    ['bank'] = 'Geld',
     ['money'] = 'Contant',
     ['black_money'] = 'Zwartgeld',
     ['laundering'] = 'Witwassen',
@@ -54,6 +65,7 @@ Locales['nl'] = {
     ['error_no_action'] = 'Geen actie gevonden',
     ['error_no_money'] = 'U heeft onvoldoende geld',
     ['error_no_item'] = 'U heeft onvoldoende voorwerpen',
+    ['error_item_limit'] = 'U kan niet zoveel van dit item dragen',
 
     ['weapon_knife'] = 'mes',
     ['weapon_nightstick'] = 'nightstick',

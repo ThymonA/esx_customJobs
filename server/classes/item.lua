@@ -15,7 +15,7 @@ function CreateJobItem(name, count, label, jobName, jobLabel)
         count = self.round(count)
 
         if (count >= 0) then
-            self.count = count
+            self.count = (self.count + count)
             self.triggerEvent('mlx_jobs:setJobItem', self.jobName, self.name, self.count)
             self.triggerEvent('mlx_jobs:addItem', self.jobName, self.name, count)
             self.save()

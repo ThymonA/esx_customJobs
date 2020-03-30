@@ -287,6 +287,26 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
         return self.items or {}
     end
 
+    self.getInventory = function()
+        local inventory = {}
+
+        for _, item in pairs(self.items) do
+            local xItem = Jobs.GetItem(item.name)
+
+            table.insert(inventory, {
+                name = item.name,
+                count = item.count,
+                label = item.label,
+                weight = xItem.weight or 1,
+                limit = xItem.limit or 50,
+                rare = xItem.rare or 0,
+                canRemove = xItem.canRemove or true
+            })
+        end
+
+        return inventory
+    end
+
     self.getItem = function(itemName)
         itemName = string.lower(itemName or 'unknown')
 
@@ -304,11 +324,13 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
         if (item ~= nil) then
             item.addItem(count)
             self.logToDiscord(_U('job_item_added', self.label), _U('job_item_added_description',
-                Jobs.Formats.NumberToFormattedString(count), itemName, _U(itemName)), itemName .. ' | ' .. self.getCurrentTimeString(),
+                Jobs.Formats.NumberToFormattedString(count), itemName, item.label), itemName .. ' | ' .. self.getCurrentTimeString(),
                 'itemtransactions',
                 3066993)
         else
-            self.items[itemName] = CreateJobItem(itemName, 0, _U(itemName), self.name, self.label)
+            local itemLabel = Jobs.ESX.GetItemLabel(itemName or 'unknown') or itemName or 'unknown'
+
+            self.items[itemName] = CreateJobItem(itemName, 0, itemLabel, self.name, self.label)
             self.addItem(itemName, count)
         end
     end
@@ -322,11 +344,13 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
         if (item ~= nil) then
             item.removeItem(count)
             self.logToDiscord(_U('job_item_removed', self.label), _U('job_item_removed_description',
-                Jobs.Formats.NumberToFormattedString(count), itemName, _U(itemName)), itemName .. ' | ' .. self.getCurrentTimeString(),
+                Jobs.Formats.NumberToFormattedString(count), itemName, item.label), itemName .. ' | ' .. self.getCurrentTimeString(),
                 'itemtransactions',
                 15158332)
         else
-            self.items[itemName] = CreateJobItem(itemName, 0, _U(itemName), self.name, self.label)
+            local itemLabel = Jobs.ESX.GetItemLabel(itemName or 'unknown') or itemName or 'unknown'
+
+            self.items[itemName] = CreateJobItem(itemName, 0, itemLabel, self.name, self.label)
             self.removeItem(itemName, count)
         end
     end
@@ -340,11 +364,13 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
         if (item ~= nil) then
             item.setItem(count)
             self.logToDiscord(_U('job_item_set', self.label), _U('job_item_set_description',
-                Jobs.Formats.NumberToFormattedString(count), itemName, _U(itemName)), itemName .. ' | ' .. self.getCurrentTimeString(),
+                Jobs.Formats.NumberToFormattedString(count), itemName, item.label), itemName .. ' | ' .. self.getCurrentTimeString(),
                 'itemtransactions',
                 15105570)
         else
-            self.items[itemName] = CreateJobItem(itemName, 0, _U(itemName), self.name, self.label)
+            local itemLabel = Jobs.ESX.GetItemLabel(itemName or 'unknown') or itemName or 'unknown'
+
+            self.items[itemName] = CreateJobItem(itemName, 0, itemLabel, self.name, self.label)
             self.setItem(itemName, count)
         end
     end

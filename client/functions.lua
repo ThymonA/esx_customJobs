@@ -11,6 +11,10 @@ Jobs.DoesMenuExists = function(menyType)
 end
 
 Jobs.TriggerMenu = function(menuType, isPrimaryJob, ...)
+    if (isPrimaryJob == nil) then
+        isPrimaryJob = true
+    end
+
     if (Jobs.DoesMenuExists(menuType)) then
         Jobs.ESX.UI.Menu.CloseAll()
         Jobs.Menus[menuType](isPrimaryJob, ...)
@@ -18,7 +22,10 @@ Jobs.TriggerMenu = function(menuType, isPrimaryJob, ...)
 end
 
 Jobs.GetPrimaryColor = function(isPrimaryJob, opacity)
-    isPrimaryJob = isPrimaryJob or true
+    if (isPrimaryJob == nil) then
+        isPrimaryJob = true
+    end
+
     opacity = opacity or 1.0
 
     if (isPrimaryJob) then
@@ -33,7 +40,10 @@ Jobs.GetPrimaryColor = function(isPrimaryJob, opacity)
 end
 
 Jobs.GetSecondaryColor = function(isPrimaryJob, opacity)
-    isPrimaryJob = isPrimaryJob or true
+    if (isPrimaryJob == nil) then
+        isPrimaryJob = true
+    end
+
     opacity = opacity or 1.0
 
     if (isPrimaryJob) then
@@ -48,7 +58,9 @@ Jobs.GetSecondaryColor = function(isPrimaryJob, opacity)
 end
 
 Jobs.GetCurrentHeaderImage = function(isPrimaryJob)
-    isPrimaryJob = isPrimaryJob or true
+    if (isPrimaryJob == nil) then
+        isPrimaryJob = true
+    end
 
     if (isPrimaryJob) then
         return ((Jobs.JobData or {}).job or {}).headerImage or 'menu_default.jpg'
@@ -58,7 +70,9 @@ Jobs.GetCurrentHeaderImage = function(isPrimaryJob)
 end
 
 Jobs.HasPermission = function(permission, isPrimaryJob)
-    isPrimaryJob = isPrimaryJob or true
+    if (isPrimaryJob == nil) then
+        isPrimaryJob = true
+    end
 
     if (isPrimaryJob) then
         return Jobs.Permissions.hasAnyPermission(((Jobs.JobData or {}).job or {}).permissions or {}, permission)
@@ -68,7 +82,9 @@ Jobs.HasPermission = function(permission, isPrimaryJob)
 end
 
 Jobs.TriggerServerCallback = function(name, isPrimaryJob, cb, ...)
-    isPrimaryJob = isPrimaryJob or true
+    if (isPrimaryJob == nil) then
+        isPrimaryJob = true
+    end
 
     Jobs.ServerCallbacks[Jobs.RequestId] = cb
 

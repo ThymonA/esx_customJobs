@@ -318,7 +318,8 @@ Jobs.LoadJob = function(rawData)
         }, function(results)
             if (results ~= nil and #results > 0) then
                 for _, item in pairs(results) do
-                    local _item = CreateJobAccount(item.item, item.count, item.label, jobData.name, jobData.label)
+                    local label = Jobs.ESX.GetItemLabel(item.item or 'unknown') or item.label or item.name or 'unknown'
+                    local _item = CreateJobItem(item.item, item.count, label, jobData.name, jobData.label)
 
                     while _item == nil do
                         Citizen.Wait(0)
@@ -338,7 +339,7 @@ Jobs.LoadJob = function(rawData)
         }, function(results)
             if (results ~= nil and #results > 0) then
                 for _, weapon in pairs(results) do
-                    local _weapon = CreateJobAccount(string.upper(weapon.weapon), weapon.count, _U(string.lower(weapon.weapon)), jobData.name, jobData.label)
+                    local _weapon = CreateJobWeapon(string.upper(weapon.weapon), weapon.count, _U(string.lower(weapon.weapon)), jobData.name, jobData.label)
 
                     while _weapon == nil do
                         Citizen.Wait(0)

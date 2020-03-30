@@ -97,7 +97,7 @@ Citizen.CreateThread(function()
                 if (GetDistanceBetweenCoords(coords, marker.position.x, marker.position.y, marker.position.z, true) < marker.info.x) then
                     Jobs.IsInMarker = true
                     Jobs.CurrentAction = marker.action
-                    Jobs.CurrentActionInfo = marker.actionInfo or true
+                    Jobs.CurrentActionInfo = marker.actionInfo
                 end
             end
         end
@@ -141,7 +141,12 @@ end)
 
 -- Trigger when player enters marker
 Jobs.HasEnteredMarker = function()
-    local isPrimaryJob = Jobs.CurrentActionInfo or true
+    local isPrimaryJob = Jobs.CurrentActionInfo
+
+    if (isPrimaryJob == nil) then
+        isPrimaryJob = true
+    end
+
     local jobName = 'Unknown'
 
     if (isPrimaryJob and Jobs.JobData ~= nil and Jobs.JobData.job ~= nil) then

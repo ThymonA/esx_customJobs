@@ -65,6 +65,11 @@ Jobs.RegisterServerCallback('mlx_jobs:storeItem', function(xPlayer, xJob, callba
                 end
 
                 xJob.addAccountMoney(item, count)
+                xJob.logIdentifierToDiscord(xPlayer.identifier,
+                    _U('safe_account_added_webhook', xPlayer.name, _U(item)),
+                    _U('safe_account_added_webhook_description', xPlayer.name, Jobs.Formats.NumberToCurrancy(count), _U(item)),
+                    'money',
+                    3066993)
 
                 callback({ done = true })
                 return
@@ -85,6 +90,12 @@ Jobs.RegisterServerCallback('mlx_jobs:storeItem', function(xPlayer, xJob, callba
                 xPlayer.removeInventoryItem(inventoryItem.name, count)
                 xJob.addItem(inventoryItem.name, count)
 
+                xJob.logIdentifierToDiscord(xPlayer.identifier,
+                    _U('safe_item_added_webhook', xPlayer.name, inventoryItem.label),
+                    _U('safe_item_added_webhook_description', xPlayer.name, Jobs.Formats.NumberToFormattedString(count), inventoryItem.label),
+                    'safe',
+                    3066993)
+
                 callback({ done = true })
                 return
             end
@@ -94,6 +105,98 @@ Jobs.RegisterServerCallback('mlx_jobs:storeItem', function(xPlayer, xJob, callba
                 message = 'error_no_item'
             })
 
+            return
+        end
+    end
+
+    callback({
+        done = false,
+        message = 'error_no_action'
+    })
+
+    return
+end)
+
+Jobs.RegisterServerCallback('mlx_jobs:getJobInventory', function(xPlayer, xJob, callback)
+    if (xPlayer == nil and callback ~= nil) then
+        callback({
+            inventory = {}
+        })
+
+        return
+    end
+
+    if (not xJob.memberHasPermission(xPlayer.identifier, 'safe.item.remove')) then
+        callback({
+            inventory = {}
+        })
+
+        return
+    end
+
+    if (callback ~= nil) then
+        callback({
+            inventory = xJob.getInventory()
+        })
+    end
+end)
+
+Jobs.RegisterServerCallback('mlx_jobs:getItem', function(xPlayer, xJob, callback, item, count)
+    item = item or 'unknown'
+    count = tonumber(count) or 0
+
+    if (xPlayer == nil and callback ~= nil) then
+        callback({
+            done = false,
+            message = 'error_no_player'
+        })
+
+        return
+    end
+
+    if (not xJob.memberHasPermission(xPlayer.identifier, 'safe.item.remove')) then
+        callback({
+            done = false,
+            message = 'error_no_permission'
+        })
+
+        return
+    end
+
+    local inventory = xJob.getInventory()
+
+    for _, inventoryItem in pairs(inventory or {}) do
+        if (string.lower(inventoryItem.name) == string.lower(item)) then
+            if (inventoryItem.count < count) then
+                callback({
+                    done = false,
+                    message = 'error_no_item'
+                })
+
+                return
+            end
+
+            local playerItem = xPlayer.getInventoryItem(inventoryItem.name)
+
+            if (playerItem ~= nil and (playerItem.count + count) > inventoryItem.limit and inventoryItem.limit ~= -1) then
+                callback({
+                    done = false,
+                    message = 'error_item_limit'
+                })
+
+                return
+            end
+
+            xPlayer.addInventoryItem(inventoryItem.name, count)
+            xJob.removeItem(inventoryItem.name, count)
+
+            xJob.logIdentifierToDiscord(xPlayer.identifier,
+                    _U('safe_item_removed_webhook', xPlayer.name, inventoryItem.label),
+                    _U('safe_item_removed_webhook_description', xPlayer.name, Jobs.Formats.NumberToFormattedString(count), inventoryItem.label),
+                    'safe',
+                    15158332)
+
+            callback({ done = true })
             return
         end
     end

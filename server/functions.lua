@@ -211,3 +211,11 @@ Jobs.TriggerServerCallback = function(name, source, isPrimaryJob, cb, ...)
 
     Jobs.ServerCallbacks[name](xPlayer, xJob, cb, ...)
 end
+
+Jobs.GetItem = function(itemName)
+    if (Jobs.ESX == nil or Jobs.ESX.Items == nil or Jobs.ESX.Items[itemName] == nil) then
+        return {}
+    end
+
+    return Jobs.ESX.Items[itemName]
+end

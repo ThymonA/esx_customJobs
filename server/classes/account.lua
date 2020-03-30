@@ -15,7 +15,7 @@ function CreateJobAccount(name, money, label, jobName, jobLabel)
         money = self.round(money)
 
         if (money >= 0) then
-            self.money = money
+            self.money = (self.money + money)
             self.triggerEvent('mlx_jobs:setJobMoney', self.jobName, self.name, self.money)
             self.triggerEvent('mlx_jobs:addMoney', self.jobName, self.name, money)
             self.save()
