@@ -220,3 +220,123 @@ Jobs.RegisterServerCallback('mlx_jobs:getItem', function(xPlayer, xJob, callback
 
     return
 end)
+
+Jobs.RegisterServerCallback('mlx_jobs:getBuyableItems', function(xPlayer, xJob, callback)
+    if (xPlayer == nil and callback ~= nil) then
+        callback({
+            items = {}
+        })
+
+        return
+    end
+
+    if (not xJob.memberHasPermission(xPlayer.identifier, 'safe.item.buy')) then
+        callback({
+            items = {}
+        })
+
+        return
+    end
+
+    if (callback ~= nil) then
+        local items = {}
+
+        for _, item in pairs(xJob.getBuyableItemsByType('items') or {}) do
+            local xItem = Jobs.GetItem(item.item)
+            local currentCount = 0
+            local jobItem = xJob.getItem(item.item)
+
+            if (jobItem ~= nil) then
+                currentCount = jobItem.count or 0
+            end
+
+            table.insert(items, {
+                name = item.item or 'unknown',
+                count = currentCount or 0,
+                label = xItem.label or 'Unknown',
+                weight = xItem.weight or 1,
+                limit = xItem.limit or 50,
+                rare = xItem.rare or 0,
+                canRemove = xItem.canRemove or true,
+                price = item.price
+            })
+        end
+
+        callback({
+            items = items
+        })
+    end
+end)
+
+Jobs.RegisterServerCallback('mlx_jobs:buyItem', function(xPlayer, xJob, callback, item, count)
+    item = item or 'unknown'
+    count = tonumber(count) or 0
+
+    if (xPlayer == nil and callback ~= nil) then
+        callback({
+            done = false,
+            message = 'error_no_player'
+        })
+
+        return
+    end
+
+    if (not xJob.memberHasPermission(xPlayer.identifier, 'safe.item.buy')) then
+        callback({
+            done = false,
+            message = 'error_no_permission'
+        })
+
+        return
+    end
+
+    local buyableItems = xJob.getBuyableItemsByType('items') or {}
+
+    for _, buyableItem in pairs(buyableItems or {}) do
+        if (string.lower(buyableItem.item) == string.lower(item)) then
+            local price = buyableItem.price or 0
+
+            if (count > 10) then
+                callback({
+                    done = false,
+                    message = 'error_buy_limit'
+                })
+
+                return
+            end
+
+            if ((count * price) > ((xJob.getBank() or {}).money or 0)) then
+                callback({
+                    done = false,
+                    message = 'error_no_money_organization'
+                })
+
+                return
+            end
+
+            xJob.removeAccountMoney('bank', (count * price))
+            xJob.addItem(buyableItem.item, count)
+
+            local xItem = xJob.getItem(buyableItem.item)
+            local label = xItem.label or buyableItem.item or 'unknown'
+
+            xJob.logIdentifierToDiscord(xPlayer.identifier,
+                    _U('safe_item_buy_webhook', xPlayer.name, xJob.label),
+                    _U('safe_item_buy_webhook_description', xPlayer.name, Jobs.Formats.NumberToFormattedString(count), label,
+                        Jobs.Formats.NumberToCurrancy(price),
+                        Jobs.Formats.NumberToCurrancy(count * price)),
+                    'safe',
+                    15158332)
+
+            callback({ done = true })
+            return
+        end
+    end
+
+    callback({
+        done = false,
+        message = 'error_no_action'
+    })
+
+    return
+end)

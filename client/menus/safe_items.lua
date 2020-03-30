@@ -9,7 +9,7 @@ Jobs.RegisterMenu('safe_items', function(isPrimaryJob)
         table.insert(elements, { label = _U('safe_item_remove'), value = 'item_remove' })
     end
 
-    if (Jobs.HasPermission('safe.item.buy', isPrimaryJob)) then
+    if (Jobs.HasPermission('safe.item.buy', isPrimaryJob) and (Jobs.GetCurrentJobValue(isPrimaryJob).hasBuyableItem or false)) then
         table.insert(elements, { label = _U('safe_item_buy'), value = 'item_buy' })
     end
 
@@ -30,6 +30,8 @@ Jobs.RegisterMenu('safe_items', function(isPrimaryJob)
                 Jobs.TriggerMenu('safe_items_add', isPrimaryJob)
             elseif (data.current.value == 'item_remove' and Jobs.HasPermission('safe.item.remove', isPrimaryJob)) then
                 Jobs.TriggerMenu('safe_items_remove', isPrimaryJob)
+            elseif (data.current.value == 'item_buy' and Jobs.HasPermission('safe.item.buy', isPrimaryJob) and (Jobs.GetCurrentJobValue(isPrimaryJob).hasBuyableItem or false)) then
+                Jobs.TriggerMenu('safe_items_buy', isPrimaryJob)
             end
         end,
         function(data, menu)
@@ -214,5 +216,87 @@ Jobs.RegisterMenu('safe_items_remove_count', function(isPrimaryJob, item)
         function(data, menu)
             menu.close()
             Jobs.TriggerMenu('safe_items_remove', isPrimaryJob)
+        end)
+end)
+
+Jobs.RegisterMenu('safe_items_buy', function(isPrimaryJob)
+    if (not Jobs.HasPermission('safe.item.buy', isPrimaryJob) or not (Jobs.GetCurrentJobValue(isPrimaryJob).hasBuyableItem or false)) then
+        return
+    end
+
+    Jobs.TriggerServerCallback('mlx_jobs:getBuyableItems', isPrimaryJob, function(items)
+        local elements = {}
+
+        if (#(items.items or {}) > 0) then
+            table.insert(elements, { label = _U('products'), value = '', disabled = true })
+
+            for _, item in pairs(items.items or {}) do
+                table.insert(elements, { label = _U('item', item.count .. '<small>x</small> ' .. item.label, Jobs.Formats.NumberToCurrancy(item.price)), value = item.name })
+            end
+        end
+
+        table.insert(elements, { label = _U('back'), value = '', disabled = true })
+        table.insert(elements, { label = _U('back'), value = 'back' })
+
+        Jobs.ESX.UI.Menu.Open(
+            'job_default',
+            GetCurrentResourceName(),
+            'safe_items_buy',
+            {
+                title       = _U('safe_item_buy'),
+                align       = 'top-left',
+                elements    = elements,
+                primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
+                secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
+                image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
+            },
+            function(data, menu)
+                if (Jobs.HasPermission('safe.item.buy', isPrimaryJob) and (Jobs.GetCurrentJobValue(isPrimaryJob).hasBuyableItem or false)) then
+                    if (string.lower(data.current.value) == 'back') then
+                        menu.close()
+                        Jobs.TriggerMenu('safe_items', isPrimaryJob)
+                    else
+                        Jobs.TriggerMenu('safe_items_buy_count', isPrimaryJob, data.current.value)
+                    end
+                end
+            end,
+            function(data, menu)
+                menu.close()
+                Jobs.TriggerMenu('safe_items', isPrimaryJob)
+            end)
+    end)
+end)
+
+Jobs.RegisterMenu('safe_items_buy_count', function(isPrimaryJob, item)
+    if (not Jobs.HasPermission('safe.item.buy', isPrimaryJob)) then
+        return
+    end
+
+    Jobs.ESX.UI.Menu.Open(
+        'job_dialog',
+        GetCurrentResourceName(),
+        'safe_items_buy_count',
+        {
+            title = _U('safe_items_buy_count'),
+            submit = _U('buy'),
+            primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
+            secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
+            image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
+        },
+        function(data, menu)
+            Jobs.TriggerServerCallback('mlx_jobs:buyItem', isPrimaryJob, function(result)
+                if ((result.done or false)) then
+                    Jobs.ESX.ShowNotification(_U('safe_item_buyed'))
+                else
+                    Jobs.ESX.ShowNotification(_U(result.message or 'unknown'))
+                end
+
+                menu.close()
+                Jobs.TriggerMenu('safe_items_buy', isPrimaryJob)
+            end, (item or 'unknown'), (data.value or 0))
+        end,
+        function(data, menu)
+            menu.close()
+            Jobs.TriggerMenu('safe_items_buy', isPrimaryJob)
         end)
 end)

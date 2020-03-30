@@ -35,8 +35,11 @@ Locales['nl'] = {
     ['safe_item_remove'] = 'Voorwerp uit kluis halen',
     ['safe_item_buy'] = 'Voorwerp kopen voor in kluis',
     ['safe_items_add_count'] = 'Hoeveel wilt u in de voorraadkast leggen?',
+    ['safe_items_remove_count'] = 'Hoeveel wilt u uit de voorraadkast halen?',
+    ['safe_items_buy_count'] = 'Hoeveel wilt u inkopen voor de voorraadkast?',
     ['safe_item_added'] = 'Uw voorwerp is opgeslagen in de voorraadkast',
     ['safe_item_removed'] = 'U heeft uw voorwerp uit de voorraadkast gehaald',
+    ['safe_item_buyed'] = 'U heeft voorwerp(en) ingekocht voor uw bedrijf',
 
     ['safe_account_added_webhook'] = '%s heeft %s gestort',
     ['safe_account_added_webhook_description'] = '**Player:** %s\n**Bedrag:** %s\n**Soort:** %s',
@@ -48,6 +51,9 @@ Locales['nl'] = {
     ['safe_item_removed_webhook'] = '%s heeft %s uit voorraadkast gehaald',
     ['safe_item_removed_webhook_description'] = '**Player:** %s\n**Aantal:** %s\n**Voorwerp:** %s',
 
+    ['safe_item_buy_webhook'] = '%s heeft names %s voorwerp(en) ingekocht',
+    ['safe_item_buy_webhook_description'] = '**Player:** %s\n**Aantal:** %s\n**Voorwerp:** %s\n**Prijs:** %s\n**Totaalprijs:** %s',
+
     ['accounts'] = 'Geld',
     ['bank'] = 'Geld',
     ['money'] = 'Contant',
@@ -56,6 +62,7 @@ Locales['nl'] = {
     ['products'] = 'Voorwerpen',
     ['add'] = 'Toevoegen',
     ['back'] = 'Terug',
+    ['buy'] = 'Kopen',
 
     ['item'] = '<strong>%s</strong> %s',
     ['negative'] = 'Waarde mag niet negative zijn, getal moet 0 of groter zijn.',
@@ -64,8 +71,10 @@ Locales['nl'] = {
     ['error_no_permission'] = 'U heeft geen toestemming om deze actie uit te voeren',
     ['error_no_action'] = 'Geen actie gevonden',
     ['error_no_money'] = 'U heeft onvoldoende geld',
+    ['error_no_money_organization'] = 'Uw bedrijf heeft onvoldoende geld',
     ['error_no_item'] = 'U heeft onvoldoende voorwerpen',
     ['error_item_limit'] = 'U kan niet zoveel van dit item dragen',
+    ['error_buy_limit'] = 'U kunt niet meer inkopen dan 10 tegelijkertijd',
 
     ['weapon_knife'] = 'mes',
     ['weapon_nightstick'] = 'nightstick',

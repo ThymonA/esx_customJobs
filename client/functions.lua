@@ -81,6 +81,18 @@ Jobs.HasPermission = function(permission, isPrimaryJob)
     return Jobs.Permissions.hasAnyPermission(((Jobs.JobData or {}).job2 or {}).permissions or {}, permission)
 end
 
+Jobs.GetCurrentJobValue = function(isPrimaryJob)
+    if (isPrimaryJob == nil) then
+        isPrimaryJob = true
+    end
+
+    if (isPrimaryJob) then
+        return (Jobs.JobData or {}).job or {}
+    end
+
+    return (Jobs.JobData or {}).job2 or {}
+end
+
 Jobs.TriggerServerCallback = function(name, isPrimaryJob, cb, ...)
     if (isPrimaryJob == nil) then
         isPrimaryJob = true

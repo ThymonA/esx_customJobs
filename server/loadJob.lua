@@ -18,6 +18,7 @@ Jobs.LoadJob = function(rawData)
         accounts = {},
         items = {},
         weapons = {},
+        buyableItems = {},
         menu = rawData.Menu or {},
         permissionSystem = CreatePermissions()
     }
@@ -353,6 +354,31 @@ Jobs.LoadJob = function(rawData)
         end)
     end)
 
+    table.insert(jobTasks, function(cb)
+        jobData.buyableItems['items'] = {}
+        jobData.buyableItems['weapons'] = {}
+
+        for _, buyableItem in pairs(rawData.BuyableItems or {}) do
+            if (buyableItem ~= nil) then
+                local buyableItemType = buyableItem.Type or 'unknown'
+
+                if (string.lower(buyableItemType) == 'item') then
+                    table.insert(jobData.buyableItems['items'], {
+                        item = buyableItem.Item or 'unknown',
+                        price = buyableItem.Price or 0
+                    })
+                elseif (string.lower(buyableItemType) == 'weapon') then
+                    table.insert(jobData.buyableItems['weapons'], {
+                        weapon = buyableItem.Weapon or 'unknown',
+                        price = buyableItem.Price or 0
+                    })
+                end
+            end
+        end
+
+        cb()
+    end)
+
     local jobInfoAdded = false
 
     Async.parallel(jobTasks, function(results)
@@ -363,5 +389,5 @@ Jobs.LoadJob = function(rawData)
         Citizen.Wait(10)
     end
 
-    return CreateJob(jobData.name, jobData.label, jobData.whitelisted, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.items, jobData.weapons, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
+    return CreateJob(jobData.name, jobData.label, jobData.whitelisted, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.items, jobData.weapons, jobData.buyableItems, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
 end

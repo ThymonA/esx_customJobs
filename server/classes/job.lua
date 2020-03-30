@@ -1,4 +1,4 @@
-function CreateJob(name, label, whitelisted, members, permissions, webhooks, grades, positions, accounts, items, weapons, menu, permissionSystem, version)
+function CreateJob(name, label, whitelisted, members, permissions, webhooks, grades, positions, accounts, items, weapons, buyableItems, menu, permissionSystem, version)
     local self = {}
 
     self.name = name
@@ -13,6 +13,7 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
     self.accounts = accounts
     self.items = items
     self.weapons = weapons
+    self.buyableItems = buyableItems
 
     if (permissionSystem == nil) then
         self.permissionSystem = CreatePermissions()
@@ -137,7 +138,7 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
                 grade = member.job_grade
             end
 
-            if (string.lower(member.job2) == self.name) then
+            if (string.lower(member.job2) == self.name and grade < member.job2_grade) then
                 grade = member.job2_grade
             end
 
@@ -439,6 +440,22 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
             self.weapons[weaponName] = CreateJobWeapon(weaponName, 0, _U(weaponName), self.name, self.label)
             self.setWeapon(weaponName, count)
         end
+    end
+
+    self.getBuyableItems = function()
+        return self.buyableItems or {}
+    end
+
+    self.getBuyableItemsByType = function(itemType)
+        return self.buyableItems[itemType] or {}
+    end
+
+    self.hasAnyBuyableItem = function()
+        return #self.getBuyableItemsByType('items') > 0
+    end
+
+    self.hasAnyBuyableWeapon = function()
+        return #self.getBuyableItemsByType('weapons') > 0
     end
 
     self.getBank = function()

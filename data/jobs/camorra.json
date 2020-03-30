@@ -103,5 +103,17 @@
         "PrimaryColor": { "r": 255, "g": 0, "b": 0 },
         "SecondaryColor": { "r": 0, "g": 0, "b": 0 },
         "HeaderImage": "camorra.jpg"
-    }
+    },
+    "BuyableItems": [
+        {
+            "Type": "item",
+            "Price": 500,
+            "Item": "fixkit"
+        },
+        {
+            "Type": "weapon",
+            "Price": 250000,
+            "Weapon": "WEAPON_PISTOL50"
+        }
+    ]
 }
