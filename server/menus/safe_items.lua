@@ -326,7 +326,7 @@ Jobs.RegisterServerCallback('mlx_jobs:buyItem', function(xPlayer, xJob, callback
                         Jobs.Formats.NumberToCurrancy(price),
                         Jobs.Formats.NumberToCurrancy(count * price)),
                     'safe',
-                    15158332)
+                    3066993)
 
             callback({ done = true })
             return

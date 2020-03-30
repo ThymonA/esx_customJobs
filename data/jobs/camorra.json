@@ -11,7 +11,7 @@
             "Denied": [
                 "safe.item.buy",
                 "safe.weapon.*",
-                "safe.account.*"
+                "safe.account.remove"
             ]
         },
         {
@@ -107,7 +107,7 @@
     "BuyableItems": [
         {
             "Type": "item",
-            "Price": 500,
+            "Price": 2500,
             "Item": "fixkit"
         },
         {
