@@ -12,6 +12,7 @@ end
 
 Jobs.TriggerMenu = function(menuType, isPrimaryJob, ...)
     if (Jobs.DoesMenuExists(menuType)) then
+        Jobs.ESX.UI.Menu.CloseAll()
         Jobs.Menus[menuType](isPrimaryJob, ...)
     end
 end

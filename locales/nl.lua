@@ -30,6 +30,7 @@ Locales['nl'] = {
     ['laundering'] = 'Witwassen',
     ['products'] = 'Voorwerpen',
     ['add'] = 'Toevoegen',
+    ['back'] = 'Terug',
 
     ['item'] = '<strong>%s</strong> %s',
     ['negative'] = 'Waarde mag niet negative zijn, getal moet 0 of groter zijn.',
@@ -37,4 +38,5 @@ Locales['nl'] = {
     ['error_no_player'] = 'Speler is niet gevonden',
     ['error_no_permission'] = 'U heeft geen toestemming om deze actie uit te voeren',
     ['error_no_action'] = 'Geen actie gevonden',
+    ['error_no_money'] = 'U heeft onvoldoende geld'
 }

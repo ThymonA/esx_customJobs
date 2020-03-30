@@ -61,6 +61,9 @@ Jobs.RegisterMenu('safe_items_add', function(isPrimaryJob)
             end
         end
 
+        table.insert(elements, { label = _U('back'), value = '', disabled = true })
+        table.insert(elements, { label = _U('back'), value = 'back' })
+
         Jobs.ESX.UI.Menu.Open(
             'job_default',
             GetCurrentResourceName(),
@@ -75,11 +78,17 @@ Jobs.RegisterMenu('safe_items_add', function(isPrimaryJob)
             },
             function(data, menu)
                 if (Jobs.HasPermission('safe.item.add', isPrimaryJob)) then
-                    Jobs.TriggerMenu('safe_items_add_count', isPrimaryJob, data.current.value)
+                    if (string.lower(data.current.value) == 'back') then
+                        menu.close()
+                        Jobs.TriggerMenu('safe_items', isPrimaryJob)
+                    else
+                        Jobs.TriggerMenu('safe_items_add_count', isPrimaryJob, data.current.value)
+                    end
                 end
             end,
             function(data, menu)
                 menu.close()
+                Jobs.TriggerMenu('safe_items', isPrimaryJob)
             end)
     end)
 end)

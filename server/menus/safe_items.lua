@@ -60,15 +60,24 @@ Jobs.RegisterServerCallback('mlx_jobs:storeItem', function(xPlayer, xJob, callba
 
     for _, account in pairs(xPlayer.getAccounts(false) or {}) do
         if (string.lower(account.name) == string.lower(item)) then
-            xPlayer.removeAccountMoney(item, count)
+            if (account.money >= count) then
+                xPlayer.removeAccountMoney(item, count)
 
-            if (string.lower(account.name) == 'money') then
-                item = 'bank'
+                if (string.lower(account.name) == 'money') then
+                    item = 'bank'
+                end
+
+                xJob.addAccountMoney(item, count)
+
+                callback({ done = true })
+                return
             end
 
-            xJob.addAccountMoney(item, count)
+            callback({
+                done = false,
+                message = 'error_no_money'
+            })
 
-            callback({ done = true })
             return
         end
     end
