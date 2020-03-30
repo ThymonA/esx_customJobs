@@ -8,7 +8,7 @@ Jobs.RegisterServerCallback('mlx_jobs:getPlayerInventory', function(xPlayer, xJo
         return
     end
 
-    if (not xJob.memberHasPermission(xPlayer.identifier, 'safe.item.add')) then
+    if (not xJob.memberHasPermission(xPlayer.identifier, 'safe.item.add') and not xJob.memberHasPermission(xPlayer.identifier, 'safe.account.add')) then
         callback({
             accounts = {},
             inventory = {}
@@ -19,16 +19,24 @@ Jobs.RegisterServerCallback('mlx_jobs:getPlayerInventory', function(xPlayer, xJo
 
     local accounts = {}
 
-    for _, account in pairs(xPlayer.getAccounts(false) or {}) do
-        if (string.lower(account.name) ~= 'bank') then
-            table.insert(accounts, account)
+    if (xJob.memberHasPermission(xPlayer.identifier, 'safe.account.add')) then
+        for _, account in pairs(xPlayer.getAccounts(false) or {}) do
+            if (string.lower(account.name) ~= 'bank') then
+                table.insert(accounts, account)
+            end
         end
+    end
+
+    local inventory = {}
+
+    if (xJob.memberHasPermission(xPlayer.identifier, 'safe.item.add')) then
+        inventory = xPlayer.inventory
     end
 
     if (callback ~= nil) then
         callback({
             accounts = accounts,
-            inventory = xPlayer.inventory
+            inventory = inventory
         })
     end
 end)
@@ -46,7 +54,7 @@ Jobs.RegisterServerCallback('mlx_jobs:storeItem', function(xPlayer, xJob, callba
         return
     end
 
-    if (not xJob.memberHasPermission(xPlayer.identifier, 'safe.item.add')) then
+    if (not xJob.memberHasPermission(xPlayer.identifier, 'safe.item.add') and not xJob.memberHasPermission(xPlayer.identifier, 'safe.account.add')) then
         callback({
             done = false,
             message = 'error_no_permission'
@@ -55,57 +63,61 @@ Jobs.RegisterServerCallback('mlx_jobs:storeItem', function(xPlayer, xJob, callba
         return
     end
 
-    for _, account in pairs(xPlayer.getAccounts(false) or {}) do
-        if (string.lower(account.name) == string.lower(item)) then
-            if (account.money >= count) then
-                xPlayer.removeAccountMoney(account.name, count)
+    if (xJob.memberHasPermission(xPlayer.identifier, 'safe.account.add')) then
+        for _, account in pairs(xPlayer.getAccounts(false) or {}) do
+            if (string.lower(account.name) == string.lower(item)) then
+                if (account.money >= count) then
+                    xPlayer.removeAccountMoney(account.name, count)
 
-                if (string.lower(account.name) == 'money') then
-                    item = 'bank'
+                    if (string.lower(account.name) == 'money') then
+                        item = 'bank'
+                    end
+
+                    xJob.addAccountMoney(item, count)
+                    xJob.logIdentifierToDiscord(xPlayer.identifier,
+                        _U('safe_account_added_webhook', xPlayer.name, _U(item)),
+                        _U('safe_account_added_webhook_description', xPlayer.name, Jobs.Formats.NumberToCurrancy(count), _U(item)),
+                        'money',
+                        3066993)
+
+                    callback({ done = true })
+                    return
                 end
 
-                xJob.addAccountMoney(item, count)
-                xJob.logIdentifierToDiscord(xPlayer.identifier,
-                    _U('safe_account_added_webhook', xPlayer.name, _U(item)),
-                    _U('safe_account_added_webhook_description', xPlayer.name, Jobs.Formats.NumberToCurrancy(count), _U(item)),
-                    'money',
-                    3066993)
+                callback({
+                    done = false,
+                    message = 'error_no_money'
+                })
 
-                callback({ done = true })
                 return
             end
-
-            callback({
-                done = false,
-                message = 'error_no_money'
-            })
-
-            return
         end
     end
 
-    for _, inventoryItem in pairs(xPlayer.inventory or {}) do
-        if (string.lower(inventoryItem.name) == string.lower(item)) then
-            if (inventoryItem.count >= count) then
-                xPlayer.removeInventoryItem(inventoryItem.name, count)
-                xJob.addItem(inventoryItem.name, count)
+    if (xJob.memberHasPermission(xPlayer.identifier, 'safe.item.add')) then
+        for _, inventoryItem in pairs(xPlayer.inventory or {}) do
+            if (string.lower(inventoryItem.name) == string.lower(item)) then
+                if (inventoryItem.count >= count) then
+                    xPlayer.removeInventoryItem(inventoryItem.name, count)
+                    xJob.addItem(inventoryItem.name, count)
 
-                xJob.logIdentifierToDiscord(xPlayer.identifier,
-                    _U('safe_item_added_webhook', xPlayer.name, inventoryItem.label),
-                    _U('safe_item_added_webhook_description', xPlayer.name, Jobs.Formats.NumberToFormattedString(count), inventoryItem.label),
-                    'safe',
-                    3066993)
+                    xJob.logIdentifierToDiscord(xPlayer.identifier,
+                        _U('safe_item_added_webhook', xPlayer.name, inventoryItem.label),
+                        _U('safe_item_added_webhook_description', xPlayer.name, Jobs.Formats.NumberToFormattedString(count), inventoryItem.label),
+                        'safe',
+                        3066993)
 
-                callback({ done = true })
+                    callback({ done = true })
+                    return
+                end
+
+                callback({
+                    done = false,
+                    message = 'error_no_item'
+                })
+
                 return
             end
-
-            callback({
-                done = false,
-                message = 'error_no_item'
-            })
-
-            return
         end
     end
 

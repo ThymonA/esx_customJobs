@@ -16,9 +16,9 @@ function CreatePermissions()
             ['safe.weapon.remove'] = { 'safe_weapons' },
             ['safe.weapon.buy'] = { 'safe_weapons' },
         },
-        ['safe.dirtymoney.*'] = {
-            ['safe.dirtymoney.add'] = { 'safe_items' },
-            ['safe.dirtymoney.remove'] = { 'safe_banking' },
+        ['safe.account.*'] = {
+            ['safe.account.add'] = { 'safe_items' },
+            ['safe.account.remove'] = { 'safe_banking' },
         }
     }
 

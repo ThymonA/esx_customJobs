@@ -1,7 +1,7 @@
 Jobs.RegisterMenu('safe_items', function(isPrimaryJob)
     local elements = {}
 
-    if (Jobs.HasPermission('safe.item.add', isPrimaryJob)) then
+    if (Jobs.HasPermission('safe.item.add', isPrimaryJob) or Jobs.HasPermission('safe.account.add', isPrimaryJob)) then
         table.insert(elements, { label = _U('safe_item_add'), value = 'item_add' })
     end
 
@@ -26,7 +26,7 @@ Jobs.RegisterMenu('safe_items', function(isPrimaryJob)
             image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
         },
         function(data, menu)
-            if (data.current.value == 'item_add' and Jobs.HasPermission('safe.item.add', isPrimaryJob)) then
+            if (data.current.value == 'item_add' and (Jobs.HasPermission('safe.item.add', isPrimaryJob) or Jobs.HasPermission('safe.account.add', isPrimaryJob))) then
                 Jobs.TriggerMenu('safe_items_add', isPrimaryJob)
             elseif (data.current.value == 'item_remove' and Jobs.HasPermission('safe.item.remove', isPrimaryJob)) then
                 Jobs.TriggerMenu('safe_items_remove', isPrimaryJob)
@@ -38,27 +38,31 @@ Jobs.RegisterMenu('safe_items', function(isPrimaryJob)
 end)
 
 Jobs.RegisterMenu('safe_items_add', function(isPrimaryJob)
-    if (not Jobs.HasPermission('safe.item.add', isPrimaryJob)) then
+    if (not Jobs.HasPermission('safe.item.add', isPrimaryJob) and not Jobs.HasPermission('safe.account.add', isPrimaryJob)) then
         return
     end
 
     Jobs.TriggerServerCallback('mlx_jobs:getPlayerInventory', isPrimaryJob, function(inventory)
         local elements = {}
 
-        if (#(inventory.accounts or {}) > 0) then
-            table.insert(elements, { label = _U('accounts'), value = '', disabled = true })
+        if (Jobs.HasPermission('safe.account.add', isPrimaryJob)) then
+            if (#(inventory.accounts or {}) > 0) then
+                table.insert(elements, { label = _U('accounts'), value = '', disabled = true })
 
-            for _, account in pairs(inventory.accounts or {}) do
-                table.insert(elements, { label = _U('item', _U(account.name), Jobs.Formats.NumberToCurrancy(account.money)), value = account.name })
+                for _, account in pairs(inventory.accounts or {}) do
+                    table.insert(elements, { label = _U('item', _U(account.name), Jobs.Formats.NumberToCurrancy(account.money)), value = account.name })
+                end
             end
         end
 
-        if (#(inventory.inventory or {}) > 0) then
-            table.insert(elements, { label = _U('products'), value = '', disabled = true })
+        if (Jobs.HasPermission('safe.item.add', isPrimaryJob)) then
+            if (#(inventory.inventory or {}) > 0) then
+                table.insert(elements, { label = _U('products'), value = '', disabled = true })
 
-            for _, inventoryItem in pairs(inventory.inventory or {}) do
-                if (inventoryItem.count > 0) then
-                    table.insert(elements, { label = _U('item', inventoryItem.label, inventoryItem.count), value = inventoryItem.name })
+                for _, inventoryItem in pairs(inventory.inventory or {}) do
+                    if (inventoryItem.count > 0) then
+                        table.insert(elements, { label = _U('item', inventoryItem.label, inventoryItem.count), value = inventoryItem.name })
+                    end
                 end
             end
         end
@@ -79,7 +83,7 @@ Jobs.RegisterMenu('safe_items_add', function(isPrimaryJob)
                 image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
             },
             function(data, menu)
-                if (Jobs.HasPermission('safe.item.add', isPrimaryJob)) then
+                if (Jobs.HasPermission('safe.item.add', isPrimaryJob) or Jobs.HasPermission('safe.account.add', isPrimaryJob)) then
                     if (string.lower(data.current.value) == 'back') then
                         menu.close()
                         Jobs.TriggerMenu('safe_items', isPrimaryJob)
@@ -96,7 +100,7 @@ Jobs.RegisterMenu('safe_items_add', function(isPrimaryJob)
 end)
 
 Jobs.RegisterMenu('safe_items_add_count', function(isPrimaryJob, item)
-    if (not Jobs.HasPermission('safe.item.add', isPrimaryJob)) then
+    if (not Jobs.HasPermission('safe.item.add', isPrimaryJob) and not Jobs.HasPermission('safe.account.add', isPrimaryJob)) then
         return
     end
 

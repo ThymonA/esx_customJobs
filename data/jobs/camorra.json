@@ -11,7 +11,7 @@
             "Denied": [
                 "safe.item.buy",
                 "safe.weapon.*",
-                "safe.dirtymoney.*"
+                "safe.account.*"
             ]
         },
         {
@@ -22,7 +22,7 @@
             "Denied": [
                 "safe.item.buy",
                 "safe.weapon.buy",
-                "safe.dirtymoney.remove"
+                "safe.account.remove"
             ]
         },
         {
@@ -31,7 +31,7 @@
             "Label": "Santista",
             "Salary": 750,
             "Denied": [
-                "safe.dirtymoney.remove"
+                "safe.account.remove"
             ]
         },
         {
@@ -75,7 +75,7 @@
     "Allowed": [
         "safe.item.*",
         "safe.weapon.*",
-        "safe.dirtymoney.*"
+        "safe.account.*"
     ],
     "Positions": [
         {
