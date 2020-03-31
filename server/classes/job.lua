@@ -1,9 +1,8 @@
-function CreateJob(name, label, whitelisted, members, permissions, webhooks, grades, positions, accounts, items, weapons, buyableItems, clothes, vehicles, menu, permissionSystem, version)
+function CreateJob(name, label, members, permissions, webhooks, grades, positions, accounts, items, weapons, buyableItems, clothes, vehicles, menu, permissionSystem, version)
     local self = {}
 
     self.name = name
     self.label = label
-    self.whitelisted = whitelisted
     self.members = members
     self.menu = menu
     self.permissions = permissions
@@ -33,17 +32,13 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
         return self.label or 'Unknown'
     end
 
-    self.isWhitelisted = function()
-        return self.whitelisted or true
-    end
-
     self.getMembers = function()
         return self.members or {}
     end
 
     self.addMemberByIdentifier = function(identifier, source, cb)
         if (self.members ~= nil and self.members[identifier] == nil) then
-            MySQL.Async.fetchAll('SELECT * FROM `users` WHERE LOWER(`job`) = @job OR LOWER(`job2`) = @job AND `identifier` = @identifier', {
+            MySQL.Async.fetchAll('SELECT * FROM `users` WHERE LOWER(`job`) = @job AND `identifier` = @identifier', {
                 ['@job'] = string.lower(self.name),
                 ['@identifier'] = identifier
             }, function(results)
@@ -53,8 +48,6 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
                         name = results[1].name or '',
                         job = results[1].job or 'Kansloos',
                         job_grade = results[1].job_grade or 0,
-                        job2 = results[1].job2 or 'Leeg',
-                        job2_grade = results[1].job2_grade or 0,
                         source = source or nil,
                     }
 
@@ -73,8 +66,6 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
                 name = xPlayer.name or '',
                 job = xPlayer.job.name or 'Kansloos',
                 job_grade = xPlayer.job.grade or 0,
-                job2 = xPlayer.job2.name or 'Leeg',
-                job2_grade = xPlayer.job2.grade or 0,
                 source = xPlayer.source or nil,
             }
 
@@ -84,13 +75,11 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
         end
     end
 
-    self.updateMemberByIdentifier = function(identifier, name, job, job_grade, job2, job2_grade, source, cb)
+    self.updateMemberByIdentifier = function(identifier, name, job, job_grade, source, cb)
         if (self.members ~= nil and self.members[identifier] ~= nil) then
             self.members[identifier].name = name or self.members[identifier].name
             self.members[identifier].job = job or self.members[identifier].job
             self.members[identifier].job_grade = job_grade or self.members[identifier].job_grade
-            self.members[identifier].job2 = job2 or self.members[identifier].job2
-            self.members[identifier].job2_grade = job2_grade or self.members[identifier].job2_grade
             self.members[identifier].source = source or nil
 
             if (cb ~= nil) then
@@ -104,8 +93,6 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
             self.members[xPlayer.identifier].name = xPlayer.name or ''
             self.members[xPlayer.identifier].job = xPlayer.job.name or 'Kansloos'
             self.members[xPlayer.identifier].job_grade = xPlayer.job.grade or 0
-            self.members[xPlayer.identifier].job2 = xPlayer.job2.name or 'Leeg'
-            self.members[xPlayer.identifier].job2_grade = xPlayer.job2.grade or 0
             self.members[xPlayer.identifier].source = xPlayer.source or nil
 
             if (cb ~= nil) then
@@ -140,10 +127,6 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
                 grade = member.job_grade
             end
 
-            if (string.lower(member.job2) == self.name and grade < member.job2_grade) then
-                grade = member.job2_grade
-            end
-
             local gradeInfo = self.getGradeByGrade(grade)
 
             if (gradeInfo ~= nil) then
@@ -162,10 +145,6 @@ function CreateJob(name, label, whitelisted, members, permissions, webhooks, gra
 
             if (string.lower(member.job) == self.name) then
                 grade = member.job_grade
-            end
-
-            if (string.lower(member.job2) == self.name and member.job2_grade >= grade) then
-                grade = member.job2_grade
             end
 
             return self.gradeHasType(grade, permissionType)

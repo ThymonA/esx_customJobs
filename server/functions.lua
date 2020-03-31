@@ -25,7 +25,6 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
 
     local jobInfo = {
         job = {},
-        job2 = {}
     }
 
     if (xPlayer.job ~= nil) then
@@ -64,6 +63,8 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
                 job_loaded = true
             else
                 xJob.addMemberByPlayer(xPlayer, function()
+                    member = xJob.getMemberByIdentifier(xPlayer.identifier)
+
                     local grade = member.job_grade
 
                     if (grade ~= xPlayer.job.grade) then
@@ -111,17 +112,6 @@ Jobs.LoadPlayerDataBySource = function(source)
 
     if (xPlayer ~= nil and xPlayer.job ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[xPlayer.job.name] ~= nil) then
         local xJob = Jobs.GetJobFromName(xPlayer.job.name)
-        local member = xJob.getMemberByIdentifier(xPlayer.identifier)
-
-        if (member == nil) then
-            xJob.addMemberByPlayer(xPlayer)
-        else
-            xJob.updateMemberByPlayer(xPlayer)
-        end
-    end
-
-    if (xPlayer ~= nil and xPlayer.job2 ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[xPlayer.job2.name] ~= nil) then
-        local xJob = Jobs.GetJobFromName(xPlayer.job2.name)
         local member = xJob.getMemberByIdentifier(xPlayer.identifier)
 
         if (member == nil) then

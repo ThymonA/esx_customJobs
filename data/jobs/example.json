@@ -1,7 +1,6 @@
 {
     "JobName": "Camorra",
     "Job": "camorra",
-    "Whitelisted": true,
     "Grades": [
         {
             "Grade": 0,
@@ -208,17 +207,11 @@
         },
         "Vehicles": [
             {
-                "Name": "Adder",
-                "Model": "adder",
+                "Name": "Audi RS7",
+                "Model": "rs7",
                 "CustomTuning": {
                     "color2": 28
                 },
-                "Allowed": []
-            },
-            {
-                "Name": "Adder V2",
-                "Model": "adder",
-                "CustomTuning": {},
                 "Allowed": []
             }
         ]

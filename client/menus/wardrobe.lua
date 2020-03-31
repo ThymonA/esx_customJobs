@@ -1,11 +1,11 @@
-Jobs.RegisterMenu('wardrobe', function(isPrimaryJob)
-    if (not Jobs.HasPermission('wardrobe.use', isPrimaryJob)) then
+Jobs.RegisterMenu('wardrobe', function()
+    if (not Jobs.HasPermission('wardrobe.use')) then
         return
     end
 
-    Jobs.TriggerServerCallback('esx_jobs:getPlayerGender', isPrimaryJob, function(gender)
+    Jobs.TriggerServerCallback('esx_jobs:getPlayerGender', function(gender)
         local elements = {}
-        local clothes = Jobs.GetCurrentJobValue(isPrimaryJob).clothes or {}
+        local clothes = Jobs.GetCurrentJobValue().clothes or {}
         local genederSkins = clothes[gender] or {}
 
         if (#genederSkins > 0) then

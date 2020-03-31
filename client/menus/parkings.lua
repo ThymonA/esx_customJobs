@@ -1,5 +1,5 @@
-Jobs.RegisterMenu('parkings', function(isPrimaryJob)
-    if (not Jobs.HasPermission('vehicle.park', isPrimaryJob)) then
+Jobs.RegisterMenu('parkings', function()
+    if (not Jobs.HasPermission('vehicle.park')) then
         return
     end
 

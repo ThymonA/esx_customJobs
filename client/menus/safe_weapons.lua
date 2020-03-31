@@ -1,15 +1,15 @@
-Jobs.RegisterMenu('safe_weapons', function(isPrimaryJob)
+Jobs.RegisterMenu('safe_weapons', function()
     local elements = {}
 
-    if (Jobs.HasPermission('safe.weapon.add', isPrimaryJob)) then
+    if (Jobs.HasPermission('safe.weapon.add')) then
         table.insert(elements, { label = _U('safe_weapon_add'), value = 'weapon_add' })
     end
 
-    if (Jobs.HasPermission('safe.weapon.remove', isPrimaryJob)) then
+    if (Jobs.HasPermission('safe.weapon.remove')) then
         table.insert(elements, { label = _U('safe_weapon_remove'), value = 'weapon_remove' })
     end
 
-    if (Jobs.HasPermission('safe.weapon.buy', isPrimaryJob) and (Jobs.GetCurrentJobValue(isPrimaryJob).hasBuyableWeapon or false)) then
+    if (Jobs.HasPermission('safe.weapon.buy') and (Jobs.GetCurrentJobValue().hasBuyableWeapon or false)) then
         table.insert(elements, { label = _U('safe_weapon_buy'), value = 'weapon_buy' })
     end
 
@@ -21,17 +21,17 @@ Jobs.RegisterMenu('safe_weapons', function(isPrimaryJob)
             title = _U('safe_weapons'),
             align = 'top-left',
             elements = elements,
-            primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
-            secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
-            image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
+            primaryColor = Jobs.GetPrimaryColor(),
+            secondaryColor = Jobs.GetSecondaryColor(),
+            image = Jobs.GetCurrentHeaderImage()
         },
         function(data, menu)
-            if (data.current.value == 'weapon_add' and (Jobs.HasPermission('safe.weapon.add', isPrimaryJob))) then
-                Jobs.TriggerMenu('safe_weapons_add', isPrimaryJob)
-            elseif (data.current.value == 'weapon_remove' and Jobs.HasPermission('safe.weapon.remove', isPrimaryJob)) then
-                Jobs.TriggerMenu('safe_weapons_remove', isPrimaryJob)
-            elseif (data.current.value == 'weapon_buy' and Jobs.HasPermission('safe.weapon.buy', isPrimaryJob) and (Jobs.GetCurrentJobValue(isPrimaryJob).hasBuyableWeapon or false)) then
-                Jobs.TriggerMenu('safe_weapons_buy', isPrimaryJob)
+            if (data.current.value == 'weapon_add' and (Jobs.HasPermission('safe.weapon.add'))) then
+                Jobs.TriggerMenu('safe_weapons_add')
+            elseif (data.current.value == 'weapon_remove' and Jobs.HasPermission('safe.weapon.remove')) then
+                Jobs.TriggerMenu('safe_weapons_remove')
+            elseif (data.current.value == 'weapon_buy' and Jobs.HasPermission('safe.weapon.buy') and (Jobs.GetCurrentJobValue().hasBuyableWeapon or false)) then
+                Jobs.TriggerMenu('safe_weapons_buy')
             end
         end,
         function(data, menu)
@@ -39,12 +39,12 @@ Jobs.RegisterMenu('safe_weapons', function(isPrimaryJob)
         end)
 end)
 
-Jobs.RegisterMenu('safe_weapons_add', function(isPrimaryJob)
-    if (not Jobs.HasPermission('safe.weapon.add', isPrimaryJob)) then
+Jobs.RegisterMenu('safe_weapons_add', function()
+    if (not Jobs.HasPermission('safe.weapon.add')) then
         return
     end
 
-    Jobs.TriggerServerCallback('esx_jobs:getPlayerWeapons', isPrimaryJob, function(inventory)
+    Jobs.TriggerServerCallback('esx_jobs:getPlayerWeapons', function(inventory)
         local elements = {}
 
         if (#(inventory.weapons or {}) > 0) then
@@ -66,17 +66,17 @@ Jobs.RegisterMenu('safe_weapons_add', function(isPrimaryJob)
                 title = _U('safe_weapon_add'),
                 align = 'top-left',
                 elements = elements,
-                primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
-                secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
-                image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
+                primaryColor = Jobs.GetPrimaryColor(),
+                secondaryColor = Jobs.GetSecondaryColor(),
+                image = Jobs.GetCurrentHeaderImage()
             },
             function(data, menu)
-                if (Jobs.HasPermission('safe.weapon.add', isPrimaryJob)) then
+                if (Jobs.HasPermission('safe.weapon.add')) then
                     if (string.lower(data.current.value) == 'back') then
                         menu.close()
-                        Jobs.TriggerMenu('safe_weapons', isPrimaryJob)
+                        Jobs.TriggerMenu('safe_weapons')
                     else
-                        Jobs.TriggerServerCallback('esx_jobs:storeWeapon', isPrimaryJob, function(result)
+                        Jobs.TriggerServerCallback('esx_jobs:storeWeapon', function(result)
                             if ((result.done or false)) then
                                 Jobs.ESX.ShowNotification(_U('safe_weapon_added'))
                             else
@@ -84,24 +84,24 @@ Jobs.RegisterMenu('safe_weapons_add', function(isPrimaryJob)
                             end
 
                             menu.close()
-                            Jobs.TriggerMenu('safe_weapons_add', isPrimaryJob)
+                            Jobs.TriggerMenu('safe_weapons_add')
                         end, data.current.value)
                     end
                 end
             end,
             function(data, menu)
                 menu.close()
-                Jobs.TriggerMenu('safe_weapons', isPrimaryJob)
+                Jobs.TriggerMenu('safe_weapons')
             end)
     end)
 end)
 
-Jobs.RegisterMenu('safe_weapons_remove', function(isPrimaryJob)
-    if (not Jobs.HasPermission('safe.weapon.remove', isPrimaryJob)) then
+Jobs.RegisterMenu('safe_weapons_remove', function()
+    if (not Jobs.HasPermission('safe.weapon.remove')) then
         return
     end
 
-    Jobs.TriggerServerCallback('esx_jobs:getJobWeapons', isPrimaryJob, function(inventory)
+    Jobs.TriggerServerCallback('esx_jobs:getJobWeapons', function(inventory)
         local elements = {}
 
         if (#(inventory.weapons or {}) > 0) then
@@ -123,17 +123,17 @@ Jobs.RegisterMenu('safe_weapons_remove', function(isPrimaryJob)
                 title = _U('safe_weapon_remove'),
                 align = 'top-left',
                 elements = elements,
-                primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
-                secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
-                image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
+                primaryColor = Jobs.GetPrimaryColor(),
+                secondaryColor = Jobs.GetSecondaryColor(),
+                image = Jobs.GetCurrentHeaderImage()
             },
             function(data, menu)
-                if (Jobs.HasPermission('safe.weapon.remove', isPrimaryJob)) then
+                if (Jobs.HasPermission('safe.weapon.remove')) then
                     if (string.lower(data.current.value) == 'back') then
                         menu.close()
-                        Jobs.TriggerMenu('safe_weapons', isPrimaryJob)
+                        Jobs.TriggerMenu('safe_weapons')
                     else
-                        Jobs.TriggerServerCallback('esx_jobs:getWeapon', isPrimaryJob, function(result)
+                        Jobs.TriggerServerCallback('esx_jobs:getWeapon', function(result)
                             if ((result.done or false)) then
                                 Jobs.ESX.ShowNotification(_U('safe_weapon_removed'))
                             else
@@ -141,24 +141,24 @@ Jobs.RegisterMenu('safe_weapons_remove', function(isPrimaryJob)
                             end
 
                             menu.close()
-                            Jobs.TriggerMenu('safe_weapons_remove', isPrimaryJob)
+                            Jobs.TriggerMenu('safe_weapons_remove')
                         end, data.current.value)
                     end
                 end
             end,
             function(data, menu)
                 menu.close()
-                Jobs.TriggerMenu('safe_weapons', isPrimaryJob)
+                Jobs.TriggerMenu('safe_weapons')
             end)
     end)
 end)
 
-Jobs.RegisterMenu('safe_weapons_buy', function(isPrimaryJob)
-    if (not Jobs.HasPermission('safe.weapon.buy', isPrimaryJob) or not (Jobs.GetCurrentJobValue(isPrimaryJob).hasBuyableItem or false)) then
+Jobs.RegisterMenu('safe_weapons_buy', function()
+    if (not Jobs.HasPermission('safe.weapon.buy') or not (Jobs.GetCurrentJobValue().hasBuyableItem or false)) then
         return
     end
 
-    Jobs.TriggerServerCallback('esx_jobs:getBuyableWeapons', isPrimaryJob, function(items)
+    Jobs.TriggerServerCallback('esx_jobs:getBuyableWeapons', function(items)
         local elements = {}
 
         if (#(items.weapons or {}) > 0) then
@@ -180,29 +180,29 @@ Jobs.RegisterMenu('safe_weapons_buy', function(isPrimaryJob)
                 title = _U('safe_weapon_buy'),
                 align = 'top-left',
                 elements = elements,
-                primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
-                secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
-                image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
+                primaryColor = Jobs.GetPrimaryColor(),
+                secondaryColor = Jobs.GetSecondaryColor(),
+                image = Jobs.GetCurrentHeaderImage()
             },
             function(data, menu)
-                if (Jobs.HasPermission('safe.weapon.buy', isPrimaryJob) and (Jobs.GetCurrentJobValue(isPrimaryJob).hasBuyableItem or false)) then
+                if (Jobs.HasPermission('safe.weapon.buy') and (Jobs.GetCurrentJobValue().hasBuyableItem or false)) then
                     if (string.lower(data.current.value) == 'back') then
                         menu.close()
-                        Jobs.TriggerMenu('safe_weapons', isPrimaryJob)
+                        Jobs.TriggerMenu('safe_weapons')
                     else
-                        Jobs.TriggerMenu('safe_weapons_buy_count', isPrimaryJob, data.current.value)
+                        Jobs.TriggerMenu('safe_weapons_buy_count', data.current.value)
                     end
                 end
             end,
             function(data, menu)
                 menu.close()
-                Jobs.TriggerMenu('safe_weapons', isPrimaryJob)
+                Jobs.TriggerMenu('safe_weapons')
             end)
     end)
 end)
 
-Jobs.RegisterMenu('safe_weapons_buy_count', function(isPrimaryJob, weapon)
-    if (not Jobs.HasPermission('safe.weapon.buy', isPrimaryJob)) then
+Jobs.RegisterMenu('safe_weapons_buy_count', function(weapon)
+    if (not Jobs.HasPermission('safe.weapon.buy')) then
         return
     end
 
@@ -213,12 +213,12 @@ Jobs.RegisterMenu('safe_weapons_buy_count', function(isPrimaryJob, weapon)
         {
             title = _U('safe_weapon_buy_count'),
             submit = _U('buy'),
-            primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
-            secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
-            image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
+            primaryColor = Jobs.GetPrimaryColor(),
+            secondaryColor = Jobs.GetSecondaryColor(),
+            image = Jobs.GetCurrentHeaderImage()
         },
         function(data, menu)
-            Jobs.TriggerServerCallback('esx_jobs:buyWeapon', isPrimaryJob, function(result)
+            Jobs.TriggerServerCallback('esx_jobs:buyWeapon', function(result)
                 if ((result.done or false)) then
                     Jobs.ESX.ShowNotification(_U('safe_weapon_buyed'))
                 else
@@ -226,11 +226,11 @@ Jobs.RegisterMenu('safe_weapons_buy_count', function(isPrimaryJob, weapon)
                 end
 
                 menu.close()
-                Jobs.TriggerMenu('safe_weapons_buy', isPrimaryJob)
+                Jobs.TriggerMenu('safe_weapons_buy')
             end, (weapon or 'unknown'), (data.value or 0))
         end,
         function(data, menu)
             menu.close()
-            Jobs.TriggerMenu('safe_weapons_buy', isPrimaryJob)
+            Jobs.TriggerMenu('safe_weapons_buy')
         end)
 end)

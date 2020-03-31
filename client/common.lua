@@ -58,6 +58,8 @@ AddEventHandler('esx_jobs:setJobData', function(jobData, jobChanged)
     if (jobData == nil) then
         jobData = {}
     end
+
+    Jobs.JobData = jobData
 end)
 
 RegisterNetEvent('esx_jobs:serverCallback')

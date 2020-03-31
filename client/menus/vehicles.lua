@@ -1,5 +1,5 @@
-Jobs.RegisterMenu('vehicles', function(isPrimaryJob)
-    if (not Jobs.HasPermission('vehicle.spawn', isPrimaryJob)) then
+Jobs.RegisterMenu('vehicles', function()
+    if (not Jobs.HasPermission('vehicle.spawn')) then
         return
     end
 
@@ -7,7 +7,7 @@ Jobs.RegisterMenu('vehicles', function(isPrimaryJob)
 
     table.insert(elements, { label = _U('vehicles'), value = '', disabled = true })
 
-    for _, vehicle in pairs(Jobs.GetCurrentJobValue(isPrimaryJob).vehicles or {}) do
+    for _, vehicle in pairs(Jobs.GetCurrentJobValue().vehicles or {}) do
         table.insert(elements, { label = vehicle.name, value = vehicle.model, index = _ })
     end
 
@@ -22,9 +22,9 @@ Jobs.RegisterMenu('vehicles', function(isPrimaryJob)
             title = _U('vehicles'),
             align = 'top-left',
             elements = elements,
-            primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
-            secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
-            image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
+            primaryColor = Jobs.GetPrimaryColor(),
+            secondaryColor = Jobs.GetSecondaryColor(),
+            image = Jobs.GetCurrentHeaderImage()
         },
         function(data, menu)
             if (string.lower(data.current.value) == 'close') then
@@ -35,7 +35,7 @@ Jobs.RegisterMenu('vehicles', function(isPrimaryJob)
             local model = (type(data.current.value) == 'number' and data.current.value or GetHashKey(data.current.value))
 
             if IsModelInCdimage(model) then
-                local spawnPosition = Jobs.GetCurrentAddonData().spawn or {}
+                local spawnPosition = Jobs.GetCurrentData().spawn or {}
 
                 if (spawnPosition ~= {}) then
                     Jobs.ESX.Game.SpawnVehicle(model, spawnPosition, spawnPosition.h, function(vehicle)
@@ -44,7 +44,7 @@ Jobs.RegisterMenu('vehicles', function(isPrimaryJob)
                         TaskWarpPedIntoVehicle(GetPlayerPed(-1), vehicle, -1)
                         SetVehRadioStation(vehicle, "OFF")
 
-                        local props = Jobs.GetCurrentJobValue(isPrimaryJob).vehicles[data.current.index].props or {}
+                        local props = Jobs.GetCurrentJobValue().vehicles[data.current.index].props or {}
 
                         props.windowTint = props.modWindows or -1
 

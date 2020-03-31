@@ -9,7 +9,7 @@
 
 ### About Custom ESX Jobs
 
-Custom ESX Jobs is a resource created by TIGO which combine all whitelisted jobs in one working script. By modifying ESX and expanding es_extended, it is possible to work with permissions and adjust everything in real time. Jobs can be edited or added while the server is running (deleting a job must be done manually).
+Custom ESX Jobs is a resource created by TIGO which combine all jobs in one working script. By modifying ESX and expanding es_extended, it is possible to work with permissions and adjust everything in real time. Jobs can be edited or added while the server is running (deleting a job must be done manually).
 
 ### Requirement
 - **es_extended** | [GitHub](https://github.com/ESX-Org/es_extended)
