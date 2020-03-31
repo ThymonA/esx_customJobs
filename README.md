@@ -15,6 +15,7 @@ Custom ESX Jobs is a resource created by TIGO which combine all jobs in one work
 - **es_extended** | [GitHub](https://github.com/ESX-Org/es_extended)
 - **mysql-async** | [GitHub](https://github.com/brouznouf/fivem-mysql-async)
 - **async** | [GitHub](https://github.com/ESX-Org/async)
+- **esx_skin** | [GitHub](https://github.com/ESX-Org/esx_skin)
 
 ### Get Started
 1) Copy **esx_customJobs** to your FXServer resource folder
