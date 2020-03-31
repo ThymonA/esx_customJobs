@@ -394,7 +394,7 @@ function CreateJob(name, label, members, permissions, webhooks, grades, position
         if (weapon ~= nil) then
             weapon.addWeapon(count)
             self.logToDiscord(_U('job_weapon_added', self.label), _U('job_weapon_added_description',
-                Jobs.Formats.NumberToFormattedString(count), weaponName, _U(weaponName)), weaponName .. ' | ' .. self.getCurrentTimeString(),
+                Jobs.Formats.NumberToFormattedString(count), string.upper(weaponName), _U(weaponName)), weaponName .. ' | ' .. self.getCurrentTimeString(),
                 'weapontransactions',
                 3066993)
         else
@@ -412,7 +412,7 @@ function CreateJob(name, label, members, permissions, webhooks, grades, position
         if (weapon ~= nil) then
             weapon.removeWeapon(count)
             self.logToDiscord(_U('job_weapon_removed', self.label), _U('job_weapon_removed_description',
-                Jobs.Formats.NumberToFormattedString(count), weaponName, weapon.label), weaponName .. ' | ' .. self.getCurrentTimeString(),
+                Jobs.Formats.NumberToFormattedString(count), string.upper(weaponName), weapon.label), weaponName .. ' | ' .. self.getCurrentTimeString(),
                 'weapontransactions',
                 15158332)
         else
@@ -430,7 +430,7 @@ function CreateJob(name, label, members, permissions, webhooks, grades, position
         if (weapon ~= nil) then
             weapon.setWeapon(count)
             self.logToDiscord(_U('job_weapon_set', self.label), _U('job_weapon_set_description',
-                Jobs.Formats.NumberToFormattedString(count), weaponName, _U(weaponName)), weaponName .. ' | ' .. self.getCurrentTimeString(),
+                Jobs.Formats.NumberToFormattedString(count), string.upper(weaponName), _U(weaponName)), weaponName .. ' | ' .. self.getCurrentTimeString(),
                 'weapontransactions',
                 15105570)
         else

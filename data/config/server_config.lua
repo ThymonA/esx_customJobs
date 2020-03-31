@@ -1,5 +1,5 @@
 Config                              = {}
-Config.Locale                       = 'nl'
+Config.Locale                       = 'en'
 
 ServerConfig                        = {}
 ServerConfig.EnableDebug            = true

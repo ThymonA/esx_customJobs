@@ -14,6 +14,7 @@ server_scripts {
 
     'shared/locale.lua',
     'locales/nl.lua',
+    'locales/en.lua',
 
     'data/config/server_config.lua',
 
@@ -41,6 +42,7 @@ server_scripts {
 client_scripts {
     'shared/locale.lua',
     'locales/nl.lua',
+    'locales/en.lua',
 
     'data/config/client_config.lua',
 
