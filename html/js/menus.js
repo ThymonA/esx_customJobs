@@ -43,7 +43,7 @@
 		'</style>'
 
 	window.job_default       = {};
-	job_default.ResourceName = 'esx_customJobs';
+	job_default.ResourceName = 'esx_customjobs';
 	job_default.opened       = {};
 	job_default.focus        = [];
 	job_default.pos          = {};
@@ -254,7 +254,7 @@
 	};
 
 	window.job_dialog       = {};
-	job_dialog.ResourceName = 'esx_customJobs';
+	job_dialog.ResourceName = 'esx_customjobs';
 	job_dialog.opened       = {};
 	job_dialog.focus        = [];
 	job_dialog.pos          = {};

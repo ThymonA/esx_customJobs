@@ -19,8 +19,9 @@ Custom ESX Jobs is a resource created by TIGO which combine all whitelisted jobs
 ### Get Started
 1) Copy **esx_customJobs** to your FXServer resource folder
 2) Run the **esx_customJobs.sql** file in your FXServer database
-3) Add **esx_customJobs** to your **sever.cfg** file
-3) Start your server or resource
+3) Rename **esx_customJobs** to **esx_customjobs** (all lowercase)
+4) Add **esx_customjobs** to your **sever.cfg** file
+5) Start your server or resource
 
 ⚠️ **esx_customJobs.sql** adds table `job_account`, `job_safe` and `job_weapon`
 
