@@ -13,7 +13,7 @@ end
 Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
     jobChanged = jobChanged or false
 
-    local job_loaded, job2_loaded = false, false
+    local job_loaded = false
 
     while not Jobs.JobsLoaded do
         Citizen.Wait(10)
@@ -99,78 +99,7 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
         job_loaded = true
     end
 
-    if (xPlayer.job2 ~= nil) then
-        local jobName = string.lower(xPlayer.job2.name)
-
-        if (Jobs.Jobs ~= nil and Jobs.Jobs[jobName] ~= nil) then
-            local xJob = Jobs.GetJobFromName(jobName)
-            local member = xJob.getMemberByIdentifier(xPlayer.identifier)
-
-            if (member ~= nil) then
-                local grade = member.job2_grade
-
-                if (grade ~= xPlayer.job2.grade) then
-                    xJob.updateMemberByPlayer(xPlayer)
-
-                    grade = xPlayer.job2.grade
-                end
-
-                local permissions = xJob.getPermissionsByGrade(grade)
-                local positions = xJob.getPositionsByGrade(grade)
-                local clothes = xJob.getClothesByGrade(grade)
-                local vehicles = xJob.getVehiclesByGrade(grade)
-
-                jobInfo.job2.permissions = permissions
-                jobInfo.job2.positions = positions
-                jobInfo.job2.clothes = clothes
-                jobInfo.job2.vehicles = vehicles
-                jobInfo.job2.name = xJob.getName()
-                jobInfo.job2.label = xJob.getLabel()
-                jobInfo.job2.primaryColor = xJob.getPrimaryColor()
-                jobInfo.job2.secondaryColor = xJob.getSecondaryColor()
-                jobInfo.job2.headerImage = xJob.getJobHeaderImage()
-                jobInfo.job2.hasBuyableItem = xJob.hasAnyBuyableItem()
-                jobInfo.job2.hasBuyableWeapon = xJob.hasAnyBuyableWeapon()
-
-                job2_loaded = true
-            else
-                xJob.addMemberByPlayer(xPlayer, function()
-                    local grade = member.job2_grade
-
-                    if (grade ~= xPlayer.job2.grade) then
-                        xJob.updateMemberByPlayer(xPlayer)
-
-                        grade = xPlayer.job2.grade
-                    end
-
-                    local permissions = xJob.getPermissionsByGrade(grade)
-                    local positions = xJob.getPositionsByGrade(grade)
-                    local clothes = xJob.getClothesByGrade(grade)
-                    local vehicles = xJob.getVehiclesByGrade(grade)
-
-                    jobInfo.job2.permissions = permissions
-                    jobInfo.job2.positions = positions
-                    jobInfo.job2.clothes = clothes
-                    jobInfo.job2.vehicles = vehicles
-                    jobInfo.job2.name = xJob.getName()
-                    jobInfo.job2.label = xJob.getLabel()
-                    jobInfo.job2.primaryColor = xJob.getPrimaryColor()
-                    jobInfo.job2.secondaryColor = xJob.getSecondaryColor()
-                    jobInfo.job2.headerImage = xJob.getJobHeaderImage()
-                    jobInfo.job2.hasBuyableItem = xJob.hasAnyBuyableItem()
-                    jobInfo.job2.hasBuyableWeapon = xJob.hasAnyBuyableWeapon()
-
-                    job2_loaded = true
-                end)
-            end
-        else
-            job2_loaded = true
-        end
-    else
-        job2_loaded = true
-    end
-
-    while not job_loaded or not job2_loaded do
+    while not job_loaded do
         Citizen.Wait(10)
     end
 
@@ -207,7 +136,7 @@ Jobs.RegisterServerCallback = function(name, cb)
     Jobs.ServerCallbacks[name] = cb
 end
 
-Jobs.TriggerServerCallback = function(name, source, isPrimaryJob, cb, ...)
+Jobs.TriggerServerCallback = function(name, source, cb, ...)
     if (Jobs.ServerCallbacks == nil or Jobs.ServerCallbacks[name] == nil) then
         Jobs.Trace(('Server callback "%s" does not exist.'):format(name))
         return
@@ -219,14 +148,7 @@ Jobs.TriggerServerCallback = function(name, source, isPrimaryJob, cb, ...)
         return
     end
 
-    local jobName = 'unknown'
-
-    if (isPrimaryJob) then
-        jobName = (xPlayer.job or {}).name or 'unknown'
-    else
-        jobName = (xPlayer.job2 or {}).name or 'unknown'
-    end
-
+    local jobName = (xPlayer.job or {}).name or 'unknown'
     local xJob = Jobs.GetJobFromName(jobName)
 
     if (xJob == nil) then

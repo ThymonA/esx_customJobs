@@ -21,7 +21,7 @@ Jobs.RegisterMenu('safe_items', function(isPrimaryJob)
             title = _U('safe_items'),
             align = 'top-left',
             elements = elements,
-            primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
+            primaryColor = Jobs.GetPrimaryColor(),
             secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
             image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
         },

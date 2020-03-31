@@ -29,9 +29,9 @@ Jobs.RegisterMenu('wardrobe', function(isPrimaryJob)
                 title = _U('wardrobe'),
                 align = 'top-left',
                 elements = elements,
-                primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
-                secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
-                image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
+                primaryColor = Jobs.GetPrimaryColor(),
+                secondaryColor = Jobs.GetSecondaryColor(),
+                image = Jobs.GetCurrentHeaderImage()
             },
             function(data, menu)
                 local index = data.current.value

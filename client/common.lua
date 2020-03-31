@@ -10,8 +10,7 @@ Jobs.RequestId              = 0
 -- Markers
 Jobs.CurrentAction          = nil
 Jobs.LastAction             = nil
-Jobs.CurrentActionInfo      = nil
-Jobs.AddonActionData        = {}
+Jobs.CurrentActionInfo      = {}
 Jobs.IsInMarker             = false
 Jobs.DrawMarkers            = {}
 
@@ -59,18 +58,6 @@ AddEventHandler('esx_jobs:setJobData', function(jobData, jobChanged)
     if (jobData == nil) then
         jobData = {}
     end
-
-    if (Jobs.JobData.job == nil) then
-        Jobs.JobData.job = jobData.job or {}
-    elseif ((jobData.job or {}) ~= {}) then
-        Jobs.JobData.job = jobData.job or {}
-    end
-
-    if (Jobs.JobData.job2 == nil) then
-        Jobs.JobData.job2 = jobData.job2 or {}
-    elseif ((jobData.job2 or {}) ~= {}) then
-        Jobs.JobData.job2 = jobData.job2 or {}
-    end
 end)
 
 RegisterNetEvent('esx_jobs:serverCallback')
@@ -85,11 +72,5 @@ end)
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
     Jobs.PlayerData.job     = job
-    Jobs.DrawMarkers        = {}
-end)
-
-RegisterNetEvent('esx:setJob2')
-AddEventHandler('esx:setJob2', function(job)
-    Jobs.PlayerData.job2    = job
     Jobs.DrawMarkers        = {}
 end)
