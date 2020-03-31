@@ -1,5 +1,5 @@
 # FiveM Custom ESX Jobs By TIGO
-
+![Custom ESX Jobs](https://i.imgur.com/GtVGZ0c.png)
 [![Thymon](https://i.imgur.com/3EquTNl.jpg)](https://www.tigodev.com)
 
 [![Developer](https://img.shields.io/badge/Developer-TigoDevelopment-darkgreen)](https://github.com/TigoDevelopment)
@@ -41,7 +41,7 @@ PermissionGroup | Permission | Description
 
 ### Overview of all new triggers in `esx_customJobs`
 
-##### [Server Event] mlx_jobs:setJobMoney
+##### [Server Event] esx_jobs:setJobMoney
 When the balance of a job has been updated
 Argument | Data Type | Optional | Default Value | Explanation
 :--------|:----------|:---------|:--------------|:-----------
@@ -50,12 +50,12 @@ account | string | false | | Account that has been updated
 money | number | false | 0 | New balance of account
 
 ```lua
-AddEventHandler('mlx_jobs:setJobMoney', function(jobName, account, money)
+AddEventHandler('esx_jobs:setJobMoney', function(jobName, account, money)
     ....
 end)
 ```
 
-##### [Server Event] mlx_jobs:addMoney
+##### [Server Event] esx_jobs:addMoney
 When money has been added to a job account balance
 Argument | Data Type | Optional | Default Value | Explanation
 :--------|:----------|:---------|:--------------|:-----------
@@ -64,12 +64,12 @@ account | string | false | | Account that has been added
 money | number | false | 0 | Added money
 
 ```lua
-AddEventHandler('mlx_jobs:addMoney', function(jobName, account, money)
+AddEventHandler('esx_jobs:addMoney', function(jobName, account, money)
     ....
 end)
 ```
 
-##### [Server Event] mlx_jobs:removeMoney
+##### [Server Event] esx_jobs:removeMoney
 When money has been removed from a job account balance
 Argument | Data Type | Optional | Default Value | Explanation
 :--------|:----------|:---------|:--------------|:-----------
@@ -78,12 +78,12 @@ account | string | false | | Account that has been removed
 money | number | false | 0 | Removed money
 
 ```lua
-AddEventHandler('mlx_jobs:removeMoney', function(jobName, account, money)
+AddEventHandler('esx_jobs:removeMoney', function(jobName, account, money)
     ....
 end)
 ```
 
-##### [Server Event] mlx_jobs:setMoney
+##### [Server Event] esx_jobs:setMoney
 When a new balance is set to job account
 Argument | Data Type | Optional | Default Value | Explanation
 :--------|:----------|:---------|:--------------|:-----------
@@ -92,12 +92,12 @@ account | string | false | | Account that has been set
 money | number | false | 0 | New account balance
 
 ```lua
-AddEventHandler('mlx_jobs:setMoney', function(jobName, account, money)
+AddEventHandler('esx_jobs:setMoney', function(jobName, account, money)
     ....
 end)
 ```
 
-##### [Server Event] mlx_jobs:setJobItem
+##### [Server Event] esx_jobs:setJobItem
 When the number of job items has been updated
 Argument | Data Type | Optional | Default Value | Explanation
 :--------|:----------|:---------|:--------------|:-----------
@@ -106,12 +106,12 @@ itemName | string | false | | Item that has been updated
 count | number | false | 0 | New count of item
 
 ```lua
-AddEventHandler('mlx_jobs:setJobItem', function(jobName, itemName, count)
+AddEventHandler('esx_jobs:setJobItem', function(jobName, itemName, count)
     ....
 end)
 ```
 
-##### [Server Event] mlx_jobs:addItem
+##### [Server Event] esx_jobs:addItem
 When items has been added to job item
 Argument | Data Type | Optional | Default Value | Explanation
 :--------|:----------|:---------|:--------------|:-----------
@@ -120,12 +120,12 @@ itemName | string | false | | Item that has been added
 count | number | false | 0 | Number of added items
 
 ```lua
-AddEventHandler('mlx_jobs:addItem', function(jobName, itemName, count)
+AddEventHandler('esx_jobs:addItem', function(jobName, itemName, count)
     ....
 end)
 ```
 
-##### [Server Event] mlx_jobs:removeItem
+##### [Server Event] esx_jobs:removeItem
 When items has been removed to job item
 Argument | Data Type | Optional | Default Value | Explanation
 :--------|:----------|:---------|:--------------|:-----------
@@ -134,12 +134,12 @@ itemName | string | false | | Item that has been removed
 count | number | false | 0 | Number of removed items
 
 ```lua
-AddEventHandler('mlx_jobs:removeItem', function(jobName, itemName, count)
+AddEventHandler('esx_jobs:removeItem', function(jobName, itemName, count)
     ....
 end)
 ```
 
-##### [Server Event] mlx_jobs:setItem
+##### [Server Event] esx_jobs:setItem
 When a new count is set to job item
 Argument | Data Type | Optional | Default Value | Explanation
 :--------|:----------|:---------|:--------------|:-----------
@@ -148,7 +148,7 @@ itemName | string | false | | Item that has been set
 count | number | false | 0 | New count of item
 
 ```lua
-AddEventHandler('mlx_jobs:setItem', function(jobName, itemName, count)
+AddEventHandler('esx_jobs:setItem', function(jobName, itemName, count)
     ....
 end)
 ```

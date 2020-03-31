@@ -44,7 +44,7 @@ Jobs.RegisterMenu('safe_weapons_add', function(isPrimaryJob)
         return
     end
 
-    Jobs.TriggerServerCallback('mlx_jobs:getPlayerWeapons', isPrimaryJob, function(inventory)
+    Jobs.TriggerServerCallback('esx_jobs:getPlayerWeapons', isPrimaryJob, function(inventory)
         local elements = {}
 
         if (#(inventory.weapons or {}) > 0) then
@@ -76,7 +76,7 @@ Jobs.RegisterMenu('safe_weapons_add', function(isPrimaryJob)
                         menu.close()
                         Jobs.TriggerMenu('safe_weapons', isPrimaryJob)
                     else
-                        Jobs.TriggerServerCallback('mlx_jobs:storeWeapon', isPrimaryJob, function(result)
+                        Jobs.TriggerServerCallback('esx_jobs:storeWeapon', isPrimaryJob, function(result)
                             if ((result.done or false)) then
                                 Jobs.ESX.ShowNotification(_U('safe_weapon_added'))
                             else
@@ -101,7 +101,7 @@ Jobs.RegisterMenu('safe_weapons_remove', function(isPrimaryJob)
         return
     end
 
-    Jobs.TriggerServerCallback('mlx_jobs:getJobWeapons', isPrimaryJob, function(inventory)
+    Jobs.TriggerServerCallback('esx_jobs:getJobWeapons', isPrimaryJob, function(inventory)
         local elements = {}
 
         if (#(inventory.weapons or {}) > 0) then
@@ -133,7 +133,7 @@ Jobs.RegisterMenu('safe_weapons_remove', function(isPrimaryJob)
                         menu.close()
                         Jobs.TriggerMenu('safe_weapons', isPrimaryJob)
                     else
-                        Jobs.TriggerServerCallback('mlx_jobs:getWeapon', isPrimaryJob, function(result)
+                        Jobs.TriggerServerCallback('esx_jobs:getWeapon', isPrimaryJob, function(result)
                             if ((result.done or false)) then
                                 Jobs.ESX.ShowNotification(_U('safe_weapon_removed'))
                             else
@@ -158,7 +158,7 @@ Jobs.RegisterMenu('safe_weapons_buy', function(isPrimaryJob)
         return
     end
 
-    Jobs.TriggerServerCallback('mlx_jobs:getBuyableWeapons', isPrimaryJob, function(items)
+    Jobs.TriggerServerCallback('esx_jobs:getBuyableWeapons', isPrimaryJob, function(items)
         local elements = {}
 
         if (#(items.weapons or {}) > 0) then
@@ -218,7 +218,7 @@ Jobs.RegisterMenu('safe_weapons_buy_count', function(isPrimaryJob, weapon)
             image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
         },
         function(data, menu)
-            Jobs.TriggerServerCallback('mlx_jobs:buyWeapon', isPrimaryJob, function(result)
+            Jobs.TriggerServerCallback('esx_jobs:buyWeapon', isPrimaryJob, function(result)
                 if ((result.done or false)) then
                     Jobs.ESX.ShowNotification(_U('safe_weapon_buyed'))
                 else

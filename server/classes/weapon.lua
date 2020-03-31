@@ -16,8 +16,8 @@ function CreateJobWeapon(name, count, label, jobName, jobLabel)
 
         if (count >= 0) then
             self.count = (self.count + count)
-            self.triggerEvent('mlx_jobs:setJobWeapon', self.jobName, self.name, self.count)
-            self.triggerEvent('mlx_jobs:addWeapon', self.jobName, self.name, count)
+            self.triggerEvent('esx_jobs:setJobWeapon', self.jobName, self.name, self.count)
+            self.triggerEvent('esx_jobs:addWeapon', self.jobName, self.name, count)
             self.save()
         end
     end
@@ -27,8 +27,8 @@ function CreateJobWeapon(name, count, label, jobName, jobLabel)
 
         if (count >= 0) then
             self.count = (self.count - count)
-            self.triggerEvent('mlx_jobs:setJobWeapon', self.jobName, self.name, self.count)
-            self.triggerEvent('mlx_jobs:removeWeapon', self.jobName, self.name, count)
+            self.triggerEvent('esx_jobs:setJobWeapon', self.jobName, self.name, self.count)
+            self.triggerEvent('esx_jobs:removeWeapon', self.jobName, self.name, count)
             self.save()
         end
     end
@@ -38,8 +38,8 @@ function CreateJobWeapon(name, count, label, jobName, jobLabel)
 
         if (count >= 0) then
             self.count = count
-            self.triggerEvent('mlx_jobs:setJobWeapon', self.jobName, self.name, self.count)
-            self.triggerEvent('mlx_jobs:setWeapon', self.jobName, self.name, count)
+            self.triggerEvent('esx_jobs:setJobWeapon', self.jobName, self.name, self.count)
+            self.triggerEvent('esx_jobs:setWeapon', self.jobName, self.name, count)
             self.save()
         end
     end

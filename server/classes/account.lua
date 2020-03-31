@@ -16,8 +16,8 @@ function CreateJobAccount(name, money, label, jobName, jobLabel)
 
         if (money >= 0) then
             self.money = (self.money + money)
-            self.triggerEvent('mlx_jobs:setJobMoney', self.jobName, self.name, self.money)
-            self.triggerEvent('mlx_jobs:addMoney', self.jobName, self.name, money)
+            self.triggerEvent('esx_jobs:setJobMoney', self.jobName, self.name, self.money)
+            self.triggerEvent('esx_jobs:addMoney', self.jobName, self.name, money)
             self.save()
         end
     end
@@ -27,8 +27,8 @@ function CreateJobAccount(name, money, label, jobName, jobLabel)
 
         if (money >= 0) then
             self.money = (self.money - money)
-            self.triggerEvent('mlx_jobs:setJobMoney', self.jobName, self.name, self.money)
-            self.triggerEvent('mlx_jobs:removeMoney', self.jobName, self.name, money)
+            self.triggerEvent('esx_jobs:setJobMoney', self.jobName, self.name, self.money)
+            self.triggerEvent('esx_jobs:removeMoney', self.jobName, self.name, money)
             self.save()
         end
     end
@@ -38,8 +38,8 @@ function CreateJobAccount(name, money, label, jobName, jobLabel)
 
         if (money >= 0) then
             self.money = money
-            self.triggerEvent('mlx_jobs:setJobMoney', self.jobName, self.name, self.money)
-            self.triggerEvent('mlx_jobs:setMoney', self.jobName, self.name, money)
+            self.triggerEvent('esx_jobs:setJobMoney', self.jobName, self.name, self.money)
+            self.triggerEvent('esx_jobs:setMoney', self.jobName, self.name, money)
             self.save()
         end
     end

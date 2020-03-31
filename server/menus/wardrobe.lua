@@ -1,4 +1,4 @@
-Jobs.RegisterServerCallback('mlx_jobs:getPlayerGender', function(xPlayer, xJob, callback)
+Jobs.RegisterServerCallback('esx_jobs:getPlayerGender', function(xPlayer, xJob, callback)
     MySQL.Async.fetchAll('SELECT `skin` FROM `users` WHERE `identifier` = @identifier', {
         ['@identifier'] = xPlayer.identifier
     }, function(userResult)

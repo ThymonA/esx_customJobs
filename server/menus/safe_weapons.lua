@@ -1,4 +1,4 @@
-Jobs.RegisterServerCallback('mlx_jobs:getPlayerWeapons', function(xPlayer, xJob, callback)
+Jobs.RegisterServerCallback('esx_jobs:getPlayerWeapons', function(xPlayer, xJob, callback)
     if (xPlayer == nil and callback ~= nil) then
         callback({
             weapons = {}
@@ -22,7 +22,7 @@ Jobs.RegisterServerCallback('mlx_jobs:getPlayerWeapons', function(xPlayer, xJob,
     end
 end)
 
-Jobs.RegisterServerCallback('mlx_jobs:storeWeapon', function(xPlayer, xJob, callback, weapon)
+Jobs.RegisterServerCallback('esx_jobs:storeWeapon', function(xPlayer, xJob, callback, weapon)
     weapon = weapon or 'unknown'
 
     if (xPlayer == nil and callback ~= nil) then
@@ -65,7 +65,7 @@ Jobs.RegisterServerCallback('mlx_jobs:storeWeapon', function(xPlayer, xJob, call
     })
 end)
 
-Jobs.RegisterServerCallback('mlx_jobs:getJobWeapons', function(xPlayer, xJob, callback)
+Jobs.RegisterServerCallback('esx_jobs:getJobWeapons', function(xPlayer, xJob, callback)
     if (xPlayer == nil and callback ~= nil) then
         callback({
             weapons = {}
@@ -101,7 +101,7 @@ Jobs.RegisterServerCallback('mlx_jobs:getJobWeapons', function(xPlayer, xJob, ca
     end
 end)
 
-Jobs.RegisterServerCallback('mlx_jobs:getWeapon', function(xPlayer, xJob, callback, weapon)
+Jobs.RegisterServerCallback('esx_jobs:getWeapon', function(xPlayer, xJob, callback, weapon)
     weapon = weapon or 'unknown'
 
     if (xPlayer == nil and callback ~= nil) then
@@ -154,7 +154,7 @@ Jobs.RegisterServerCallback('mlx_jobs:getWeapon', function(xPlayer, xJob, callba
     callback({ done = true })
 end)
 
-Jobs.RegisterServerCallback('mlx_jobs:getBuyableWeapons', function(xPlayer, xJob, callback)
+Jobs.RegisterServerCallback('esx_jobs:getBuyableWeapons', function(xPlayer, xJob, callback)
     if (xPlayer == nil and callback ~= nil) then
         callback({
             weapons = {}
@@ -200,7 +200,7 @@ Jobs.RegisterServerCallback('mlx_jobs:getBuyableWeapons', function(xPlayer, xJob
     end
 end)
 
-Jobs.RegisterServerCallback('mlx_jobs:buyWeapon', function(xPlayer, xJob, callback, weapon, count)
+Jobs.RegisterServerCallback('esx_jobs:buyWeapon', function(xPlayer, xJob, callback, weapon, count)
     weapon = weapon or 'unknown'
     count = tonumber(count) or 0
 

@@ -7,7 +7,7 @@ Jobs.ScriptLoaded               = false
 Jobs.JobsLoaded                 = false
 Jobs.ServerCallbacks            = {}
 
-TriggerEvent('mlx:getSharedObject', function (object)
+TriggerEvent('esx:getSharedObject', function (object)
     Jobs.ESX = object
 end)
 
@@ -15,7 +15,7 @@ Citizen.CreateThread(function()
     Citizen.Wait(0)
 
     while Jobs.ESX == nil do
-        TriggerEvent('mlx:getSharedObject', function (object)
+        TriggerEvent('esx:getSharedObject', function (object)
             Jobs.ESX = object
         end)
 

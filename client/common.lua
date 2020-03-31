@@ -20,7 +20,7 @@ Jobs.Menus                  = {}
 
 Citizen.CreateThread(function()
     while Jobs.ESX == nil do
-        TriggerEvent('mlx:getSharedObject', function(object)
+        TriggerEvent('esx:getSharedObject', function(object)
             Jobs.ESX = object
         end)
 
@@ -42,14 +42,14 @@ end)
 
 Jobs.GetJobsData = function()
     if (Jobs.JobData == nil) then
-        TriggerServerEvent('mlx_jobs:getJobData')
+        TriggerServerEvent('esx_jobs:getJobData')
     end
 
     return Jobs.JobData
 end
 
-RegisterNetEvent('mlx_jobs:setJobData')
-AddEventHandler('mlx_jobs:setJobData', function(jobData, jobChanged)
+RegisterNetEvent('esx_jobs:setJobData')
+AddEventHandler('esx_jobs:setJobData', function(jobData, jobChanged)
     jobChanged = jobChanged or false
 
     if (Jobs.JobData == nil or jobChanged) then
@@ -73,8 +73,8 @@ AddEventHandler('mlx_jobs:setJobData', function(jobData, jobChanged)
     end
 end)
 
-RegisterNetEvent('mlx_jobs:serverCallback')
-AddEventHandler('mlx_jobs:serverCallback', function(requestId, ...)
+RegisterNetEvent('esx_jobs:serverCallback')
+AddEventHandler('esx_jobs:serverCallback', function(requestId, ...)
     if (Jobs.ServerCallbacks ~= nil and Jobs.ServerCallbacks[requestId] ~= nil) then
         Jobs.ServerCallbacks[requestId](...)
     end
@@ -82,14 +82,14 @@ AddEventHandler('mlx_jobs:serverCallback', function(requestId, ...)
     Jobs.ServerCallbacks[requestId] = nil
 end)
 
-RegisterNetEvent('mlx:setJob')
-AddEventHandler('mlx:setJob', function(job)
+RegisterNetEvent('esx:setJob')
+AddEventHandler('esx:setJob', function(job)
     Jobs.PlayerData.job     = job
     Jobs.DrawMarkers        = {}
 end)
 
-RegisterNetEvent('mlx:setJob2')
-AddEventHandler('mlx:setJob2', function(job)
+RegisterNetEvent('esx:setJob2')
+AddEventHandler('esx:setJob2', function(job)
     Jobs.PlayerData.job2    = job
     Jobs.DrawMarkers        = {}
 end)

@@ -1,5 +1,5 @@
-RegisterServerEvent('mlx_jobs:getJobData')
-AddEventHandler('mlx_jobs:getJobData', function()
+RegisterServerEvent('esx_jobs:getJobData')
+AddEventHandler('esx_jobs:getJobData', function()
     local xPlayer = Jobs.ESX.GetPlayerFromId(source)
 
     Jobs.UpdatePlayerJobData(xPlayer)
@@ -15,7 +15,7 @@ AddEventHandler('onResourceStart', function(resource)
 	end
 end)
 
-AddEventHandler('mlx:setJob', function(source, job, lastJob)
+AddEventHandler('esx:setJob', function(source, job, lastJob)
     local xPlayer = Jobs.ESX.GetPlayerFromId(source)
 
     if (xPlayer ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[lastJob.name] ~= nil and lastJob.name ~= job.name and xPlayer.job2.name ~= lastJob.name) then
@@ -56,7 +56,7 @@ AddEventHandler('mlx:setJob', function(source, job, lastJob)
     end
 end)
 
-AddEventHandler('mlx:setJob2', function(source, job, lastJob)
+AddEventHandler('esx:setJob2', function(source, job, lastJob)
     local xPlayer = Jobs.ESX.GetPlayerFromId(source)
 
     if (xPlayer ~= nil and Jobs.Jobs ~= nil and Jobs.Jobs[lastJob.name] ~= nil and lastJob.name ~= job.name and xPlayer.job.name ~= lastJob.name) then
@@ -97,15 +97,15 @@ AddEventHandler('mlx:setJob2', function(source, job, lastJob)
     end
 end)
 
-AddEventHandler('mlx:playerLoaded', function(playerId)
+AddEventHandler('esx:playerLoaded', function(playerId)
     Jobs.LoadPlayerDataBySource(playerId)
 end)
 
-RegisterServerEvent('mlx_jobs:triggerServerCallback')
-AddEventHandler('mlx_jobs:triggerServerCallback', function(name, requestId, isPrimaryJob, ...)
+RegisterServerEvent('esx_jobs:triggerServerCallback')
+AddEventHandler('esx_jobs:triggerServerCallback', function(name, requestId, isPrimaryJob, ...)
     local playerId = source
 
     Jobs.TriggerServerCallback(name, playerId, isPrimaryJob, function(...)
-        TriggerClientEvent('mlx_jobs:serverCallback', playerId, requestId, ...)
+        TriggerClientEvent('esx_jobs:serverCallback', playerId, requestId, ...)
     end, ...)
 end)

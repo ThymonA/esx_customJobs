@@ -44,7 +44,7 @@ Jobs.RegisterMenu('safe_items_add', function(isPrimaryJob)
         return
     end
 
-    Jobs.TriggerServerCallback('mlx_jobs:getPlayerInventory', isPrimaryJob, function(inventory)
+    Jobs.TriggerServerCallback('esx_jobs:getPlayerInventory', isPrimaryJob, function(inventory)
         local elements = {}
 
         if (Jobs.HasPermission('safe.account.add', isPrimaryJob)) then
@@ -118,7 +118,7 @@ Jobs.RegisterMenu('safe_items_add_count', function(isPrimaryJob, item)
             image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
         },
         function(data, menu)
-            Jobs.TriggerServerCallback('mlx_jobs:storeItem', isPrimaryJob, function(result)
+            Jobs.TriggerServerCallback('esx_jobs:storeItem', isPrimaryJob, function(result)
                 if ((result.done or false)) then
                     Jobs.ESX.ShowNotification(_U('safe_item_added'))
                 else
@@ -140,7 +140,7 @@ Jobs.RegisterMenu('safe_items_remove', function(isPrimaryJob)
         return
     end
 
-    Jobs.TriggerServerCallback('mlx_jobs:getJobInventory', isPrimaryJob, function(inventory)
+    Jobs.TriggerServerCallback('esx_jobs:getJobInventory', isPrimaryJob, function(inventory)
         local elements = {}
 
         if (#(inventory.inventory or {}) > 0) then
@@ -202,7 +202,7 @@ Jobs.RegisterMenu('safe_items_remove_count', function(isPrimaryJob, item)
             image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
         },
         function(data, menu)
-            Jobs.TriggerServerCallback('mlx_jobs:getItem', isPrimaryJob, function(result)
+            Jobs.TriggerServerCallback('esx_jobs:getItem', isPrimaryJob, function(result)
                 if ((result.done or false)) then
                     Jobs.ESX.ShowNotification(_U('safe_item_removed'))
                 else
@@ -224,7 +224,7 @@ Jobs.RegisterMenu('safe_items_buy', function(isPrimaryJob)
         return
     end
 
-    Jobs.TriggerServerCallback('mlx_jobs:getBuyableItems', isPrimaryJob, function(items)
+    Jobs.TriggerServerCallback('esx_jobs:getBuyableItems', isPrimaryJob, function(items)
         local elements = {}
 
         if (#(items.items or {}) > 0) then
@@ -284,7 +284,7 @@ Jobs.RegisterMenu('safe_items_buy_count', function(isPrimaryJob, item)
             image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
         },
         function(data, menu)
-            Jobs.TriggerServerCallback('mlx_jobs:buyItem', isPrimaryJob, function(result)
+            Jobs.TriggerServerCallback('esx_jobs:buyItem', isPrimaryJob, function(result)
                 if ((result.done or false)) then
                     Jobs.ESX.ShowNotification(_U('safe_item_buyed'))
                 else

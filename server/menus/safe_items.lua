@@ -1,4 +1,4 @@
-Jobs.RegisterServerCallback('mlx_jobs:getPlayerInventory', function(xPlayer, xJob, callback)
+Jobs.RegisterServerCallback('esx_jobs:getPlayerInventory', function(xPlayer, xJob, callback)
     if (xPlayer == nil and callback ~= nil) then
         callback({
             accounts = {},
@@ -41,7 +41,7 @@ Jobs.RegisterServerCallback('mlx_jobs:getPlayerInventory', function(xPlayer, xJo
     end
 end)
 
-Jobs.RegisterServerCallback('mlx_jobs:storeItem', function(xPlayer, xJob, callback, item, count)
+Jobs.RegisterServerCallback('esx_jobs:storeItem', function(xPlayer, xJob, callback, item, count)
     item = item or 'unknown'
     count = tonumber(count) or 0
 
@@ -129,7 +129,7 @@ Jobs.RegisterServerCallback('mlx_jobs:storeItem', function(xPlayer, xJob, callba
     return
 end)
 
-Jobs.RegisterServerCallback('mlx_jobs:getJobInventory', function(xPlayer, xJob, callback)
+Jobs.RegisterServerCallback('esx_jobs:getJobInventory', function(xPlayer, xJob, callback)
     if (xPlayer == nil and callback ~= nil) then
         callback({
             inventory = {}
@@ -153,7 +153,7 @@ Jobs.RegisterServerCallback('mlx_jobs:getJobInventory', function(xPlayer, xJob, 
     end
 end)
 
-Jobs.RegisterServerCallback('mlx_jobs:getItem', function(xPlayer, xJob, callback, item, count)
+Jobs.RegisterServerCallback('esx_jobs:getItem', function(xPlayer, xJob, callback, item, count)
     item = item or 'unknown'
     count = tonumber(count) or 0
 
@@ -221,7 +221,7 @@ Jobs.RegisterServerCallback('mlx_jobs:getItem', function(xPlayer, xJob, callback
     return
 end)
 
-Jobs.RegisterServerCallback('mlx_jobs:getBuyableItems', function(xPlayer, xJob, callback)
+Jobs.RegisterServerCallback('esx_jobs:getBuyableItems', function(xPlayer, xJob, callback)
     if (xPlayer == nil and callback ~= nil) then
         callback({
             items = {}
@@ -268,7 +268,7 @@ Jobs.RegisterServerCallback('mlx_jobs:getBuyableItems', function(xPlayer, xJob, 
     end
 end)
 
-Jobs.RegisterServerCallback('mlx_jobs:buyItem', function(xPlayer, xJob, callback, item, count)
+Jobs.RegisterServerCallback('esx_jobs:buyItem', function(xPlayer, xJob, callback, item, count)
     item = item or 'unknown'
     count = tonumber(count) or 0
 

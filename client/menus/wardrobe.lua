@@ -3,7 +3,7 @@ Jobs.RegisterMenu('wardrobe', function(isPrimaryJob)
         return
     end
 
-    Jobs.TriggerServerCallback('mlx_jobs:getPlayerGender', isPrimaryJob, function(gender)
+    Jobs.TriggerServerCallback('esx_jobs:getPlayerGender', isPrimaryJob, function(gender)
         local elements = {}
         local clothes = Jobs.GetCurrentJobValue(isPrimaryJob).clothes or {}
         local genederSkins = clothes[gender] or {}
@@ -47,22 +47,22 @@ Jobs.RegisterMenu('wardrobe', function(isPrimaryJob)
                     local outfit = clothes[gender][index] or {}
 
                     TriggerEvent('skinchanger:loadDefaultModel', gender == 'male', function()
-                        Jobs.ESX.TriggerServerCallback('mlx_skin:getPlayerSkin', function(skin)
+                        Jobs.ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin)
                             TriggerEvent('skinchanger:loadClothes', skin, outfit.skin)
-                            TriggerEvent('mlx:restoreLoadout')
+                            TriggerEvent('esx:restoreLoadout')
                         end)
                     end)
 
-                    TriggerEvent('mlx:restoreLoadout')
+                    TriggerEvent('esx:restoreLoadout')
                 else
                     TriggerEvent('skinchanger:loadDefaultModel', gender == 'male', function()
-                        Jobs.ESX.TriggerServerCallback('mlx_skin:getPlayerSkin', function(skin)
+                        Jobs.ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin)
                             TriggerEvent('skinchanger:loadSkin', skin)
-                            TriggerEvent('mlx:restoreLoadout')
+                            TriggerEvent('esx:restoreLoadout')
                         end)
                     end)
 
-                    TriggerEvent('mlx:restoreLoadout')
+                    TriggerEvent('esx:restoreLoadout')
                 end
 
                 menu.close()

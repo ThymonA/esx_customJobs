@@ -174,7 +174,7 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
         Citizen.Wait(10)
     end
 
-    TriggerClientEvent('mlx_jobs:setJobData', xPlayer.source, jobInfo, jobChanged)
+    TriggerClientEvent('esx_jobs:setJobData', xPlayer.source, jobInfo, jobChanged)
 end
 
 Jobs.LoadPlayerDataBySource = function(source)

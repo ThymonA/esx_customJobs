@@ -104,7 +104,7 @@ Jobs.TriggerServerCallback = function(name, isPrimaryJob, cb, ...)
 
     Jobs.ServerCallbacks[Jobs.RequestId] = cb
 
-    TriggerServerEvent('mlx_jobs:triggerServerCallback', name, Jobs.RequestId, isPrimaryJob, ...)
+    TriggerServerEvent('esx_jobs:triggerServerCallback', name, Jobs.RequestId, isPrimaryJob, ...)
 
     if (Jobs.RequestId < 65535) then
         Jobs.RequestId = Jobs.RequestId + 1

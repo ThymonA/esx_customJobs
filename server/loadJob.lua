@@ -355,7 +355,7 @@ Jobs.LoadJob = function(rawData)
                 }
             end
 
-            TriggerEvent('mlx:updateJob', {
+            TriggerEvent('esx:updateJob', {
                 name = jobData.name,
                 label = jobData.label,
                 whitelisted = jobData.whitelisted
