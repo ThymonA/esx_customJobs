@@ -9,7 +9,6 @@ Jobs.LoadJob = function(rawData)
     local jobData = {
         label = rawData.JobName or '',
         name = rawData.Job or '',
-        whitelisted = rawData.Whitelisted or true,
         members = {},
         permissions = {},
         webhooks = {},
@@ -128,18 +127,16 @@ Jobs.LoadJob = function(rawData)
         ['@job'] = string.lower(jobData.name)
     }, function(results)
         if (results == nil or #results <= 0) then
-            MySQL.Async.execute('INSERT INTO `jobs` (`name`, `label`, `whitelisted`) VALUES (@job, @name, @whitelisted)', {
+            MySQL.Async.execute('INSERT INTO `jobs` (`name`, `label`) VALUES (@job, @name)', {
                 ['@job'] = string.lower(jobData.name),
-                ['@name'] = jobData.label,
-                ['@whitelisted'] = jobData.whitelisted
+                ['@name'] = jobData.label
             }, function(updated)
                 Jobs.Information('Job ' .. jobData.label .. ' added to the system')
             end)
         else
-            MySQL.Async.execute('UPDATE `jobs` SET `label` = @name, `whitelisted` = @whitelisted WHERE `name` = @job', {
+            MySQL.Async.execute('UPDATE `jobs` SET `label` = @name WHERE `name` = @job', {
                 ['@job'] = string.lower(jobData.name),
-                ['@name'] = jobData.label,
-                ['@whitelisted'] = jobData.whitelisted
+                ['@name'] = jobData.label
             }, function(updated)
                 Jobs.Information('Job ' .. jobData.label .. ' is now up to date')
             end)
@@ -357,8 +354,7 @@ Jobs.LoadJob = function(rawData)
 
             TriggerEvent('esx:updateJob', {
                 name = jobData.name,
-                label = jobData.label,
-                whitelisted = jobData.whitelisted
+                label = jobData.label
             }, newJobGrades)
 
             Jobs.Information('Job grades for ' .. jobData.label .. ' is now up to date')
@@ -366,7 +362,7 @@ Jobs.LoadJob = function(rawData)
     end)
 
     table.insert(jobTasks, function(cb)
-        MySQL.Async.fetchAll('SELECT * FROM `users` WHERE LOWER(`job`) = @job OR LOWER(`job2`) = @job', {
+        MySQL.Async.fetchAll('SELECT * FROM `users` WHERE LOWER(`job`) = @job', {
             ['@job'] = string.lower(jobData.name)
         }, function(results)
             if (results ~= nil and #results > 0) then
@@ -376,8 +372,6 @@ Jobs.LoadJob = function(rawData)
                         name = user.name or '',
                         job = user.job or 'Kansloos',
                         job_grade = user.job_grade or 0,
-                        job2 = user.job2 or 'Leeg',
-                        job2_grade = user.job2_grade or 0,
                         source = nil,
                     }
 
@@ -513,5 +507,5 @@ Jobs.LoadJob = function(rawData)
         Citizen.Wait(10)
     end
 
-    return CreateJob(jobData.name, jobData.label, jobData.whitelisted, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.items, jobData.weapons, jobData.buyableItems, jobData.clothes, jobData.vehicles, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
+    return CreateJob(jobData.name, jobData.label, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.items, jobData.weapons, jobData.buyableItems, jobData.clothes, jobData.vehicles, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
 end
