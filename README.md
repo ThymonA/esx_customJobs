@@ -25,6 +25,34 @@ Custom ESX Jobs is a resource created by TIGO which combine all jobs in one work
 
 ⚠️ **esx_customJobs.sql** adds table `job_account`, `job_safe` and `job_weapon`
 
+### Add `esx:updateJob` to `es_extended`
+To update jobs in real time, you need to modify your `es_extended`.
+Add the function to `@es_extended/server/common.lua`.
+```lua
+AddEventHandler('esx:updateJob', function(job, grades)
+	ESX.Jobs[job.name] = job
+	ESX.Jobs[job.name].grades = grades
+
+	if (ESX.Table.SizeOf(ESX.Jobs[job.name].grades) == 0) then
+		ESX.Jobs[job.name] = nil
+		print(('[es_extended] [^3WARNING^7] Ignoring job "%s" due to no job grades found'):format(job.name))
+	end
+
+	for source, xPlayer in pairs(ESX.Players) do
+		if (xPlayer ~= nil and xPlayer.job ~= nil and xPlayer.job.name == job.name) then
+			local currentGrade = xPlayer.job.grade or 0
+			local playerGradeExists = ESX.Jobs[job.name] ~= nil and ESX.Jobs[job.name].grades[tostring(currentGrade)] ~= nil
+
+			if (playerGradeExists) then
+				xPlayer.setJob(job.name, currentGrade)
+			else
+				xPlayer.setJob('unemployed', 0)
+			end
+		end
+	end
+end)
+```
+
 ### Overview of all permissions in `esx_customJobs`
 PermissionGroup | Permission | Description
 :---------------|:-----------|:-----------
