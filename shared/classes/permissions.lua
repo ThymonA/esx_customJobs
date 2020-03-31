@@ -22,6 +22,10 @@ function CreatePermissions()
         },
         ['wardrobe.*'] = {
             ['wardrobe.use'] = { 'wardrobe' }
+        },
+        ['vehicle.*'] = {
+            ['vehicle.spawn'] = { 'vehicles' },
+            ['vehicle.park'] = { 'parkings' }
         }
     }
 

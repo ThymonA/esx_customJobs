@@ -11,6 +11,7 @@ Jobs.RequestId              = 0
 Jobs.CurrentAction          = nil
 Jobs.LastAction             = nil
 Jobs.CurrentActionInfo      = nil
+Jobs.AddonActionData        = {}
 Jobs.IsInMarker             = false
 Jobs.DrawMarkers            = {}
 

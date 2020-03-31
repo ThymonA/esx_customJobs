@@ -20,6 +20,7 @@ Jobs.LoadJob = function(rawData)
         weapons = {},
         buyableItems = {},
         clothes = {},
+        vehicles = {},
         menu = rawData.Menu or {},
         permissionSystem = CreatePermissions()
     }
@@ -51,6 +52,16 @@ Jobs.LoadJob = function(rawData)
             jobData.positions[positionType] = {}
         end
 
+        local addonData = {}
+
+        for key, value in pairs(position.AddonData or {}) do
+            if (string.lower(type(key)) == 'number') then
+                addonData[key] = value
+            else
+                addonData[string.lower(tostring(key))] = value
+            end
+        end
+
         table.insert(jobData.positions[positionType], {
             type = positionType,
             name = position.Name or 'Unknown',
@@ -59,7 +70,8 @@ Jobs.LoadJob = function(rawData)
             position = position.Position or { x = 0, y = 0, z = 0 },
             color = position.Color or { r = 255, g = 0, b = 0 },
             size = position.Size or { x = 1.5, y = 1.5, z = 0.5 },
-            marker = position.Marker or 25
+            marker = position.Marker or 25,
+            addonData = addonData or {}
         })
     end
 
@@ -86,6 +98,30 @@ Jobs.LoadJob = function(rawData)
                 })
             end
         end
+    end
+
+    rawData.Vehicles = rawData.Vehicles or {}
+
+    for _, vehicle in pairs(rawData.Vehicles.Vehicles or {}) do
+        local vehicleProps = rawData.Vehicles.VehicleProps or {}
+
+        local customTuning = vehicle.CustomTuning or {}
+            local newVehicleProps = {}
+
+            for prop, value in pairs(vehicleProps) do
+                newVehicleProps[prop] = value
+            end
+
+            for prop, value in pairs(customTuning) do
+                newVehicleProps[prop] = value
+            end
+
+            table.insert(jobData.vehicles, {
+                name = vehicle.Name or 'Unknown',
+                model = vehicle.Model or 'unknown',
+                props = newVehicleProps or {},
+                allowed = vehicle.Allowed or {}
+            })
     end
 
     MySQL.Async.fetchAll('SELECT * FROM `jobs` WHERE `name` = @job', {
@@ -144,7 +180,8 @@ Jobs.LoadJob = function(rawData)
                 salary = jobGrade.Salary or 0,
                 permissions = {},
                 positions = {},
-                clothes = {}
+                clothes = {},
+                vehicles = {}
             }
 
             for _, jobPermission in pairs(jobData.permissions or {}) do
@@ -231,6 +268,25 @@ Jobs.LoadJob = function(rawData)
 
                 if (gradeAllowed or #allowedGrades <= 0) then
                     table.insert(jobData.grades[tostring(jobGrade.Grade or 0)].clothes['female'], clothes)
+                end
+            end
+
+            for _, vehicle in pairs (jobData.vehicles or {}) do
+                local allowedGrades = vehicle.allowed or {}
+                local gradeAllowed = false
+
+                for _, allowedGrade in pairs(allowedGrades) do
+                    if (allowedGrade ~= nil and string.lower(tostring(allowedGrade)) == string.lower(jobData.grades[tostring(jobGrade.Grade or 0)].name)) then
+                        gradeAllowed = true
+                    end
+
+                    if (deniedGrade ~= nil and string.lower(tostring(allowedGrade)) == tostring(jobGrade.Grade or 0)) then
+                        gradeAllowed = true
+                    end
+                end
+
+                if (gradeAllowed or #allowedGrades <= 0) then
+                    table.insert(jobData.grades[tostring(jobGrade.Grade or 0)].vehicles, vehicle)
                 end
             end
         end
@@ -457,5 +513,5 @@ Jobs.LoadJob = function(rawData)
         Citizen.Wait(10)
     end
 
-    return CreateJob(jobData.name, jobData.label, jobData.whitelisted, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.items, jobData.weapons, jobData.buyableItems, jobData.clothes, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
+    return CreateJob(jobData.name, jobData.label, jobData.whitelisted, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.items, jobData.weapons, jobData.buyableItems, jobData.clothes, jobData.vehicles, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
 end

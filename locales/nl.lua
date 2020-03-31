@@ -2,6 +2,8 @@ Locales['nl'] = {
     ['open_safe_items'] = 'Druk op ~INPUT_CONTEXT~ om de kluis van ~y~%s~s~ te openen',
     ['open_safe_weapons'] = 'Druk op ~INPUT_CONTEXT~ om de kluis met wapens van ~y~%s~s~ te openen',
     ['open_wardrobe'] = 'Druk op ~INPUT_CONTEXT~ om de kledingkast van ~y~%s~s~ te openen',
+    ['open_vehicles'] = 'Druk op ~INPUT_CONTEXT~ om een voertuig van ~y~%s~s~ te pakken',
+    ['open_parkings'] = 'Druk op ~INPUT_CONTEXT~ om uw voertuig te despawnen bij ~y~%s~s~',
 
     ['job_added_title'] = '%s is toegevoegd aan de organisatie',
     ['job_added_description'] = '**%s** is aan **%s** toegevoegd als **%s** (%s)',
@@ -70,6 +72,8 @@ Locales['nl'] = {
     ['safe_weapon_buy_webhook'] = '%s heeft names %s wapen(s) ingekocht',
     ['safe_weapon_buy_webhook_description'] = '**Player:** %s\n**Aantal:** %s\n**Wapen:** %s\n**Prijs:** %s\n**Totaalprijs:** %s',
 
+    ['vehicle_parked'] = 'Voertuig is succesvol weggezet',
+
     ['accounts'] = 'Geld',
     ['bank'] = 'Geld',
     ['money'] = 'Contant',
@@ -83,6 +87,8 @@ Locales['nl'] = {
     ['own_skin'] = 'Eigen kledingstuk',
     ['skins'] = 'Kledingstukken',
     ['weapons'] = 'Wapens',
+    ['vehicles'] = 'Voertuigen',
+    ['close'] = 'Sluiten',
 
     ['item'] = '<strong>%s</strong> %s',
     ['weapon'] = '<strong>%s</strong> %s kogels',
@@ -98,6 +104,9 @@ Locales['nl'] = {
     ['error_item_limit'] = 'U kan niet zoveel van dit item dragen',
     ['error_buy_limit'] = 'U kunt niet meer inkopen dan 10 tegelijkertijd',
     ['error_has_weapon'] = 'U heeft het wapen al op zak',
+    ['error_must_driver'] = 'U moet bestuurder van het voertuig zijn om dit voertuig te kunnen parkeren',
+    ['error_no_vehicle'] = 'U zit niet in een voertuig',
+    ['error_invalid_model'] = 'Voertuig kan niet geladen worden',
 
     ['weapon_knife'] = 'mes',
     ['weapon_nightstick'] = 'nightstick',

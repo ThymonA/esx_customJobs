@@ -30,7 +30,8 @@ Citizen.CreateThread(function()
                             type = marker.marker or 25
                         },
                         action = marker.type or 'unknown',
-                        actionInfo = true
+                        actionInfo = true,
+                        addonData = marker.addonData or {}
                     })
                 end
             end
@@ -57,7 +58,8 @@ Citizen.CreateThread(function()
                             type = marker.marker or 25
                         },
                         action = marker.type or 'unknown',
-                        actionInfo = false
+                        actionInfo = false,
+                        addonData = marker.addonData or {}
                     })
                 end
             end
@@ -98,6 +100,7 @@ Citizen.CreateThread(function()
                     Jobs.IsInMarker = true
                     Jobs.CurrentAction = marker.action
                     Jobs.CurrentActionInfo = marker.actionInfo
+                    Jobs.AddonActionData = marker.addonData
                 end
             end
         end
@@ -164,6 +167,7 @@ Jobs.HasExitedMarker = function()
     Jobs.CurrentAction = nil
     Jobs.LastAction = nil
     Jobs.CurrentActionInfo = nil
+    Jobs.AddonActionData = {}
 end
 
 Jobs.GetCurrentAction = function()

@@ -79,7 +79,8 @@
         "safe.item.*",
         "safe.weapon.*",
         "safe.account.*",
-        "wardrobe.*"
+        "wardrobe.*",
+        "vehicle.*"
     ],
     "Positions": [
         {
@@ -110,6 +111,29 @@
             "Position": { "x": -1487.1, "y": -375.74, "z": 39.16 },
             "Color": { "r": 255, "g": 255, "b": 0 },
             "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
+            "Marker": 1
+        },
+        {
+            "Type": "vehicles",
+            "Name": "Garage #1",
+            "Denied": [],
+            "Public": false,
+            "Position": { "x": -1489.97, "y": -385.11, "z": 39.11 },
+            "Color": { "r": 0, "g": 255, "b": 255 },
+            "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
+            "Marker": 1,
+            "AddonData": {
+                "Spawn": { "x": -1506.14, "y": -384.02, "z": 39.81, "h": 44.5 }
+            }
+        },
+        {
+            "Type": "parkings",
+            "Name": "Parking #1",
+            "Denied": [],
+            "Public": false,
+            "Position": { "x": -1512.76, "y": -378.03, "z": 40.68 },
+            "Color": { "r": 255, "g": 0, "b": 0 },
+            "Size": { "x": 2.5, "y": 2.5, "z": 1.5 },
             "Marker": 1
         }
     ],
@@ -165,5 +189,38 @@
             },
             "Gender": "M"
         }
-    ]
+    ],
+    "Vehicles": {
+        "VehicleProps": {
+            "modArmor": 1,
+            "modEngine": 3,
+            "modBrakes": 2,
+            "modTransmission": 2,
+            "modSuspension": 3,
+            "modTurbo": true,
+            "color1": 28,
+            "color2": 0,
+            "pearlescentColor": 28,
+            "plateIndex": 1,
+            "modAPlate": 5,
+            "modWindows": 1,
+            "modXenon": true
+        },
+        "Vehicles": [
+            {
+                "Name": "Adder",
+                "Model": "adder",
+                "CustomTuning": {
+                    "color2": 28
+                },
+                "Allowed": []
+            },
+            {
+                "Name": "Adder V2",
+                "Model": "adder",
+                "CustomTuning": {},
+                "Allowed": []
+            }
+        ]
+    }
 }

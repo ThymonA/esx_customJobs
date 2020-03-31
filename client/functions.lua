@@ -93,6 +93,10 @@ Jobs.GetCurrentJobValue = function(isPrimaryJob)
     return (Jobs.JobData or {}).job2 or {}
 end
 
+Jobs.GetCurrentAddonData = function()
+    return Jobs.AddonActionData or {}
+end
+
 Jobs.TriggerServerCallback = function(name, isPrimaryJob, cb, ...)
     if (isPrimaryJob == nil) then
         isPrimaryJob = true
