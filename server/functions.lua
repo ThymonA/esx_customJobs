@@ -235,3 +235,19 @@ Jobs.GetItem = function(itemName)
 
     return Jobs.ESX.Items[itemName]
 end
+
+Jobs.GetWeapon = function(weaponName)
+    local weapon = Jobs.ESX.GetWeaponLabel(weaponName)
+
+    if (weapon == nil) then
+        return {}
+    end
+
+    return {
+        name = string.upper(weaponName),
+        ammo = 0,
+        label = weapon,
+        components = {},
+        tintIndex = 0
+    }
+end

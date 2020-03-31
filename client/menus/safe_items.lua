@@ -16,11 +16,11 @@ Jobs.RegisterMenu('safe_items', function(isPrimaryJob)
     Jobs.ESX.UI.Menu.Open(
         'job_default',
         GetCurrentResourceName(),
-        'safe_menu',
+        'safe_items',
         {
-            title       = _U('safe_items'),
-            align       = 'top-left',
-            elements    = elements,
+            title = _U('safe_items'),
+            align = 'top-left',
+            elements = elements,
             primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
             secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
             image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
@@ -77,9 +77,9 @@ Jobs.RegisterMenu('safe_items_add', function(isPrimaryJob)
             GetCurrentResourceName(),
             'safe_items_add',
             {
-                title       = _U('safe_item_add'),
-                align       = 'top-left',
-                elements    = elements,
+                title = _U('safe_item_add'),
+                align = 'top-left',
+                elements = elements,
                 primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
                 secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
                 image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
@@ -161,9 +161,9 @@ Jobs.RegisterMenu('safe_items_remove', function(isPrimaryJob)
             GetCurrentResourceName(),
             'safe_items_remove',
             {
-                title       = _U('safe_item_remove'),
-                align       = 'top-left',
-                elements    = elements,
+                title = _U('safe_item_remove'),
+                align = 'top-left',
+                elements = elements,
                 primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
                 secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
                 image = Jobs.GetCurrentHeaderImage(isPrimaryJob)
@@ -243,9 +243,9 @@ Jobs.RegisterMenu('safe_items_buy', function(isPrimaryJob)
             GetCurrentResourceName(),
             'safe_items_buy',
             {
-                title       = _U('safe_item_buy'),
-                align       = 'top-left',
-                elements    = elements,
+                title = _U('safe_item_buy'),
+                align = 'top-left',
+                elements = elements,
                 primaryColor = Jobs.GetPrimaryColor(isPrimaryJob),
                 secondaryColor = Jobs.GetSecondaryColor(isPrimaryJob),
                 image = Jobs.GetCurrentHeaderImage(isPrimaryJob)

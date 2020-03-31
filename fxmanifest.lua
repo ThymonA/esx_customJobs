@@ -34,7 +34,8 @@ server_scripts {
     'server/main.lua',
 
     'server/menus/safe_items.lua',
-    'server/menus/wardrobe.lua'
+    'server/menus/wardrobe.lua',
+    'server/menus/safe_weapons.lua',
 }
 
 client_scripts {
@@ -57,6 +58,7 @@ client_scripts {
 
     'client/menus/safe_items.lua',
     'client/menus/wardrobe.lua',
+    'client/menus/safe_weapons.lua',
 
     'client/main.lua'
 }

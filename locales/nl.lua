@@ -42,18 +42,33 @@ Locales['nl'] = {
     ['safe_item_removed'] = 'U heeft uw voorwerp uit de voorraadkast gehaald',
     ['safe_item_buyed'] = 'U heeft voorwerp(en) ingekocht voor uw bedrijf',
 
+    ['safe_weapons'] = 'Wapenkluis',
+    ['safe_weapon_add'] = 'Wapen in kluis leggen',
+    ['safe_weapon_remove'] = 'Wapen uit kluis halen',
+    ['safe_weapon_buy'] = 'Wapen kopen voor in kluis',
+    ['safe_weapon_added'] = 'Uw wapen is opgeslagen in de kluis',
+    ['safe_weapon_removed'] = 'U heeft uw wapen uit de kluis gehaald',
+    ['safe_weapon_buyed'] = 'U heeft wapen(s) ingekocht voor uw bedrijf',
+    ['safe_weapon_buy_count'] = 'Hoeveel wapens wilt u inkopen?',
+
     ['safe_account_added_webhook'] = '%s heeft %s gestort',
     ['safe_account_added_webhook_description'] = '**Player:** %s\n**Bedrag:** %s\n**Soort:** %s',
     ['safe_item_added_webhook'] = '%s heeft %s in voorraadkast gedaan',
     ['safe_item_added_webhook_description'] = '**Player:** %s\n**Aantal:** %s\n**Voorwerp:** %s',
+    ['safe_weapon_added_webhook'] = '%s heeft een %s in de kluis gelegd',
+    ['safe_weapon_added_webhook_description'] = '**Player:** %s\n**Wapen:** %s',
 
     ['safe_account_removed_webhook'] = '%s heeft %s opgenomen',
     ['safe_account_removed_webhook_description'] = '**Player:** %s\n**Bedrag:** %s\n**Soort:** %s',
     ['safe_item_removed_webhook'] = '%s heeft %s uit voorraadkast gehaald',
     ['safe_item_removed_webhook_description'] = '**Player:** %s\n**Aantal:** %s\n**Voorwerp:** %s',
+    ['safe_weapon_removed_webhook'] = '%s heeft %s uit de kluis gehaald',
+    ['safe_weapon_removed_webhook_description'] = '**Player:** %s\n**Wapen:** %s',
 
     ['safe_item_buy_webhook'] = '%s heeft names %s voorwerp(en) ingekocht',
     ['safe_item_buy_webhook_description'] = '**Player:** %s\n**Aantal:** %s\n**Voorwerp:** %s\n**Prijs:** %s\n**Totaalprijs:** %s',
+    ['safe_weapon_buy_webhook'] = '%s heeft names %s wapen(s) ingekocht',
+    ['safe_weapon_buy_webhook_description'] = '**Player:** %s\n**Aantal:** %s\n**Wapen:** %s\n**Prijs:** %s\n**Totaalprijs:** %s',
 
     ['accounts'] = 'Geld',
     ['bank'] = 'Geld',
@@ -67,8 +82,10 @@ Locales['nl'] = {
     ['wardrobe'] = 'Kledingkast',
     ['own_skin'] = 'Eigen kledingstuk',
     ['skins'] = 'Kledingstukken',
+    ['weapons'] = 'Wapens',
 
     ['item'] = '<strong>%s</strong> %s',
+    ['weapon'] = '<strong>%s</strong> %s kogels',
     ['negative'] = 'Waarde mag niet negative zijn, getal moet 0 of groter zijn.',
 
     ['error_no_player'] = 'Speler is niet gevonden',
@@ -77,8 +94,10 @@ Locales['nl'] = {
     ['error_no_money'] = 'U heeft onvoldoende geld',
     ['error_no_money_organization'] = 'Uw bedrijf heeft onvoldoende geld',
     ['error_no_item'] = 'U heeft onvoldoende voorwerpen',
+    ['error_no_weapon_organization'] = 'Uw bedrijf heeft het wapen niet',
     ['error_item_limit'] = 'U kan niet zoveel van dit item dragen',
     ['error_buy_limit'] = 'U kunt niet meer inkopen dan 10 tegelijkertijd',
+    ['error_has_weapon'] = 'U heeft het wapen al op zak',
 
     ['weapon_knife'] = 'mes',
     ['weapon_nightstick'] = 'nightstick',
