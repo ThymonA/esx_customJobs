@@ -20,6 +20,7 @@ Jobs.LoadJob = function(rawData)
         buyableItems = {},
         clothes = {},
         vehicles = {},
+        blips = {},
         menu = rawData.Menu or {},
         permissionSystem = CreatePermissions()
     }
@@ -497,6 +498,22 @@ Jobs.LoadJob = function(rawData)
         cb()
     end)
 
+    table.insert(jobTasks, function(cb)
+        for _, blip in pairs(rawData.Blips or {}) do
+            table.insert(jobData.blips, {
+                title = blip.Title or 'Unknown',
+                visibleForEveryone = blip.VisibleForEveryone or false,
+                position = blip.Position or { x = 0, y = 0, z = 0 },
+                sprite = blip.Sprite or 1.0,
+                display = blip.Display or 4,
+                scale = blip.Scale or 1.0,
+                colour = blip.Colour or 1
+            })
+        end
+
+        cb()
+    end)
+
     local jobInfoAdded = false
 
     Async.parallel(jobTasks, function(results)
@@ -507,5 +524,5 @@ Jobs.LoadJob = function(rawData)
         Citizen.Wait(10)
     end
 
-    return CreateJob(jobData.name, jobData.label, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.items, jobData.weapons, jobData.buyableItems, jobData.clothes, jobData.vehicles, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
+    return CreateJob(jobData.name, jobData.label, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.items, jobData.weapons, jobData.buyableItems, jobData.clothes, jobData.vehicles, jobData.blips, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
 end

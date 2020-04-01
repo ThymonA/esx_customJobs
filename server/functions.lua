@@ -59,6 +59,7 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
                 jobInfo.job.headerImage = xJob.getJobHeaderImage()
                 jobInfo.job.hasBuyableItem = xJob.hasAnyBuyableItem()
                 jobInfo.job.hasBuyableWeapon = xJob.hasAnyBuyableWeapon()
+                jobInfo.job.blips = xJob.getBlips()
 
                 job_loaded = true
             else
@@ -89,6 +90,7 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
                     jobInfo.job.headerImage = xJob.getJobHeaderImage()
                     jobInfo.job.hasBuyableItem = xJob.hasAnyBuyableItem()
                     jobInfo.job.hasBuyableWeapon = xJob.hasAnyBuyableWeapon()
+                    jobInfo.job.blips = xJob.getBlips()
 
                     job_loaded = true
                 end)

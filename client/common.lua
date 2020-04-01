@@ -3,6 +3,7 @@ Jobs                        = {}
 Jobs.ESX                    = nil
 Jobs.PlayerData             = {}
 Jobs.JobData                = nil
+Jobs.JobDataLoaded          = false
 Jobs.Permissions            = CreatePermissions()
 Jobs.ServerCallbacks        = {}
 Jobs.RequestId              = 0
@@ -16,6 +17,10 @@ Jobs.DrawMarkers            = {}
 
 -- Menus
 Jobs.Menus                  = {}
+
+-- Blips
+Jobs.Blips                  = {}
+Jobs.BlipsLoaded            = false
 
 Citizen.CreateThread(function()
     while Jobs.ESX == nil do
@@ -60,6 +65,8 @@ AddEventHandler('esx_jobs:setJobData', function(jobData, jobChanged)
     end
 
     Jobs.JobData = jobData
+    Jobs.JobDataLoaded = true
+    Jobs.BlipsLoaded = false
 end)
 
 RegisterNetEvent('esx_jobs:serverCallback')

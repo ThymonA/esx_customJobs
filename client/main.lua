@@ -1,3 +1,43 @@
+-- Draw blips
+Citizen.CreateThread(function()
+    while true do
+        while not Jobs.JobDataLoaded do
+            Citizen.Wait(10)
+        end
+
+        if (not Jobs.BlipsLoaded) then
+            for _, blip in pairs(Jobs.Blips or {}) do
+                RemoveBlip(blip.data)
+            end
+
+            local jobData = Jobs.JobData or {}
+            local jobInfo = jobData.job or {}
+
+            for _, blip in pairs(jobInfo.blips or {}) do
+                local position = blip.position or {}
+                local data = AddBlipForCoord(position.x or 0, position.y or 0, position.z or 0)
+
+                SetBlipSprite(data, blip.sprite or 1)
+                SetBlipDisplay(data, blip.display or 4)
+                SetBlipScale(data, blip.scale or 1.0)
+                SetBlipColour(data, blip.colour or 1)
+                SetBlipAsShortRange(data, blip.asShortRange or true)
+                BeginTextCommandSetBlipName('STRING')
+                AddTextComponentString(blip.title)
+                EndTextCommandSetBlipName(data)
+
+                blip.data = data
+
+                table.insert(Jobs.Blips, blip)
+            end
+
+            Jobs.BlipsLoaded = true
+        end
+
+        Citizen.Wait(0)
+    end
+end)
+
 -- Store marker information
 Citizen.CreateThread(function()
     while true do

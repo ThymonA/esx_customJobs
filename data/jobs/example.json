@@ -215,5 +215,16 @@
                 "Allowed": []
             }
         ]
-    }
+    },
+    "Blips": [
+        {
+            "Title": "Camorra HQ",
+            "VisibleForEveryone": false,
+            "Position": { "x": -1485.75, "y": -378.5, "z": 39.19 },
+            "Sprite": 475,
+            "Display": 6,
+            "Scale": 1.0,
+            "Colour": 60
+        }
+    ]
 }
