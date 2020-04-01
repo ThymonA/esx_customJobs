@@ -214,7 +214,12 @@
                 },
                 "Allowed": []
             }
-        ]
+        ],
+        "LicensePlate": {
+            "Prefix": "JOB",
+            "SpaceBetween": false,
+            "Length": 8
+        }
     },
     "Blips": [
         {

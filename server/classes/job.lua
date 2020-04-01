@@ -1,4 +1,4 @@
-function CreateJob(name, label, members, permissions, webhooks, grades, positions, accounts, items, weapons, buyableItems, clothes, vehicles, blips, menu, permissionSystem, version)
+function CreateJob(name, label, members, permissions, webhooks, grades, positions, accounts, items, weapons, buyableItems, clothes, vehicles, plate, blips, menu, permissionSystem, version)
     local self = {}
 
     self.name = name
@@ -16,6 +16,7 @@ function CreateJob(name, label, members, permissions, webhooks, grades, position
     self.clothes = clothes
     self.vehicles = vehicles
     self.blips = blips
+    self.plate = plate
 
     if (permissionSystem == nil) then
         self.permissionSystem = CreatePermissions()
@@ -214,6 +215,10 @@ function CreateJob(name, label, members, permissions, webhooks, grades, position
         if (gradeData) then
             return gradeData.vehicles or {}
         end
+    end
+
+    self.getPlate = function()
+        return self.plate or {}
     end
 
     self.getBlips = function()

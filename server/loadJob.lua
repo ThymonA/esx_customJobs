@@ -20,6 +20,7 @@ Jobs.LoadJob = function(rawData)
         buyableItems = {},
         clothes = {},
         vehicles = {},
+        plate = {},
         blips = {},
         menu = rawData.Menu or {},
         permissionSystem = CreatePermissions()
@@ -123,6 +124,10 @@ Jobs.LoadJob = function(rawData)
                 allowed = vehicle.Allowed or {}
             })
     end
+
+    jobData.plate.prefix = (rawData.Vehicles.LicensePlate or {}).Prefix or ''
+    jobData.plate.length = (rawData.Vehicles.LicensePlate or {}).Length or 6
+    jobData.plate.spaceBetween = (rawData.Vehicles.LicensePlate or {}).SpaceBetween or false
 
     MySQL.Async.fetchAll('SELECT * FROM `jobs` WHERE `name` = @job', {
         ['@job'] = string.lower(jobData.name)
@@ -524,5 +529,5 @@ Jobs.LoadJob = function(rawData)
         Citizen.Wait(10)
     end
 
-    return CreateJob(jobData.name, jobData.label, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.items, jobData.weapons, jobData.buyableItems, jobData.clothes, jobData.vehicles, jobData.blips, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
+    return CreateJob(jobData.name, jobData.label, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.items, jobData.weapons, jobData.buyableItems, jobData.clothes, jobData.vehicles, jobData.plate, jobData.blips, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
 end
