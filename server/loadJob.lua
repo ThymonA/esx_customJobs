@@ -245,7 +245,7 @@ Jobs.LoadJob = function(rawData)
                         gradeAllowed = true
                     end
 
-                    if (deniedGrade ~= nil and string.lower(tostring(allowedGrade)) == tostring(jobGrade.Grade or 0)) then
+                    if (allowedGrade ~= nil and string.lower(tostring(allowedGrade)) == tostring(jobGrade.Grade or 0)) then
                         gradeAllowed = true
                     end
                 end
@@ -264,7 +264,7 @@ Jobs.LoadJob = function(rawData)
                         gradeAllowed = true
                     end
 
-                    if (deniedGrade ~= nil and string.lower(tostring(allowedGrade)) == tostring(jobGrade.Grade or 0)) then
+                    if (allowedGrade ~= nil and string.lower(tostring(allowedGrade)) == tostring(jobGrade.Grade or 0)) then
                         gradeAllowed = true
                     end
                 end
@@ -283,7 +283,7 @@ Jobs.LoadJob = function(rawData)
                         gradeAllowed = true
                     end
 
-                    if (deniedGrade ~= nil and string.lower(tostring(allowedGrade)) == tostring(jobGrade.Grade or 0)) then
+                    if (allowedGrade ~= nil and string.lower(tostring(allowedGrade)) == tostring(jobGrade.Grade or 0)) then
                         gradeAllowed = true
                     end
                 end
