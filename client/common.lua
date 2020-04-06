@@ -145,6 +145,22 @@ Citizen.CreateThread(function()
 			end
         end
 
+        if (Jobs.IsHostage) then
+            local targetPlayerPed = GetPlayerPed(GetPlayerFromServerId(Jobs.HoldingById))
+
+            if (IsEntityDead(targetPlayerPed)) then
+                TriggerEvent('esx_jobs:stopHostage')
+            end
+        end
+
+        if (Jobs.IsHoldingHostage) then
+            local targetPlayerPed = GetPlayerPed(GetPlayerFromServerId(Jobs.HostageId))
+
+            if (IsEntityDead(targetPlayerPed)) then
+                TriggerEvent('esx_jobs:stopHostage')
+            end
+        end
+
         Citizen.Wait(0)
     end
 end)
@@ -293,6 +309,10 @@ AddEventHandler('esx_jobs:stopHostage', function()
         end
 
         TaskPlayAnim(playerPed, 'reaction@shove', 'shove_var_a', 8.0, -8.0, 1250, 120, 0, false, false, false)
+
+        Citizen.Wait(1250)
+
+        ClearPedTasks(playerPed)
     end
 
     if (Jobs.IsHostage) then
@@ -308,6 +328,10 @@ AddEventHandler('esx_jobs:stopHostage', function()
         TaskPlayAnim(playerPed, 'reaction@shove', 'shoved_back', 8.0, -8.0, 1250, 1, 0, false, false, false)
 
         SetCurrentPedWeapon(playerPed, GetHashKey('WEAPON_UNARMED'), true)
+
+        Citizen.Wait(1250)
+
+        ClearPedTasks(playerPed)
     end
 end)
 
@@ -326,4 +350,9 @@ RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
     Jobs.PlayerData.job     = job
     Jobs.DrawMarkers        = {}
+end)
+
+AddEventHandler("playerSpawned", function()
+    TriggerEvent('esx_jobs:stopHostage')
+    TriggerEvent('esx_jobs:unhandcuffPlayer')
 end)
