@@ -31,6 +31,7 @@ function CreatePermissions()
             ['action.menu.allow'] = { 'action_menu' },
             ['action.menu.handcuff'] = { 'action_menu' },
             ['action.menu.drag'] = { 'action_menu' },
+            ['action.menu.hostage'] = { 'action_menu' },
             ['action.menu.invehicle'] = { 'action_menu' },
             ['action.menu.outvehicle'] = { 'action_menu' },
             ['action.menu.idcard'] = { 'action_menu' },

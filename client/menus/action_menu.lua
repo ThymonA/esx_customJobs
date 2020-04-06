@@ -13,6 +13,10 @@ Jobs.RegisterMenu('action_menu', function()
         table.insert(elements, { label = _U('drag'), value = 'drag' })
     end
 
+    if (Jobs.HasPermission('action.menu.hostage')) then
+        table.insert(elements, { label = _U('hostage'), value = 'hostage' })
+    end
+
     if (Jobs.HasPermission('action.menu.invehicle')) then
         table.insert(elements, { label = _U('in_vehicle'), value = 'in_vehicle' })
     end
@@ -49,6 +53,10 @@ Jobs.RegisterMenu('action_menu', function()
             if (data.current.value == 'handcuff' and Jobs.HasPermission('action.menu.handcuff')) then
                 Jobs.HandcuffPlayer()
             end
+
+            if (data.current.value == 'hostage' and Jobs.HasPermission('action.menu.hostage')) then
+                Jobs.HostagePlayer()
+            end
         end,
         function(data, menu)
             menu.close()
@@ -58,10 +66,29 @@ end)
 Jobs.HandcuffPlayer = function()
     local targetPlayer, targetDistance = Jobs.ESX.Game.GetClosestPlayer()
 
-    if (targetPlayer == -1 or targetDistance > 5) then
+    if (targetPlayer == -1 or targetDistance > 2) then
         Jobs.ESX.ShowNotification(_U('no_player_close'))
         return
     end
 
     Jobs.TriggerServerEvent('esx_jobs:handcuffPlayer', GetPlayerServerId(targetPlayer))
+end
+
+Jobs.HostagePlayer = function()
+    local playerPed = GetPlayerPed(-1)
+    local targetPlayer, targetDistance = Jobs.ESX.Game.GetClosestPlayer()
+
+    if (targetPlayer == -1 or targetDistance > 2) then
+        Jobs.ESX.ShowNotification(_U('no_player_close'))
+        return
+    end
+
+    for _, blacklistedWeapon in pairs(Config.BlacklsitedHostageWeapons) do
+        if (GetSelectedPedWeapon(playerPed) == GetHashKey(blacklistedWeapon)) then
+            Jobs.ESX.ShowNotification(_U('hostage_weapon_not_allowed'))
+            return
+        end
+    end
+
+    Jobs.TriggerServerEvent('esx_jobs:hostagePlayer', GetPlayerServerId(targetPlayer))
 end

@@ -8,6 +8,7 @@ Jobs.JobsLoaded                 = false
 Jobs.ServerCallbacks            = {}
 Jobs.ServerEvents               = {}
 Jobs.Handcuffs                  = {}
+Jobs.Hostages                   = {}
 Jobs.JobPlayers                 = {}
 
 TriggerEvent('esx:getSharedObject', function (object)
