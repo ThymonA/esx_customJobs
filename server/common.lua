@@ -6,6 +6,9 @@ Jobs.ESX                        = nil
 Jobs.ScriptLoaded               = false
 Jobs.JobsLoaded                 = false
 Jobs.ServerCallbacks            = {}
+Jobs.ServerEvents               = {}
+Jobs.Handcuffs                  = {}
+Jobs.JobPlayers                 = {}
 
 TriggerEvent('esx:getSharedObject', function (object)
     Jobs.ESX = object

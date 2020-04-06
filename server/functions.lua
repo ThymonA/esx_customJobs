@@ -130,6 +130,10 @@ Jobs.RegisterServerCallback = function(name, cb)
     Jobs.ServerCallbacks[name] = cb
 end
 
+Jobs.RegisterServerEvent = function(name, cb)
+    Jobs.ServerEvents[name] = cb
+end
+
 Jobs.TriggerServerCallback = function(name, source, cb, ...)
     if (Jobs.ServerCallbacks == nil or Jobs.ServerCallbacks[name] == nil) then
         Jobs.Trace(('Server callback "%s" does not exist.'):format(name))
@@ -150,6 +154,28 @@ Jobs.TriggerServerCallback = function(name, source, cb, ...)
     end
 
     Jobs.ServerCallbacks[name](xPlayer, xJob, cb, ...)
+end
+
+Jobs.TriggerServerEvent = function(name, source, ...)
+    if (Jobs.ServerEvents == nil or Jobs.ServerEvents[name] == nil) then
+        Jobs.Trace(('Server event "%s" does not exist.'):format(name))
+        return
+    end
+
+    local xPlayer = Jobs.ESX.GetPlayerFromId(source)
+
+    if (xPlayer == nil) then
+        return
+    end
+
+    local jobName = (xPlayer.job or {}).name or 'unknown'
+    local xJob = Jobs.GetJobFromName(jobName)
+
+    if (xJob == nil) then
+        return
+    end
+
+    Jobs.ServerEvents[name](xPlayer, xJob, ...)
 end
 
 Jobs.GetItem = function(itemName)
@@ -174,4 +200,65 @@ Jobs.GetWeapon = function(weaponName)
         components = {},
         tintIndex = 0
     }
+end
+
+Jobs.AddPlayerToJob = function(jobName, playerId)
+    if (Jobs.JobPlayers == nil) then
+        Jobs.JobPlayers = {}
+    end
+
+    if (Jobs.JobPlayers[jobName] == nil) then
+        Jobs.JobPlayers[jobName] = {}
+    end
+
+    Jobs.JobPlayers[jobName][tostring(playerId)] = playerId
+end
+
+Jobs.RemovePlayerFromJob = function(jobName, playerId)
+    if (Jobs.JobPlayers == nil) then
+        Jobs.JobPlayers = {}
+    end
+
+    if (Jobs.JobPlayers[jobName] == nil) then
+        Jobs.JobPlayers[jobName] = {}
+    end
+
+
+    if (Jobs.JobPlayers[jobName][tostring(playerId)] ~= nil) then
+        Jobs.JobPlayers[jobName][tostring(playerId)] = nil
+    end
+end
+
+Jobs.GetAllCurrentJobPlayerIds = function(jobName)
+    if (Jobs.JobPlayers == nil) then
+        Jobs.JobPlayers = {}
+    end
+
+    if (Jobs.JobPlayers[jobName] == nil) then
+        Jobs.JobPlayers[jobName] = {}
+    end
+
+    local results = {}
+
+    for _, playerId in pairs(Jobs.JobPlayers[jobName]) do
+        table.insert(results, playerId)
+    end
+
+    return results
+end
+
+Jobs.GetJobHandcuffs = function(jobName)
+    if (Jobs.Handcuffs == nil) then
+        Jobs.Handcuffs = {}
+    end
+
+    local results = {}
+
+    for playerId, handcuff in pairs(Jobs.Handcuffs) do
+        if (string.lower(handcuff.job) == string.lower(jobName) and handcuff.isHandcuffed) then
+            results[playerId] = handcuff
+        end
+    end
+
+    return results
 end

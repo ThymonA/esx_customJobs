@@ -26,6 +26,17 @@ function CreatePermissions()
         ['vehicle.*'] = {
             ['vehicle.spawn'] = { 'vehicles' },
             ['vehicle.park'] = { 'parkings' }
+        },
+        ['action.menu.*'] = {
+            ['action.menu.allow'] = { 'action_menu' },
+            ['action.menu.handcuff'] = { 'action_menu' },
+            ['action.menu.drag'] = { 'action_menu' },
+            ['action.menu.invehicle'] = { 'action_menu' },
+            ['action.menu.outvehicle'] = { 'action_menu' },
+            ['action.menu.idcard'] = { 'action_menu' },
+            ['action.menu.search'] = { 'action_menu' },
+            ['action.menu.steal'] = { 'action_menu' },
+            ['action.menu.hijackvehicle'] = { 'action_menu' },
         }
     }
 

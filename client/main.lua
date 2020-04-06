@@ -152,6 +152,18 @@ Citizen.CreateThread(function()
     end
 end)
 
+-- Open action menu when key pressed
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+
+        -- F6 Menu
+        if (IsControlJustReleased(0, 167) and Jobs.HasPermission('action.menu.allow')) then
+            Jobs.TriggerMenu('action_menu')
+        end
+    end
+end)
+
 -- Trigger when player enters marker
 Jobs.HasEnteredMarker = function()
     local jobName = Jobs.JobData.job.label or 'Unknown'

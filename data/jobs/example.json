@@ -79,7 +79,8 @@
         "safe.weapon.*",
         "safe.account.*",
         "wardrobe.*",
-        "vehicle.*"
+        "vehicle.*",
+        "action.menu.*"
     ],
     "Positions": [
         {

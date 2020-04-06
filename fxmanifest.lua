@@ -37,6 +37,7 @@ server_scripts {
     'server/menus/safe_items.lua',
     'server/menus/wardrobe.lua',
     'server/menus/safe_weapons.lua',
+    'server/menus/action_menu.lua',
 }
 
 client_scripts {
@@ -63,6 +64,7 @@ client_scripts {
     'client/menus/safe_weapons.lua',
     'client/menus/parkings.lua',
     'client/menus/vehicles.lua',
+    'client/menus/action_menu.lua',
 
     'client/main.lua'
 }

@@ -60,3 +60,60 @@ Jobs.TriggerServerCallback = function(name, cb, ...)
         Jobs.RequestId = 0
     end
 end
+
+Jobs.TriggerServerEvent = function(name, ...)
+    TriggerServerEvent('esx_jobs:triggerServerEvent', name, ...)
+end
+
+Jobs.AddLabel = function(serverId, text, action)
+    action = action or 'none'
+
+    if (Jobs.LabelDisplaying[tostring(serverId)] == nil) then
+        Jobs.LabelDisplaying[tostring(serverId)] = {}
+    end
+
+    table.insert(Jobs.LabelDisplaying[tostring(serverId)], {
+        text = text,
+        action = action
+    })
+end
+
+Jobs.RemoveActionLabel = function(serverId, action)
+    action = action or 'none'
+
+    if (action == 'none') then
+        Jobs.LabelDisplaying[tostring(serverId)] = {}
+    else
+        if (Jobs.LabelDisplaying[tostring(serverId)] == nil) then
+            Jobs.LabelDisplaying[tostring(serverId)] = {}
+        end
+
+        for _, label in pairs(Jobs.LabelDisplaying[tostring(serverId)]) do
+            local currentAction = label.action or 'none'
+
+            if (string.lower(currentAction) == string.lower(action)) then
+                table.remove(Jobs.LabelDisplaying[tostring(serverId)], _)
+            end
+        end
+    end
+end
+
+Jobs.Draw3DText = function(coords, text)
+    local camCoords = GetGameplayCamCoord()
+    local dist = #(coords - camCoords)
+    local scale = 200 / (GetGameplayCamFov() * dist)
+
+    -- Format the text
+    SetTextColour(230, 230, 230, 255 )
+    SetTextScale(0.0, 0.25 * scale)
+    SetTextDropshadow(0, 0, 0, 0, 55)
+    SetTextDropShadow()
+    SetTextCentre(true)
+
+    -- Diplay the text
+    BeginTextCommandDisplayText("STRING")
+    AddTextComponentSubstringPlayerName(text)
+    SetDrawOrigin(coords, 0)
+    EndTextCommandDisplayText(0.0, 0.0)
+    ClearDrawOrigin()
+end
