@@ -5,24 +5,20 @@ Jobs.RegisterMenu('action_menu', function()
 
     local elements = {}
 
-    if (Jobs.HasPermission('action.menu.handcuff')) then
-        table.insert(elements, { label = _U('handcuff'), value = 'handcuff' })
+    if (Jobs.HasAnyPermission({ 'action.menu.handcuff', 'action.menu.drag', 'action.menu.hostage', 'action.menu.idcard', 'action.menu.search' })) then
+        table.insert(elements, { label = _U('action_on_player'), value = '', disabled = true })
     end
 
-    if (Jobs.HasPermission('action.menu.drag')) then
-        table.insert(elements, { label = _U('drag'), value = 'drag' })
+    if (Jobs.HasPermission('action.menu.handcuff')) then
+        table.insert(elements, { label = _U('handcuff'), value = 'handcuff' })
     end
 
     if (Jobs.HasPermission('action.menu.hostage')) then
         table.insert(elements, { label = _U('hostage'), value = 'hostage' })
     end
 
-    if (Jobs.HasPermission('action.menu.invehicle')) then
-        table.insert(elements, { label = _U('in_vehicle'), value = 'in_vehicle' })
-    end
-
-    if (Jobs.HasPermission('action.menu.outvehicle')) then
-        table.insert(elements, { label = _U('out_vehicle'), value = 'out_vehicle' })
+    if (Jobs.HasPermission('action.menu.drag')) then
+        table.insert(elements, { label = _U('drag'), value = 'drag' })
     end
 
     if (Jobs.HasPermission('action.menu.idcard')) then
@@ -33,9 +29,24 @@ Jobs.RegisterMenu('action_menu', function()
         table.insert(elements, { label = _U('search_player'), value = 'search_player' })
     end
 
+    if (Jobs.HasAnyPermission({ 'action.menu.invehicle', 'action.menu.outvehicle', 'action.menu.hijackvehicle' })) then
+        table.insert(elements, { label = _U('vehicle_actions'), value = '', disabled = true })
+    end
+
+    if (Jobs.HasPermission('action.menu.invehicle')) then
+        table.insert(elements, { label = _U('in_vehicle'), value = 'in_vehicle' })
+    end
+
+    if (Jobs.HasPermission('action.menu.outvehicle')) then
+        table.insert(elements, { label = _U('out_vehicle'), value = 'out_vehicle' })
+    end
+
     if (Jobs.HasPermission('action.menu.hijackvehicle')) then
         table.insert(elements, { label = _U('hijack_vehicle'), value = 'hijack_vehicle' })
     end
+
+    table.insert(elements, { label = _U('close'), value = 'close', disabled = true })
+    table.insert(elements, { label = _U('close'), value = 'close' })
 
     Jobs.ESX.UI.Menu.Open(
         'job_default',
@@ -50,28 +61,39 @@ Jobs.RegisterMenu('action_menu', function()
             image = Jobs.GetCurrentHeaderImage()
         },
         function(data, menu)
+            if (data.current.value == 'close') then
+                menu.close()
+                return
+            end
+
             if (data.current.value == 'handcuff' and Jobs.HasPermission('action.menu.handcuff')) then
                 Jobs.HandcuffPlayer()
+                return
             end
 
             if (data.current.value == 'hostage' and Jobs.HasPermission('action.menu.hostage')) then
                 Jobs.HostagePlayer()
+                return
             end
 
             if (data.current.value == 'drag' and Jobs.HasPermission('action.menu.drag')) then
                 Jobs.DragPlayer()
+                return
             end
 
             if (data.current.value == 'in_vehicle' and Jobs.HasPermission('action.menu.invehicle')) then
                 Jobs.TriggerMenu('action_menu_in_vehicle')
+                return
             end
 
             if (data.current.value == 'out_vehicle' and Jobs.HasPermission('action.menu.outvehicle')) then
                 Jobs.TriggerMenu('action_menu_out_vehicle')
+                return
             end
 
             if (data.current.value == 'id_card' and Jobs.HasPermission('action.menu.idcard')) then
                 Jobs.TriggerMenu('action_menu_idcard')
+                return
             end
         end,
         function(data, menu)

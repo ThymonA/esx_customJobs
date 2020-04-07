@@ -99,6 +99,8 @@ Locales['nl'] = {
     ['id_card'] = 'Legitimatiebewijs',
     ['search_player'] = 'Fouilleren',
     ['hijack_vehicle'] = 'Voertuig openbreken',
+    ['action_on_player'] = 'Speler interacties',
+    ['vehicle_actions'] = 'Voertuig interacties',
 
     ['no_player_close'] = 'Er is geen speler in de buurt',
     ['already_handcuffed_other_job'] = 'Speler is al vastgebonden door een andere organisatie',

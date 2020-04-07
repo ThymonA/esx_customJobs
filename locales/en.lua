@@ -99,6 +99,8 @@ Locales['en'] = {
     ['id_card'] = 'Identity card',
     ['search_player'] = 'Search',
     ['hijack_vehicle'] = 'Hijack vehicle',
+    ['action_on_player'] = 'Player interactions',
+    ['vehicle_actions'] = 'Vehicle interactions',
 
     ['no_player_close'] = 'There is no player nearby',
     ['already_handcuffed_other_job'] = 'Player is already handcuffed by another organization',

@@ -41,6 +41,20 @@ Jobs.HasPermission = function(permission)
     return Jobs.Permissions.hasAnyPermission(((Jobs.JobData or {}).job or {}).permissions or {}, permission)
 end
 
+Jobs.HasAnyPermission = function(permissions)
+    if (string.lower(type(permissions)) ~= 'table') then
+        return Jobs.Permissions.hasAnyPermission(((Jobs.JobData or {}).job or {}).permissions or {}, permissions)
+    end
+
+    for _, permission in pairs(permissions) do
+        if (Jobs.Permissions.hasAnyPermission(((Jobs.JobData or {}).job or {}).permissions or {}, permission)) then
+            return true
+        end
+    end
+
+    return false
+end
+
 Jobs.GetCurrentJobValue = function()
     return (Jobs.JobData or {}).job or {}
 end
