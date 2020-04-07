@@ -9,6 +9,7 @@ Jobs.ServerCallbacks            = {}
 Jobs.ServerEvents               = {}
 Jobs.Handcuffs                  = {}
 Jobs.Hostages                   = {}
+Jobs.Dragges                    = {}
 Jobs.JobPlayers                 = {}
 
 TriggerEvent('esx:getSharedObject', function (object)

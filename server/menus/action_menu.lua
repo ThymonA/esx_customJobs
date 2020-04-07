@@ -162,6 +162,79 @@ Jobs.RegisterServerEvent('esx_jobs:releaseHostage', function(xPlayer, xJob, targ
     end
 end)
 
+Jobs.RegisterServerEvent('esx_jobs:dragPlayer', function(xPlayer, xJob, targetPlayerId, seatNumber)
+    local xTarget = Jobs.ESX.GetPlayerFromId(targetPlayerId)
+
+    if (xTarget == nil) then
+        return
+    end
+
+    if (not xJob.memberHasPermission(xPlayer.identifier, 'action.menu.drag')) then
+        TriggerClientEvent('esx:showNotification', xPlayer.source, _U('error_no_permission'))
+        return
+    end
+
+    if (Jobs.IsPlayerDragged(xTarget.source) and Jobs.IsDraggedBy(xTarget.source) ~= xJob.name) then
+        TriggerClientEvent('esx:showNotification', xPlayer.source, _U('already_drag_other_job'))
+    elseif (Jobs.IsPlayerDragged(xTarget.source) and Jobs.IsDraggedBy(xTarget.source) == xJob.name) then
+        TriggerClientEvent('esx:showNotification', xPlayer.source, _U('already_drag_by_job'))
+    else
+        Jobs.Dragges[tostring(xTarget.source)] = {
+            job = xJob.name,
+            isDragged = true,
+            time = os.time()
+        }
+
+        TriggerClientEvent('esx_jobs:dragPlayer', xTarget.source, xPlayer.source)
+        TriggerClientEvent('esx:showNotification', xPlayer.source, _U('player_dragged'))
+        TriggerClientEvent('esx_jobs:addLabel', xPlayer.source, xTarget.source, _U('press_to_undrag_player'), 'drag')
+
+        xJob.logIdentifierToDiscord(xPlayer.identifier,
+            _U('drag_player', xPlayer.name, xTarget.name),
+            _U('drag_player_description', xPlayer.name, xTarget.name),
+            'actions',
+            15105570)
+    end
+end)
+
+Jobs.RegisterServerEvent('esx_jobs:undragPlayer', function(xPlayer, xJob, targetPlayerId)
+    local xTarget = Jobs.ESX.GetPlayerFromId(targetPlayerId)
+
+    if (xTarget == nil) then
+        return
+    end
+
+    if (not xJob.memberHasPermission(xPlayer.identifier, 'action.menu.drag')) then
+        TriggerClientEvent('esx:showNotification', xPlayer.source, _U('error_no_permission'))
+        return
+    end
+
+    if (Jobs.IsPlayerDragged(xTarget.source) and Jobs.IsDraggedBy(xTarget.source) == xJob.name) then
+        local totalTime = os.time() - (((Jobs.Dragges or {})[tostring(xTarget.source)] or {}).time or os.time())
+
+        Jobs.Dragges[tostring(xTarget.source)] = {
+            job = 'none',
+            isDragged = false,
+            time = 0
+        }
+
+        TriggerClientEvent('esx_jobs:stopDrag', xPlayer.source)
+        TriggerClientEvent('esx_jobs:stopDrag', xTarget.source)
+        TriggerClientEvent('esx:showNotification', xPlayer.source, _U('undrag_player_info'))
+        TriggerClientEvent('esx_jobs:removeLabel', xPlayer.source, xTarget.source, 'drag')
+
+        xJob.logIdentifierToDiscord(xPlayer.identifier,
+            _U('undrag_player', xPlayer.name, xTarget.name),
+            _U('undrag_description', xPlayer.name, xTarget.name, totalTime),
+            'actions',
+            2600544)
+    elseif (Jobs.IsPlayerDragged(xTarget.source)) then
+        TriggerClientEvent('esx:showNotification', xPlayer.source, _U('not_your_drag'))
+    else
+        TriggerClientEvent('esx:showNotification', xPlayer.source, _U('not_dragging'))
+    end
+end)
+
 Jobs.RegisterServerEvent('esx_jobs:putInVehicle', function(xPlayer, xJob, targetPlayerId, seatNumber)
     local xTarget = Jobs.ESX.GetPlayerFromId(targetPlayerId)
 
@@ -240,4 +313,24 @@ Jobs.HostageByPlayerId = function(playerId)
     end
 
     return 0
+end
+
+Jobs.IsPlayerDragged = function(playerId)
+    playerId = tostring(playerId)
+
+    if (Jobs.Dragges ~= nil and Jobs.Dragges[playerId] ~= nil) then
+        return Jobs.Dragges[playerId].isDragged or false
+    end
+
+    return false
+end
+
+Jobs.IsDraggedBy = function(playerId)
+    playerId = tostring(playerId)
+
+    if (Jobs.Dragges ~= nil and Jobs.Dragges[playerId] ~= nil) then
+        return Jobs.Dragges[playerId].job or 'none'
+    end
+
+    return 'none'
 end

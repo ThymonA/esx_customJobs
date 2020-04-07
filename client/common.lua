@@ -23,6 +23,7 @@ Jobs.Blips                  = {}
 Jobs.BlipsLoaded            = false
 
 -- Actions
+Jobs.IsDragged              = false
 Jobs.IsHandcuffed           = false
 Jobs.IsHoldingHostage       = false
 Jobs.HostageId              = 0
@@ -81,6 +82,8 @@ Citizen.CreateThread(function()
                                 Jobs.TriggerServerEvent('esx_jobs:unhandcuffPlayer', tonumber(playerServerId))
                             elseif (string.lower(label.action) == 'hostage') then
                                 Jobs.TriggerServerEvent('esx_jobs:releaseHostage', tonumber(playerServerId))
+                            elseif (string.lower(label.action) == 'drag') then
+                                Jobs.TriggerServerEvent('esx_jobs:undragPlayer', tonumber(playerServerId))
                             end
                         end
                     end
@@ -381,6 +384,24 @@ AddEventHandler('esx_jobs:putOutVehicle', function()
 
         TaskLeaveVehicle(playerPed, vehicle, 1)
     end
+end)
+
+RegisterNetEvent('esx_jobs:dragPlayer')
+AddEventHandler('esx_jobs:dragPlayer', function(targetPlayerId)
+    local playerPed = GetPlayerPed(-1)
+    local targetPlayerPed = GetPlayerPed(GetPlayerFromServerId(targetPlayerId))
+
+    Jobs.IsDragged = true
+
+    AttachEntityToEntity(playerPed, targetPlayerPed, 11816, 0.35, 0.35, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
+end)
+
+RegisterNetEvent('esx_jobs:stopDrag')
+AddEventHandler('esx_jobs:stopDrag', function()
+    local playerPed = GetPlayerPed(-1)
+
+    ClearPedSecondaryTask(playerPed)
+    DetachEntity(playerPed, true, true)
 end)
 
 RegisterNetEvent('esx_jobs:addLabel')

@@ -58,6 +58,10 @@ Jobs.RegisterMenu('action_menu', function()
                 Jobs.HostagePlayer()
             end
 
+            if (data.current.value == 'drag' and Jobs.HasPermission('action.menu.drag')) then
+                Jobs.DragPlayer()
+            end
+
             if (data.current.value == 'in_vehicle' and Jobs.HasPermission('action.menu.invehicle')) then
                 Jobs.TriggerMenu('action_menu_in_vehicle')
             end
@@ -232,6 +236,10 @@ Jobs.RegisterMenu('action_menu_out_vehicle', function()
 end)
 
 Jobs.HandcuffPlayer = function()
+    if (not Jobs.HasPermission('action.menu.handcuff')) then
+        return
+    end
+
     local targetPlayer, targetDistance = Jobs.ESX.Game.GetClosestPlayer()
 
     if (targetPlayer == -1 or targetDistance > 2) then
@@ -243,6 +251,10 @@ Jobs.HandcuffPlayer = function()
 end
 
 Jobs.HostagePlayer = function()
+    if (not Jobs.HasPermission('action.menu.hostage')) then
+        return
+    end
+
     local playerPed = GetPlayerPed(-1)
     local targetPlayer, targetDistance = Jobs.ESX.Game.GetClosestPlayer()
 
@@ -259,4 +271,19 @@ Jobs.HostagePlayer = function()
     end
 
     Jobs.TriggerServerEvent('esx_jobs:hostagePlayer', GetPlayerServerId(targetPlayer))
+end
+
+Jobs.DragPlayer = function()
+    if (not Jobs.HasPermission('action.menu.drag')) then
+        return
+    end
+
+    local targetPlayer, targetDistance = Jobs.ESX.Game.GetClosestPlayer()
+
+    if (targetPlayer == -1 or targetDistance > 2) then
+        Jobs.ESX.ShowNotification(_U('no_player_close'))
+        return
+    end
+
+    Jobs.TriggerServerEvent('esx_jobs:dragPlayer', GetPlayerServerId(targetPlayer))
 end
