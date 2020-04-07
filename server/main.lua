@@ -80,7 +80,7 @@ AddEventHandler('esx:setJob', function(source, job, lastJob)
             if (xJob.memberHasPermission(xPlayer.identifier, 'action.menu.handcuff')) then
                 for playerId, handcuff in pairs(Jobs.GetJobHandcuffs(xJob.name)) do
                     if (tonumber(playerId) ~= xPlayer.source) then
-                        TriggerClientEvent('esx_jobs:addLabel', xPlayer.source, tonumber(playerId), _U('press_to_uncuff'), 'handcuff')
+                        TriggerClientEvent('esx_jobs:addLabel', xPlayer.source, tonumber(playerId), _U('press_to_uncuff', (Jobs.GetActionKey('handcuff') or {}).label or '?'), 'handcuff')
                     end
                 end
             end

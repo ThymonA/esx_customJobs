@@ -52,3 +52,18 @@ Config.BlacklsitedHostageWeapons = {
     'WEAPON_RAYCARBINE',
     'WEAPON_RAYPISTOL'
 }
+
+Config.Keys = {
+    ['handcuff'] = {
+        key = 38,
+        label = 'E'
+    },
+    ['hostage'] = {
+        key = 38,
+        label = 'E'
+    },
+    ['drag'] = {
+        key = 47,
+        label = 'G'
+    }
+}

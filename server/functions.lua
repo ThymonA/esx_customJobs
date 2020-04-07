@@ -262,3 +262,11 @@ Jobs.GetJobHandcuffs = function(jobName)
 
     return results
 end
+
+Jobs.GetActionKey = function(action)
+    if (Config.Keys ~= nil and Config.Keys[string.lower(action)] ~= nil) then
+        return Config.Keys[string.lower(action)]
+    end
+
+    return nil
+end

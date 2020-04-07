@@ -16,6 +16,7 @@ server_scripts {
     'locales/nl.lua',
     'locales/en.lua',
 
+    'data/config/client_config.lua',
     'data/config/server_config.lua',
 
     'shared/classes/permissions.lua',

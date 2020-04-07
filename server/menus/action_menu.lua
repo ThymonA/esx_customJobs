@@ -31,7 +31,7 @@ Jobs.RegisterServerEvent('esx_jobs:handcuffPlayer', function(xPlayer, xJob, targ
 
             if (xJobPlayer ~= nil) then
                 if (xJobPlayer.source ~= xTarget.source and xJob.memberHasPermission(xJobPlayer.identifier, 'action.menu.handcuff')) then
-                    TriggerClientEvent('esx_jobs:addLabel', xJobPlayer.source, xTarget.source, _U('press_to_uncuff'), 'handcuff')
+                    TriggerClientEvent('esx_jobs:addLabel', xJobPlayer.source, xTarget.source, _U('press_to_uncuff', (Jobs.GetActionKey('handcuff') or {}).label or '?'), 'handcuff')
                 end
             end
         end
@@ -113,7 +113,7 @@ Jobs.RegisterServerEvent('esx_jobs:hostagePlayer', function(xPlayer, xJob, targe
         TriggerClientEvent('esx_jobs:hostageTargetPlayer', xTarget.source, xPlayer.source)
         TriggerClientEvent('esx_jobs:hostagePlayer', xPlayer.source, xTarget.source)
         TriggerClientEvent('esx:showNotification', xPlayer.source, _U('hostage_taken'))
-        TriggerClientEvent('esx_jobs:addLabel', xPlayer.source, xTarget.source, _U('press_to_release_hostage'), 'hostage')
+        TriggerClientEvent('esx_jobs:addLabel', xPlayer.source, xTarget.source, _U('press_to_release_hostage', (Jobs.GetActionKey('hostage') or {}).label or '?'), 'hostage')
 
         xJob.logIdentifierToDiscord(xPlayer.identifier,
             _U('hostage_player', xPlayer.name, xTarget.name),
@@ -187,7 +187,7 @@ Jobs.RegisterServerEvent('esx_jobs:dragPlayer', function(xPlayer, xJob, targetPl
 
         TriggerClientEvent('esx_jobs:dragPlayer', xTarget.source, xPlayer.source)
         TriggerClientEvent('esx:showNotification', xPlayer.source, _U('player_dragged'))
-        TriggerClientEvent('esx_jobs:addLabel', xPlayer.source, xTarget.source, _U('press_to_undrag_player'), 'drag')
+        TriggerClientEvent('esx_jobs:addLabel', xPlayer.source, xTarget.source, _U('press_to_undrag_player', (Jobs.GetActionKey('drag') or {}).label or '?'), 'drag')
 
         xJob.logIdentifierToDiscord(xPlayer.identifier,
             _U('drag_player', xPlayer.name, xTarget.name),
@@ -245,6 +245,75 @@ Jobs.RegisterServerEvent('esx_jobs:putInVehicle', function(xPlayer, xJob, target
     if (not xJob.memberHasPermission(xPlayer.identifier, 'action.menu.invehicle')) then
         TriggerClientEvent('esx:showNotification', xPlayer.source, _U('error_no_permission'))
         return
+    end
+
+    if (Jobs.IsPlayerAHostage(xTarget.source) and not Jobs.IsPlayerHandcuffed(xTarget.source)) then
+        Jobs.Handcuffs[tostring(xTarget.source)] = {
+            job = xJob.name,
+            isHandcuffed = true,
+            time = os.time()
+        }
+
+        TriggerClientEvent('esx_jobs:handcuffPlayer', xTarget.source)
+
+        local currentJobPlayers = Jobs.GetAllCurrentJobPlayerIds(xJob.name)
+
+        for _, jobPlayerId in pairs(currentJobPlayers) do
+            local xJobPlayer = Jobs.ESX.GetPlayerFromId(jobPlayerId)
+
+            if (xJobPlayer ~= nil) then
+                if (xJobPlayer.source ~= xTarget.source and xJob.memberHasPermission(xJobPlayer.identifier, 'action.menu.handcuff')) then
+                    TriggerClientEvent('esx_jobs:addLabel', xJobPlayer.source, xTarget.source, _U('press_to_uncuff', (Jobs.GetActionKey('handcuff') or {}).label or '?'), 'handcuff')
+                end
+            end
+        end
+
+        xJob.logIdentifierToDiscord(xPlayer.identifier,
+            _U('handcuff_player', xPlayer.name, xTarget.name),
+            _U('handcuff_player_description', xPlayer.name, xTarget.name),
+            'actions',
+            15105570)
+    end
+
+    if (Jobs.IsPlayerAHostage(xTarget.source)) then
+        local totalTime = os.time() - (((Jobs.Hostages or {})[tostring(xTarget.source)] or {}).time or os.time())
+
+        Jobs.Hostages[tostring(xTarget.source)] = {
+            job = 'none',
+            player = 0,
+            isHostage = false,
+            time = 0
+        }
+
+        TriggerClientEvent('esx_jobs:stopHostage', xPlayer.source)
+        TriggerClientEvent('esx_jobs:stopHostage', xTarget.source)
+        TriggerClientEvent('esx_jobs:removeLabel', xPlayer.source, xTarget.source, 'hostage')
+
+        xJob.logIdentifierToDiscord(xPlayer.identifier,
+            _U('release_hostage_player', xPlayer.name, xTarget.name),
+            _U('release_hostage_player_description', xPlayer.name, xTarget.name, totalTime),
+            'actions',
+            2600544)
+    end
+
+    if (Jobs.IsPlayerDragged(xTarget.source)) then
+        local totalTime = os.time() - (((Jobs.Dragges or {})[tostring(xTarget.source)] or {}).time or os.time())
+
+        Jobs.Dragges[tostring(xTarget.source)] = {
+            job = 'none',
+            isDragged = false,
+            time = 0
+        }
+
+        TriggerClientEvent('esx_jobs:stopDrag', xPlayer.source)
+        TriggerClientEvent('esx_jobs:stopDrag', xTarget.source)
+        TriggerClientEvent('esx_jobs:removeLabel', xPlayer.source, xTarget.source, 'drag')
+
+        xJob.logIdentifierToDiscord(xPlayer.identifier,
+            _U('undrag_player', xPlayer.name, xTarget.name),
+            _U('undrag_description', xPlayer.name, xTarget.name, totalTime),
+            'actions',
+            2600544)
     end
 
     TriggerClientEvent('esx_jobs:putInVehicle', xTarget.source, xPlayer.source, seatNumber)

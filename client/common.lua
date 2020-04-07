@@ -69,6 +69,8 @@ Citizen.CreateThread(function()
 
                 if (distance < 2) then
                     for _, label in pairs(playerLabels) do
+                        label.action = label.action or 'none'
+
                         if (HasEntityClearLosToEntity(currentPlayerPed, targetPlayerPed, 17)) then
                             if (string.lower(label.action) == 'handcuff') then
                                 Jobs.Draw3DText(vector3(targetCoords.x, targetCoords.y, targetCoords.z + 0.1), label.text)
@@ -77,7 +79,9 @@ Citizen.CreateThread(function()
                             end
                         end
 
-                        if (IsControlJustPressed(0, 38) and string.lower(label.action) ~= 'none') then
+                        local actionKey = Jobs.GetActionKey(label.action)
+
+                        if (actionKey ~= nil and IsControlJustPressed(0, actionKey.key)) then
                             if (string.lower(label.action) == 'handcuff') then
                                 Jobs.TriggerServerEvent('esx_jobs:unhandcuffPlayer', tonumber(playerServerId))
                             elseif (string.lower(label.action) == 'hostage') then
@@ -119,7 +123,21 @@ Citizen.CreateThread(function()
 			DisableControlAction(0, 167, true) -- F6
 			DisableControlAction(0, 168, true) -- F7
 			DisableControlAction(0, 57, true) -- F10
-			DisableControlAction(0, 73, true) -- X
+            DisableControlAction(0, 73, true) -- X
+        elseif (Jobs.IsDragged) then
+            DisableControlAction(0, 69, true) -- INPUT_VEH_ATTACK
+            DisableControlAction(0, 92, true) -- INPUT_VEH_PASSENGER_ATTACK
+            DisableControlAction(0, 114, true) -- INPUT_VEH_FLY_ATTACK
+            DisableControlAction(0, 140, true) -- INPUT_MELEE_ATTACK_LIGHT
+            DisableControlAction(0, 141, true) -- INPUT_MELEE_ATTACK_HEAVY
+            DisableControlAction(0, 142, true) -- INPUT_MELEE_ATTACK_ALTERNATE
+            DisableControlAction(0, 257, true) -- INPUT_ATTACK2
+            DisableControlAction(0, 263, true) -- INPUT_MELEE_ATTACK1
+            DisableControlAction(0, 264, true) -- INPUT_MELEE_ATTACK2
+            DisableControlAction(0, 24, true) -- INPUT_ATTACK
+            DisableControlAction(0, 25, true) -- INPUT_AIM
+			DisableControlAction(0, 21, true) -- SHIFT
+			DisableControlAction(0, 22, true) -- SPACE
         end
 
         Citizen.Wait(0)
@@ -270,10 +288,11 @@ AddEventHandler('esx_jobs:unhandcuffPlayer', function()
         Citizen.Wait(0)
     end
 
-    ClearPedTasks(playerPed)
     SetEnableHandcuffs(playerPed, false)
     UncuffPed(playerPed)
     SetPedComponentVariation(playerPed, 7, Jobs.Variation, 0, 0)
+    ClearPedTasks(playerPed)
+    StopAnimTask(playerPed, 'mp_arresting', 'idle', 1.0)
 end)
 
 RegisterNetEvent('esx_jobs:hostageTargetPlayer')
@@ -399,6 +418,8 @@ end)
 RegisterNetEvent('esx_jobs:stopDrag')
 AddEventHandler('esx_jobs:stopDrag', function()
     local playerPed = GetPlayerPed(-1)
+
+    Jobs.IsDragged = false
 
     ClearPedSecondaryTask(playerPed)
     DetachEntity(playerPed, true, true)
