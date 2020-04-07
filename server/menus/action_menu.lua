@@ -162,7 +162,7 @@ Jobs.RegisterServerEvent('esx_jobs:releaseHostage', function(xPlayer, xJob, targ
     end
 end)
 
-Jobs.RegisterServerEvent('esx_jobs:dragPlayer', function(xPlayer, xJob, targetPlayerId, seatNumber)
+Jobs.RegisterServerEvent('esx_jobs:dragPlayer', function(xPlayer, xJob, targetPlayerId)
     local xTarget = Jobs.ESX.GetPlayerFromId(targetPlayerId)
 
     if (xTarget == nil) then
@@ -340,7 +340,7 @@ Jobs.RegisterServerCallback('esx_jobs:getPlayerIdentity', function(xPlayer, xJob
     if (xTarget == nil) then
         callback({
             done = false,
-            message = 'no_player'
+            message = 'error_no_player'
         })
         return
     end
