@@ -69,6 +69,10 @@ Jobs.RegisterMenu('action_menu', function()
             if (data.current.value == 'out_vehicle' and Jobs.HasPermission('action.menu.outvehicle')) then
                 Jobs.TriggerMenu('action_menu_out_vehicle')
             end
+
+            if (data.current.value == 'id_card' and Jobs.HasPermission('action.menu.idcard')) then
+                Jobs.TriggerMenu('action_menu_idcard')
+            end
         end,
         function(data, menu)
             menu.close()
@@ -233,6 +237,64 @@ Jobs.RegisterMenu('action_menu_out_vehicle', function()
         Jobs.TriggerMenu('action_menu')
         return
     end
+end)
+
+Jobs.RegisterMenu('action_menu_idcard', function()
+    if (not Jobs.HasPermission('action.menu.idcard')) then
+        return
+    end
+
+    local targetPlayer, targetDistance = Jobs.ESX.Game.GetClosestPlayer()
+
+    if (targetPlayer == -1 or targetDistance > 2) then
+        Jobs.ESX.ShowNotification(_U('no_player_close'))
+        Jobs.TriggerMenu('action_menu')
+        return
+    end
+
+    Jobs.TriggerServerCallback('esx_jobs:getPlayerIdentity', function(identity)
+        if ((identity.done or false)) then
+            local gender = _U('male')
+
+            if (string.lower(identity.data.sex) == 'f') then
+                gender = _U('female')
+            end
+
+            local elements = {
+                { label = _U('identity'), value = '', disabled = true },
+                { label = _U('firstname', identity.data.firstname), value = '', disabled = true },
+                { label = _U('lastname', identity.data.lastname), value = '', disabled = true },
+                { label = _U('sex', gender), value = '', disabled = true },
+                { label = _U('dateofbirth', identity.data.dateofbirth), value = '', disabled = true },
+                { label = _U('length', identity.data.height), value = '', disabled = true },
+                { label = _U('back'), value = '', disabled = true },
+                { label = _U('back'), value = 'back' }
+            }
+
+            Jobs.ESX.UI.Menu.Open(
+                'job_default',
+                GetCurrentResourceName(),
+                'action_menu',
+                {
+                    title = _U('action_menu'),
+                    align = 'top-left',
+                    elements = elements,
+                    primaryColor = Jobs.GetPrimaryColor(),
+                    secondaryColor = Jobs.GetSecondaryColor(),
+                    image = Jobs.GetCurrentHeaderImage()
+                },
+                function (data, menu)
+                    if (data.current.value == 'back') then
+                        Jobs.TriggerMenu('action_menu')
+                    end
+                end,
+                function (data, menu)
+                    Jobs.TriggerMenu('action_menu')
+                end)
+        else
+            Jobs.ESX.ShowNotification(_U(identity.message))
+        end
+    end, GetPlayerServerId(targetPlayer))
 end)
 
 Jobs.HandcuffPlayer = function()

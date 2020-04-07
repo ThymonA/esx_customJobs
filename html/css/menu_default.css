@@ -164,3 +164,7 @@
 .menu.menu_default .menu-items .menu-item.disabled {
     color: gray;
 }
+
+.menu.menu_default .menu-items .menu-item.disabled strong {
+    color: white;
+}

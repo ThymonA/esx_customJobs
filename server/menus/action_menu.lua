@@ -334,6 +334,60 @@ Jobs.RegisterServerEvent('esx_jobs:putOutVehicle', function(xPlayer, xJob, targe
     TriggerClientEvent('esx_jobs:putOutVehicle', xTarget.source)
 end)
 
+Jobs.RegisterServerCallback('esx_jobs:getPlayerIdentity', function(xPlayer, xJob, callback, targetPlayerId)
+    local xTarget = Jobs.ESX.GetPlayerFromId(targetPlayerId)
+
+    if (xTarget == nil) then
+        callback({
+            done = false,
+            message = 'no_player'
+        })
+        return
+    end
+
+    if (not xJob.memberHasPermission(xPlayer.identifier, 'action.menu.idcard')) then
+        callback({
+            done = false,
+            message = 'error_no_permission'
+        })
+
+        return
+    end
+
+    TriggerClientEvent('esx:showNotification', xTarget.source, _U('your_identitycard_has_been_taken'))
+    TriggerClientEvent('esx:showNotification', xPlayer.source, _U('you_have_identitycard'))
+
+    MySQL.Async.fetchAll('SELECT identifier, firstname, lastname, dateofbirth, sex, height FROM `users` WHERE `identifier` = @identifier', {
+        ['@identifier'] = xTarget.identifier
+    }, function(results)
+        if (results ~= nil and results[1] ~= nil) then
+            callback({
+                done = true,
+                data = {
+                    identifier	= results[1].identifier or '',
+                    firstname	= results[1].firstname or '',
+                    lastname	= results[1].lastname or '',
+                    dateofbirth	= results[1].dateofbirth or '',
+                    sex			= results[1].sex or '',
+                    height		= results[1].height or ''
+                }
+            })
+        else
+            callback({
+                done = true,
+                data = {
+                    identifier	= '',
+                    firstname	= '',
+                    lastname	= '',
+                    dateofbirth	= '',
+                    sex			= '',
+                    height		= ''
+                }
+            })
+        end
+    end)
+end)
+
 Jobs.IsPlayerHandcuffed = function(playerId)
     playerId = tostring(playerId)
 
