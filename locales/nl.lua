@@ -124,6 +124,9 @@ Locales['nl'] = {
     ['release_hostage_player_description'] = '**Player:** %s\n**Gijzelaar:** %s\n**Duur:** %s seconden\n**Status:** Vrijgelaten',
     ['not_your_hostage'] = 'U heeft speler niet gegijzeld',
     ['not_hostage'] = 'Speler is geen gegijzelde',
+    ['seat_head'] = 'Bestuurdersstoel',
+    ['seat'] = 'Stoel %s',
+    ['no_vehicle'] = 'Er is geen voertuig in de buurt',
 
     ['item'] = '<strong>%s</strong> %s',
     ['weapon'] = '<strong>%s</strong> %s kogels',

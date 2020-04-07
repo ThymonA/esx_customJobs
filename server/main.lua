@@ -5,6 +5,23 @@ AddEventHandler('esx_jobs:getJobData', function()
     Jobs.UpdatePlayerJobData(xPlayer)
 end)
 
+RegisterServerEvent('esx_jobs:triggerServerCallback')
+AddEventHandler('esx_jobs:triggerServerCallback', function(name, requestId, ...)
+    local playerId = source
+
+    Jobs.TriggerServerCallback(name, playerId, function(...)
+        TriggerClientEvent('esx_jobs:serverCallback', playerId, requestId, ...)
+    end, ...)
+end)
+
+
+RegisterServerEvent('esx_jobs:triggerServerEvent')
+AddEventHandler('esx_jobs:triggerServerEvent', function(name, ...)
+    local playerId = source
+
+    Jobs.TriggerServerEvent(name, playerId, ...)
+end)
+
 AddEventHandler('onResourceStart', function(resource)
 	if resource == GetCurrentResourceName() then
         local players = GetPlayers()
@@ -118,21 +135,4 @@ AddEventHandler('playerDropped', function()
 
         Jobs.RemovePlayerFromJob(jobName, playerId)
     end
-end)
-
-RegisterServerEvent('esx_jobs:triggerServerCallback')
-AddEventHandler('esx_jobs:triggerServerCallback', function(name, requestId, ...)
-    local playerId = source
-
-    Jobs.TriggerServerCallback(name, playerId, function(...)
-        TriggerClientEvent('esx_jobs:serverCallback', playerId, requestId, ...)
-    end, ...)
-end)
-
-
-RegisterServerEvent('esx_jobs:triggerServerEvent')
-AddEventHandler('esx_jobs:triggerServerEvent', function(name, ...)
-    local playerId = source
-
-    Jobs.TriggerServerEvent(name, playerId, ...)
 end)

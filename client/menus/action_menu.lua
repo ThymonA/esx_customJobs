@@ -57,10 +57,178 @@ Jobs.RegisterMenu('action_menu', function()
             if (data.current.value == 'hostage' and Jobs.HasPermission('action.menu.hostage')) then
                 Jobs.HostagePlayer()
             end
+
+            if (data.current.value == 'in_vehicle' and Jobs.HasPermission('action.menu.invehicle')) then
+                Jobs.TriggerMenu('action_menu_in_vehicle')
+            end
+
+            if (data.current.value == 'out_vehicle' and Jobs.HasPermission('action.menu.outvehicle')) then
+                Jobs.TriggerMenu('action_menu_out_vehicle')
+            end
         end,
         function(data, menu)
             menu.close()
         end)
+end)
+
+Jobs.RegisterMenu('action_menu_in_vehicle', function()
+    if (not Jobs.HasPermission('action.menu.invehicle')) then
+        return
+    end
+
+    local playerPed = GetPlayerPed(-1)
+    local targetPlayer, targetDistance = Jobs.ESX.Game.GetClosestPlayer()
+
+    if (targetPlayer == -1 or targetDistance > 2) then
+        Jobs.ESX.ShowNotification(_U('no_player_close'))
+        Jobs.TriggerMenu('action_menu')
+        return
+    end
+
+    local vehicle, elements = nil, {}
+
+    if (IsPedInAnyVehicle(playerPed, true)) then
+        vehicle = GetVehiclePedIsIn(playerPed, false)
+    else
+        vehicle = Jobs.ESX.Game.GetVehicleInDirection()
+    end
+
+    if (DoesEntityExist(vehicle)) then
+        local maxSeats = GetVehicleMaxNumberOfPassengers(vehicle)
+
+        for i = 0, maxSeats, 1 do
+            if (maxSeats == i and not IsVehicleSeatFree(vehicle, -1)) then
+                table.insert(elements, { label = _U('seat_head'), value = -1, disabled = true })
+            elseif (maxSeats == i and IsVehicleSeatFree(vehicle,  -1)) then
+                table.insert(elements, { label = _U('seat_head'), value = -1})
+            elseif IsVehicleSeatFree(vehicle,  i) then
+                table.insert( elements, { label = _U('seat', (i + 1)), value = i })
+            else
+                table.insert( elements, { label = _U('seat', (i + 1)), value = i, disabled = true })
+            end
+        end
+
+        table.insert(elements, { label = _U('back'), value = '', disabled = true })
+        table.insert(elements, { label = _U('back'), value = 'back' })
+
+        Jobs.ESX.UI.Menu.Open(
+            'job_default',
+            GetCurrentResourceName(),
+            'action_menu_in_vehicle',
+            {
+                title = _U('action_menu_in_vehicle'),
+                align = 'top-left',
+                elements = elements,
+                primaryColor = Jobs.GetPrimaryColor(),
+                secondaryColor = Jobs.GetSecondaryColor(),
+                image = Jobs.GetCurrentHeaderImage()
+            },
+            function(data, menu)
+                if (data.current.value == nil or
+                    data.current.value == '' or
+                    string.lower(data.current.value) == 'back') then
+                    Jobs.TriggerMenu('action_menu')
+                else
+                    Jobs.TriggerServerEvent('esx_jobs:putInVehicle', GetPlayerServerId(targetPlayer), data.current.value)
+                    Jobs.TriggerMenu('action_menu')
+                end
+            end,
+            function(data, menu)
+                Jobs.TriggerMenu('action_menu')
+            end)
+    else
+        Jobs.ESX.ShowNotification(_U('no_vehicle'))
+        Jobs.TriggerMenu('action_menu')
+        return
+    end
+end)
+
+Jobs.RegisterMenu('action_menu_out_vehicle', function()
+    if (not Jobs.HasPermission('action.menu.outvehicle')) then
+        return
+    end
+
+    local playerPed = GetPlayerPed(-1)
+    local targetPlayer, targetDistance = Jobs.ESX.Game.GetClosestPlayer()
+
+    if (targetPlayer == -1 or targetDistance > 2) then
+        Jobs.ESX.ShowNotification(_U('no_player_close'))
+        Jobs.TriggerMenu('action_menu')
+        return
+    end
+
+    local vehicle, elements = nil, {}
+
+    if (IsPedInAnyVehicle(playerPed, true)) then
+        vehicle = GetVehiclePedIsIn(playerPed, false)
+    else
+        vehicle = Jobs.ESX.Game.GetVehicleInDirection()
+    end
+
+    if (DoesEntityExist(vehicle)) then
+        local maxSeats = GetVehicleMaxNumberOfPassengers(vehicle)
+
+        for i = 0, maxSeats, 1 do
+            if (maxSeats == i and not IsVehicleSeatFree(vehicle,  -1)) then
+                local targetPlayerPed = GetPedInVehicleSeat(vehicle, -1)
+                local playerId = NetworkGetPlayerIndexFromPed(targetPlayerPed)
+                local player = GetPlayerServerId(playerId)
+
+                if (targetPlayerPed ~= playerPed) then
+                    table.insert( elements, { label = _U('seat_head'), value = player })
+                else
+                    table.insert( elements, { label = _U('seat_head'), value = -1, disabled = true  })
+                end
+              elseif (maxSeats == i and IsVehicleSeatFree(vehicle,  -1)) then
+                table.insert( elements, { label = _U('seat_head'), value = -1, disabled = true  })
+              elseif IsVehicleSeatFree(vehicle,  i) then
+                table.insert( elements, { label = _U('seat', (i + 1)), value = i, disabled = true })
+              else
+                local targetPlayerPed = GetPedInVehicleSeat(vehicle, i)
+                local playerId = NetworkGetPlayerIndexFromPed(targetPlayerPed)
+                local player = GetPlayerServerId(playerId)
+
+                if (targetPlayerPed ~= playerPed) then
+                    table.insert( elements, { label = _U('seat', (i + 1)), value = player })
+                else
+                    table.insert( elements, { label = _U('seat', (i + 1)), value = i, disabled = true })
+                end
+              end
+        end
+
+        table.insert(elements, { label = _U('back'), value = '', disabled = true })
+        table.insert(elements, { label = _U('back'), value = 'back' })
+
+        Jobs.ESX.UI.Menu.Open(
+            'job_default',
+            GetCurrentResourceName(),
+            'action_menu_out_vehicle',
+            {
+                title = _U('action_menu_out_vehicle'),
+                align = 'top-left',
+                elements = elements,
+                primaryColor = Jobs.GetPrimaryColor(),
+                secondaryColor = Jobs.GetSecondaryColor(),
+                image = Jobs.GetCurrentHeaderImage()
+            },
+            function(data, menu)
+                if (data.current.value == nil or
+                    data.current.value == '' or
+                    string.lower(data.current.value) == 'back') then
+                    Jobs.TriggerMenu('action_menu')
+                else
+                    Jobs.TriggerServerEvent('esx_jobs:putOutVehicle', data.current.value)
+                    Jobs.TriggerMenu('action_menu')
+                end
+            end,
+            function(data, menu)
+                Jobs.TriggerMenu('action_menu')
+            end)
+    else
+        Jobs.ESX.ShowNotification(_U('no_vehicle'))
+        Jobs.TriggerMenu('action_menu')
+        return
+    end
 end)
 
 Jobs.HandcuffPlayer = function()

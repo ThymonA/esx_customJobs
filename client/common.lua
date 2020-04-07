@@ -126,6 +126,7 @@ end)
 -- Play hostage animation
 Citizen.CreateThread(function()
     while true do
+        local playerPed = GetPlayerPed(-1)
         local animation = 'anim@gangops@hostage@'
         local flag = 49
         local animationPart = 'perp_idle'
@@ -140,6 +141,12 @@ Citizen.CreateThread(function()
 
         if (Jobs.IsHostage or Jobs.IsHoldingHostage) then
             while not IsEntityPlayingAnim(GetPlayerPed(-1), animation, animationPart, 3) do
+                RequestAnimDict(animation)
+
+                while not HasAnimDictLoaded(animation) do
+                    Citizen.Wait(0)
+                end
+
 				TaskPlayAnim(GetPlayerPed(-1), animation, animationPart, 8.0, -8.0, duration, flag, 0, false, false, false)
 				Citizen.Wait(0)
 			end
@@ -158,6 +165,25 @@ Citizen.CreateThread(function()
 
             if (IsEntityDead(targetPlayerPed)) then
                 TriggerEvent('esx_jobs:stopHostage')
+            end
+        end
+
+        if (Jobs.IsHandcuffed) then
+            SetEnableHandcuffs(playerPed, true)
+            DisablePlayerFiring(playerPed, true)
+            SetCurrentPedWeapon(playerPed, GetHashKey('WEAPON_UNARMED'), true)
+            DisplayRadar(false)
+
+            while not IsEntityPlayingAnim(GetPlayerPed(-1), 'mp_arresting', 'idle', 3) do
+                RequestAnimDict('mp_arresting')
+
+                while not HasAnimDictLoaded('mp_arresting') do
+                    Citizen.Wait(0)
+                end
+
+                TaskPlayAnim(playerPed, 'mp_arresting', 'idle', 8.0, -8, -1, 49, 0, 0, 0, 0)
+
+                Citizen.Wait(0)
             end
         end
 
@@ -205,13 +231,6 @@ AddEventHandler('esx_jobs:handcuffPlayer', function()
     Jobs.ESX.UI.Menu.CloseAll()
 
     local playerPed = GetPlayerPed(-1)
-
-    RequestAnimDict('mp_arresting')
-
-    while not HasAnimDictLoaded('mp_arresting') do
-        Citizen.Wait(0)
-    end
-
     local currentPlayerHash = GetEntityModel(playerPed)
 
     Jobs.Variation = GetPedDrawableVariation(playerPed, 7)
@@ -226,6 +245,12 @@ AddEventHandler('esx_jobs:handcuffPlayer', function()
     DisablePlayerFiring(playerPed, true)
     SetCurrentPedWeapon(playerPed, GetHashKey('WEAPON_UNARMED'), true)
     DisplayRadar(false)
+
+    RequestAnimDict('mp_arresting')
+
+    while not HasAnimDictLoaded('mp_arresting') do
+        Citizen.Wait(0)
+    end
 
     TaskPlayAnim(playerPed, 'mp_arresting', 'idle', 8.0, -8, -1, 49, 0, 0, 0, 0)
 end)
@@ -332,6 +357,29 @@ AddEventHandler('esx_jobs:stopHostage', function()
         Citizen.Wait(1250)
 
         ClearPedTasks(playerPed)
+    end
+end)
+
+RegisterNetEvent('esx_jobs:putInVehicle')
+AddEventHandler('esx_jobs:putInVehicle', function(targetPlayerId, seat)
+    local playerPed = GetPlayerPed(-1)
+    local vehicle = Jobs.GetVehicleInPedDirection(GetPlayerFromServerId(targetPlayerId))
+
+    if (DoesEntityExist(vehicle) and IsVehicleSeatFree(vehicle, seat)) then
+        TaskWarpPedIntoVehicle(playerPed, vehicle, seat)
+    end
+end)
+
+RegisterNetEvent('esx_jobs:putOutVehicle')
+AddEventHandler('esx_jobs:putOutVehicle', function()
+    local playerPed = GetPlayerPed(-1)
+
+    ClearPedTasksImmediately(playerPed)
+
+    if (IsPedInAnyVehicle(playerPed)) then
+        local vehicle = GetVehiclePedIsIn(playerPed)
+
+        TaskLeaveVehicle(playerPed, vehicle, 1)
     end
 end)
 

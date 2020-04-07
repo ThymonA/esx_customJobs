@@ -124,6 +124,9 @@ Locales['en'] = {
     ['release_hostage_player_description'] = '**Player:** %s\n**Hostage:** %s\n**Duur:** %s seconds\n**Status:** Released',
     ['not_your_hostage'] = 'You didn\'t take that player as hostage',
     ['not_hostage'] = 'Player is not a hostage',
+    ['seat_head'] = 'Driver seat',
+    ['seat'] = 'Seat %s',
+    ['no_vehicle'] = 'There is no vehicle nearby',
 
     ['item'] = '<strong>%s</strong> %s',
     ['weapon'] = '<strong>%s</strong> %s bullets',

@@ -162,6 +162,36 @@ Jobs.RegisterServerEvent('esx_jobs:releaseHostage', function(xPlayer, xJob, targ
     end
 end)
 
+Jobs.RegisterServerEvent('esx_jobs:putInVehicle', function(xPlayer, xJob, targetPlayerId, seatNumber)
+    local xTarget = Jobs.ESX.GetPlayerFromId(targetPlayerId)
+
+    if (xTarget == nil) then
+        return
+    end
+
+    if (not xJob.memberHasPermission(xPlayer.identifier, 'action.menu.invehicle')) then
+        TriggerClientEvent('esx:showNotification', xPlayer.source, _U('error_no_permission'))
+        return
+    end
+
+    TriggerClientEvent('esx_jobs:putInVehicle', xTarget.source, xPlayer.source, seatNumber)
+end)
+
+Jobs.RegisterServerEvent('esx_jobs:putOutVehicle', function(xPlayer, xJob, targetPlayerId)
+    local xTarget = Jobs.ESX.GetPlayerFromId(targetPlayerId)
+
+    if (xTarget == nil) then
+        return
+    end
+
+    if (not xJob.memberHasPermission(xPlayer.identifier, 'action.menu.outvehicle')) then
+        TriggerClientEvent('esx:showNotification', xPlayer.source, _U('error_no_permission'))
+        return
+    end
+
+    TriggerClientEvent('esx_jobs:putOutVehicle', xTarget.source)
+end)
+
 Jobs.IsPlayerHandcuffed = function(playerId)
     playerId = tostring(playerId)
 

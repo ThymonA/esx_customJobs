@@ -73,7 +73,6 @@ Jobs.RegisterMenu('safe_weapons_add', function()
             function(data, menu)
                 if (Jobs.HasPermission('safe.weapon.add')) then
                     if (string.lower(data.current.value) == 'back') then
-                        menu.close()
                         Jobs.TriggerMenu('safe_weapons')
                     else
                         Jobs.TriggerServerCallback('esx_jobs:storeWeapon', function(result)
@@ -83,14 +82,12 @@ Jobs.RegisterMenu('safe_weapons_add', function()
                                 Jobs.ESX.ShowNotification(_U(result.message or 'unknown'))
                             end
 
-                            menu.close()
                             Jobs.TriggerMenu('safe_weapons_add')
                         end, data.current.value)
                     end
                 end
             end,
             function(data, menu)
-                menu.close()
                 Jobs.TriggerMenu('safe_weapons')
             end)
     end)
@@ -130,7 +127,6 @@ Jobs.RegisterMenu('safe_weapons_remove', function()
             function(data, menu)
                 if (Jobs.HasPermission('safe.weapon.remove')) then
                     if (string.lower(data.current.value) == 'back') then
-                        menu.close()
                         Jobs.TriggerMenu('safe_weapons')
                     else
                         Jobs.TriggerServerCallback('esx_jobs:getWeapon', function(result)
@@ -140,14 +136,12 @@ Jobs.RegisterMenu('safe_weapons_remove', function()
                                 Jobs.ESX.ShowNotification(_U(result.message or 'unknown'))
                             end
 
-                            menu.close()
                             Jobs.TriggerMenu('safe_weapons_remove')
                         end, data.current.value)
                     end
                 end
             end,
             function(data, menu)
-                menu.close()
                 Jobs.TriggerMenu('safe_weapons')
             end)
     end)
@@ -187,7 +181,6 @@ Jobs.RegisterMenu('safe_weapons_buy', function()
             function(data, menu)
                 if (Jobs.HasPermission('safe.weapon.buy') and (Jobs.GetCurrentJobValue().hasBuyableItem or false)) then
                     if (string.lower(data.current.value) == 'back') then
-                        menu.close()
                         Jobs.TriggerMenu('safe_weapons')
                     else
                         Jobs.TriggerMenu('safe_weapons_buy_count', data.current.value)
@@ -195,7 +188,6 @@ Jobs.RegisterMenu('safe_weapons_buy', function()
                 end
             end,
             function(data, menu)
-                menu.close()
                 Jobs.TriggerMenu('safe_weapons')
             end)
     end)
@@ -225,12 +217,10 @@ Jobs.RegisterMenu('safe_weapons_buy_count', function(weapon)
                     Jobs.ESX.ShowNotification(_U(result.message or 'unknown'))
                 end
 
-                menu.close()
                 Jobs.TriggerMenu('safe_weapons_buy')
             end, (weapon or 'unknown'), (data.value or 0))
         end,
         function(data, menu)
-            menu.close()
             Jobs.TriggerMenu('safe_weapons_buy')
         end)
 end)
