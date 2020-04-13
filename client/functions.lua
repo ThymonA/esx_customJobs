@@ -191,3 +191,13 @@ Jobs.Draw3DText = function(coords, text)
     EndTextCommandDisplayText(0.0, 0.0)
     ClearDrawOrigin()
 end
+
+Jobs.DrawButtonNotification = function(msg)
+    BeginTextCommandScaleformString("STRING")
+    AddTextComponentScaleform(msg)
+    EndTextCommandScaleformString()
+end
+
+Jobs.GetButton = function(button)
+    N_0xe83a3e3557a56640(button)
+end

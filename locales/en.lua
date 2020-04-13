@@ -165,6 +165,10 @@ Locales['en'] = {
     ['showroom_add_object'] = 'Place your object in showroom',
 
     ['catalogues'] = 'Catalogues',
+    ['rotate_object_left'] = 'Rotate object to the left',
+    ['rotate_object_right'] = 'Rotate object to the right',
+    ['inspect_object'] = 'Inspect object',
+    ['backspace_close'] = 'Close',
 
     ['item'] = '<strong>%s</strong> %s',
     ['weapon'] = '<strong>%s</strong> %s bullets',

@@ -165,6 +165,10 @@ Locales['nl'] = {
     ['showroom_add_object'] = 'Plaats uw object in de showroom',
 
     ['catalogues'] = 'Catalogus',
+    ['rotate_object_left'] = 'Object naar links draaien',
+    ['rotate_object_right'] = 'Object naar rechts draaien',
+    ['inspect_object'] = 'Inspecteer object',
+    ['backspace_close'] = 'Sluiten',
 
     ['item'] = '<strong>%s</strong> %s',
     ['weapon'] = '<strong>%s</strong> %s kogels',

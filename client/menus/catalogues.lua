@@ -28,6 +28,31 @@ Jobs.RegisterMenu('catalogues', function()
             Jobs.RenderVehicleSpot(entityModel)
         end
 
+        Citizen.CreateThread(function()
+            local playerPed = GetPlayerPed(-1)
+            local form = Jobs.SetupScaleform("instructional_buttons")
+
+            while Jobs.Camera ~= nil do
+                DrawScaleformMovieFullscreen(form, 255, 255, 255, 255, 0)
+
+                FreezeEntityPosition(playerPed, true)
+
+                while IsControlPressed(0, 189) do
+                    Jobs.RotateEntity(5, false)
+                    Citizen.Wait(25)
+                end
+
+                while IsControlPressed(0, 190) do
+                    Jobs.RotateEntity(5, true)
+                    Citizen.Wait(25)
+                end
+
+                Citizen.Wait(0)
+            end
+
+            FreezeEntityPosition(playerPed, false)
+        end)
+
         Jobs.ESX.UI.Menu.Open(
             'job_default',
             GetCurrentResourceName(),
@@ -47,6 +72,36 @@ Jobs.RegisterMenu('catalogues', function()
                     menu.close()
                     return
                 end
+
+                SetVehicleDoorCanBreak(Jobs.CurrentVehicle, 0, false)
+                SetVehicleDoorCanBreak(Jobs.CurrentVehicle, 1, false)
+                SetVehicleDoorCanBreak(Jobs.CurrentVehicle, 2, false)
+                SetVehicleDoorCanBreak(Jobs.CurrentVehicle, 3, false)
+                SetVehicleDoorCanBreak(Jobs.CurrentVehicle, 4, false)
+                SetVehicleDoorCanBreak(Jobs.CurrentVehicle, 5, false)
+                SetVehicleDoorCanBreak(Jobs.CurrentVehicle, 6, false)
+
+                if (Jobs.CurrentVehicle ~= nil and DoesEntityExist(Jobs.CurrentVehicle) and not Jobs.DoorsAreOpen) then
+                    SetVehicleDoorOpen(Jobs.CurrentVehicle, 0, false)
+                    SetVehicleDoorOpen(Jobs.CurrentVehicle, 1, false)
+                    SetVehicleDoorOpen(Jobs.CurrentVehicle, 2, false)
+                    SetVehicleDoorOpen(Jobs.CurrentVehicle, 3, false)
+                    SetVehicleDoorOpen(Jobs.CurrentVehicle, 4, false)
+                    SetVehicleDoorOpen(Jobs.CurrentVehicle, 5, false)
+                    SetVehicleDoorOpen(Jobs.CurrentVehicle, 6, false)
+
+                    Jobs.DoorsAreOpen = true
+                elseif (Jobs.CurrentVehicle ~= nil and DoesEntityExist(Jobs.CurrentVehicle) and Jobs.DoorsAreOpen) then
+                    SetVehicleDoorShut(Jobs.CurrentVehicle, 0, true)
+                    SetVehicleDoorShut(Jobs.CurrentVehicle, 1, true)
+                    SetVehicleDoorShut(Jobs.CurrentVehicle, 2, true)
+                    SetVehicleDoorShut(Jobs.CurrentVehicle, 3, true)
+                    SetVehicleDoorShut(Jobs.CurrentVehicle, 4, true)
+                    SetVehicleDoorShut(Jobs.CurrentVehicle, 5, true)
+                    SetVehicleDoorShut(Jobs.CurrentVehicle, 6, true)
+
+                    Jobs.DoorsAreOpen = false
+                end
             end,
             function(data, menu)
                 Jobs.DeleteObject()
@@ -63,8 +118,6 @@ end)
 
 Jobs.RenderCamera = function(toggle)
     local camera = (Jobs.GetCurrentData() or {}).camera or nil
-
-    print(json.encode(camera))
 
     if (camera == nil) then
         return
@@ -106,40 +159,31 @@ Jobs.RenderVehicleSpot = function(model)
         local vehicleHash = (type(model) == 'number' and model or GetHashKey(model))
 
         if (IsModelInCdimage(vehicleHash)) then
-            local veh, distance = Jobs.ESX.Game.GetClosestVehicle(position)
-
-            if (DoesEntityExist(veh) and distance < 1.0) then
-                local currentVehicleModel = GetEntityModel(veh)
+            if (DoesEntityExist(Jobs.CurrentVehicle)) then
+                local currentVehicleModel = GetEntityModel(Jobs.CurrentVehicle)
 
                 if (currentVehicleModel ~= vehicleHash) then
-                    Jobs.ESX.Game.DeleteVehicle(veh)
-
+                    Jobs.DeleteObject()
                     Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
+                        Jobs.CurrentVehicle = vehicle
+                        Jobs.DoorsAreOpen = false
+
                         FreezeEntityPosition(vehicle, true)
                     end)
                 end
-            elseif (DoesEntityExist(veh) and distance > 1.0) then
+            elseif (not DoesEntityExist(Jobs.CurrentVehicle)) then
                 Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
-                    FreezeEntityPosition(vehicle, true)
-                end)
-            elseif (not DoesEntityExist(veh)) then
-                Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
+                    Jobs.CurrentVehicle = vehicle
+                    Jobs.DoorsAreOpen = false
+
                     FreezeEntityPosition(vehicle, true)
                 end)
             end
         else
-            local veh, distance = Jobs.ESX.Game.GetClosestVehicle(position)
-
-            if (DoesEntityExist(veh) and distance < 1.0) then
-                Jobs.ESX.Game.DeleteVehicle(veh)
-            end
+            Jobs.DeleteObject()
         end
     else
-        local veh, distance = Jobs.ESX.Game.GetClosestVehicle(position)
-
-        if (DoesEntityExist(veh) and distance < 1.0) then
-            Jobs.ESX.Game.DeleteVehicle(veh)
-        end
+        Jobs.DeleteObject()
     end
 end
 
@@ -147,6 +191,10 @@ Jobs.DeleteObject = function()
     local markerType = (Jobs.GetCurrentData() or {}).type or 'unknown'
 
     if (markerType == 'car') then
+        if (DoesEntityExist(Jobs.CurrentVehicle)) then
+            Jobs.ESX.Game.DeleteVehicle(Jobs.CurrentVehicle)
+        end
+
         local position = Jobs.GetPosition()
         local veh, distance = Jobs.ESX.Game.GetClosestVehicle(position)
 
@@ -156,6 +204,74 @@ Jobs.DeleteObject = function()
     end
 end
 
+Jobs.RotateEntity = function(direction, added)
+    direction = direction or 0
+    added = added or false
+
+    if (Jobs.CurrentVehicle ~= nil and DoesEntityExist(Jobs.CurrentVehicle)) then
+        local entityHeading = GetEntityHeading(Jobs.CurrentVehicle)
+
+        if (added) then
+            entityHeading = (entityHeading + direction) % 360
+        else
+            entityHeading = (entityHeading - direction) % 360
+        end
+
+        SetEntityHeading(Jobs.CurrentVehicle, entityHeading)
+    end
+end
+
 Jobs.GetPosition = function()
     return (Jobs.GetCurrentData() or {}).spawn or { x = 0, y = 0, z = 0, h = 0 }
+end
+
+Jobs.SetupScaleform = function(scaleform)
+    local scaleform = RequestScaleformMovie(scaleform)
+
+    while not HasScaleformMovieLoaded(scaleform) do
+        Citizen.Wait(0)
+    end
+
+    PushScaleformMovieFunction(scaleform, "CLEAR_ALL")
+    PopScaleformMovieFunctionVoid()
+
+    PushScaleformMovieFunction(scaleform, "SET_CLEAR_SPACE")
+    PushScaleformMovieFunctionParameterInt(200)
+    PopScaleformMovieFunctionVoid()
+
+    PushScaleformMovieFunction(scaleform, "SET_DATA_SLOT")
+    PushScaleformMovieFunctionParameterInt(0)
+    Jobs.GetButton (GetControlInstructionalButton(2, 194, true))
+    Jobs.DrawButtonNotification(_U('backspace_close'))
+    PopScaleformMovieFunctionVoid()
+
+    PushScaleformMovieFunction(scaleform, "SET_DATA_SLOT")
+    PushScaleformMovieFunctionParameterInt(1)
+    Jobs.GetButton (GetControlInstructionalButton(2, 191, true))
+    Jobs.DrawButtonNotification(_U('inspect_object'))
+    PopScaleformMovieFunctionVoid()
+
+    PushScaleformMovieFunction(scaleform, "SET_DATA_SLOT")
+    PushScaleformMovieFunctionParameterInt(2)
+    Jobs.GetButton (GetControlInstructionalButton(2, 190, true))
+    Jobs.DrawButtonNotification(_U('rotate_object_right'))
+    PopScaleformMovieFunctionVoid()
+
+    PushScaleformMovieFunction(scaleform, "SET_DATA_SLOT")
+    PushScaleformMovieFunctionParameterInt(3)
+    Jobs.GetButton (GetControlInstructionalButton(2, 189, true))
+    Jobs.DrawButtonNotification(_U('rotate_object_left'))
+    PopScaleformMovieFunctionVoid()
+
+    PushScaleformMovieFunction(scaleform, "DRAW_INSTRUCTIONAL_BUTTONS")
+    PopScaleformMovieFunctionVoid()
+
+    PushScaleformMovieFunction(scaleform, "SET_BACKGROUND_COLOUR")
+    PushScaleformMovieFunctionParameterInt(0)
+    PushScaleformMovieFunctionParameterInt(0)
+    PushScaleformMovieFunctionParameterInt(0)
+    PushScaleformMovieFunctionParameterInt(80)
+    PopScaleformMovieFunctionVoid()
+
+    return scaleform
 end

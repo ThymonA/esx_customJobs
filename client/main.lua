@@ -254,6 +254,12 @@ Jobs.HasExitedMarker = function()
     Jobs.CurrentAction = nil
     Jobs.LastAction = nil
     Jobs.Marker = {}
+
+    if (Jobs.Camera ~= nil) then
+        DestroyCam(Jobs.Camera)
+        Jobs.Camera = nil
+        RenderScriptCams(0, 1, 750, 1, 0)
+    end
 end
 
 Jobs.GetCurrentAction = function()

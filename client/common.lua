@@ -34,6 +34,8 @@ Jobs.LabelDisplaying        = {}
 
 -- Extras
 Jobs.Camera                 = nil
+Jobs.CurrentVehicle         = nil
+Jobs.DoorsAreOpen           = false
 
 Citizen.CreateThread(function()
     while Jobs.ESX == nil do
