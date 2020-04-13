@@ -14,6 +14,7 @@ Jobs.LastAction             = nil
 Jobs.CurrentActionInfo      = {}
 Jobs.IsInMarker             = false
 Jobs.DrawMarkers            = {}
+Jobs.MarkerIndex            = -1
 
 -- Menus
 Jobs.Menus                  = {}

@@ -11,6 +11,7 @@ Jobs.Handcuffs                  = {}
 Jobs.Hostages                   = {}
 Jobs.Dragges                    = {}
 Jobs.JobPlayers                 = {}
+Jobs.JobPublics                 = {}
 
 TriggerEvent('esx:getSharedObject', function (object)
     Jobs.ESX = object

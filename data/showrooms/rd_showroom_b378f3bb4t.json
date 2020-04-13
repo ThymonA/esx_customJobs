@@ -1,0 +1,54 @@
+{
+  "job":"rd",
+  "key":"b378f3bb4t",
+  "name":"Showroom #1",
+  "spots":[{
+      "locked":true,
+      "position":{
+        "x":-786.07,
+        "h":75.5,
+        "z":36.08,
+        "y":-245.27
+      },
+      "code":"rs7",
+      "index":1,
+      "type":"car",
+      "label":"Window #1"
+    },{
+      "locked":true,
+      "position":{
+        "x":-788.52,
+        "h":79.5,
+        "z":36.08,
+        "y":-240.42
+      },
+      "code":"rs7",
+      "index":2,
+      "type":"car",
+      "label":"Window #2"
+    },{
+      "locked":true,
+      "position":{
+        "x":-791.41,
+        "h":78.5,
+        "z":36.08,
+        "y":-235.5
+      },
+      "code":"rs7",
+      "index":3,
+      "type":"car",
+      "label":"Window #3"
+    },{
+      "locked":true,
+      "position":{
+        "x":-783.78,
+        "h":136.5,
+        "z":36.32,
+        "y":-223.68
+      },
+      "code":"rs7",
+      "index":4,
+      "type":"car",
+      "label":"Main Showroom"
+    }]
+}

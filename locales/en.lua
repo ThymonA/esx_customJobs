@@ -4,6 +4,7 @@ Locales['en'] = {
     ['open_wardrobe'] = 'Press ~INPUT_CONTEXT~ to open the wardrobe of ~y~%s~',
     ['open_vehicles'] = 'Press ~INPUT_CONTEXT~ to spawn a vehicle of ~y~%s~',
     ['open_parkings'] = 'Press ~INPUT_CONTEXT~ to despawn your vehicle at ~y~%s~',
+    ['open_showroom'] = 'Press ~INPUT_CONTEXT~ to open the showroom of ~y~%s~',
 
     ['job_added_title'] = '%s has been added to the organisation',
     ['job_added_description'] = '**%s** is added to **%s** as **%s** (%s)',
@@ -89,6 +90,7 @@ Locales['en'] = {
     ['weapons'] = 'Weapons',
     ['vehicles'] = 'Vehicles',
     ['close'] = 'Close',
+    ['none'] = 'None',
 
     ['action_menu'] = 'Actions',
     ['handcuff'] = 'Use tiewrap',
@@ -152,6 +154,11 @@ Locales['en'] = {
     ['female'] = 'Female',
     ['your_identitycard_has_been_taken'] = 'Someone grabbed your ID card',
     ['you_have_identitycard'] = 'You have someone\'s identity card',
+
+    ['showroom'] = 'Showroom',
+    ['showroom_add'] = 'Place item in showroom',
+    ['showroom_remove'] = 'Remove item from showroom',
+    ['showroom_spot_updated'] = 'You have updated showroom spot ~g~%s~s~ with object ~g~%s~s~',
 
     ['item'] = '<strong>%s</strong> %s',
     ['weapon'] = '<strong>%s</strong> %s bullets',

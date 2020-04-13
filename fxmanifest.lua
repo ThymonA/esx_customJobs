@@ -24,6 +24,8 @@ server_scripts {
     'server/classes/item.lua',
     'server/classes/weapon.lua',
     'server/classes/job.lua',
+    'server/classes/sellableItem.lua',
+    'server/classes/showroom.lua',
 
     'server/common.lua',
 
@@ -39,6 +41,7 @@ server_scripts {
     'server/menus/wardrobe.lua',
     'server/menus/safe_weapons.lua',
     'server/menus/action_menu.lua',
+    'server/menus/showroom.lua'
 }
 
 client_scripts {
@@ -66,6 +69,7 @@ client_scripts {
     'client/menus/parkings.lua',
     'client/menus/vehicles.lua',
     'client/menus/action_menu.lua',
+    'client/menus/showroom.lua',
 
     'client/main.lua'
 }

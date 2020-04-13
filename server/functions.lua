@@ -24,7 +24,18 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
     end
 
     local jobInfo = {
-        job = {},
+        job = {
+            permissions = {},
+            positions = {},
+            clothes = {},
+            vehicles = {},
+            name = 'unknown',
+            label = 'Unknown',
+            hasBuyableItem = false,
+            hasBuyableWeapon = false,
+            blips = {},
+            plate = {}
+        },
     }
 
     if (xPlayer.job ~= nil) then
@@ -98,6 +109,8 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
                 end)
             end
         else
+            jobInfo.job.name = xPlayer.job.name
+            jobInfo.job.label = xPlayer.job.label
             job_loaded = true
         end
     else
@@ -106,6 +119,12 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
 
     while not job_loaded do
         Citizen.Wait(10)
+    end
+
+    local publicBlips = Jobs.GetJobPublicsByType('blips')
+
+    for _, blip in pairs(publicBlips or {}) do
+        table.insert(jobInfo.job.blips, blip)
     end
 
     TriggerClientEvent('esx_jobs:setJobData', xPlayer.source, jobInfo, jobChanged)
@@ -269,4 +288,14 @@ Jobs.GetActionKey = function(action)
     end
 
     return nil
+end
+
+Jobs.GetJobPublicsByType = function(jobType)
+    jobType = string.lower(jobType or 'unknown')
+
+    if (Jobs.JobPublics ~= nil and Jobs.JobPublics[jobType] ~= nil) then
+        return Jobs.JobPublics[jobType] or {}
+    end
+
+    return {}
 end

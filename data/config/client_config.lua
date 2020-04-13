@@ -1,5 +1,5 @@
 Config                  = {}
-Config.Locale           = 'en'
+Config.Locale           = 'nl'
 Config.DrawDistance     = 25
 
 -- Blacklisted Weapons for taking soming as hostage

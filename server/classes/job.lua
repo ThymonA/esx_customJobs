@@ -1,30 +1,26 @@
-function CreateJob(name, label, members, permissions, webhooks, grades, positions, accounts, items, weapons, buyableItems, clothes, vehicles, plate, blips, menu, permissionSystem, version)
+function CreateJob(jobData, version)
     local self = {}
 
-    self.name = name
-    self.label = label
-    self.members = members
-    self.menu = menu
-    self.permissions = permissions
-    self.webhooks = webhooks
-    self.grades = grades
-    self.positions = positions
-    self.accounts = accounts
-    self.items = items
-    self.weapons = weapons
-    self.buyableItems = buyableItems
-    self.clothes = clothes
-    self.vehicles = vehicles
-    self.blips = blips
-    self.plate = plate
-
-    if (permissionSystem == nil) then
-        self.permissionSystem = CreatePermissions()
-    else
-        self.permissionSystem = permissionSystem
-    end
-
-    self.version = version
+    self.name = jobData.name or 'unknown'
+    self.label = jobData.label or 'Unknown'
+    self.members = jobData.members or {}
+    self.menu = jobData.menu or {}
+    self.permissions = jobData.permissions or {}
+    self.permissionSystem = jobData.permissionSystem or CreatePermissions()
+    self.webhooks = jobData.webhooks or {}
+    self.grades = jobData.grades or {}
+    self.positions = jobData.positions or {}
+    self.accounts = jobData.accounts or {}
+    self.items = jobData.items or {}
+    self.weapons = jobData.weapons or {}
+    self.buyableItems = jobData.buyableItems or {}
+    self.sellableItems = jobData.sellableItems or {}
+    self.clothes = jobData.clothes or {}
+    self.vehicles = jobData.vehicles or {}
+    self.showrooms = jobData.showrooms or {}
+    self.blips = jobData.blips or {}
+    self.plate = jobData.plate or {}
+    self.version = version or '0.0.1'
 
     self.getName = function()
         return self.name or 'unknown'
@@ -463,6 +459,74 @@ function CreateJob(name, label, members, permissions, webhooks, grades, position
 
     self.hasAnyBuyableWeapon = function()
         return #self.getBuyableItemsByType('weapons') > 0
+    end
+
+    self.getSellableCategories = function()
+        return self.sellableItems or {}
+    end
+
+    self.getSellableItemsFromCategroy = function(category)
+        category = string.lower(category or 'none')
+
+        if (self.sellableItems ~= nil and self.sellableItems[category] ~= nil) then
+            return self.sellableItems[category] or {}
+        end
+
+        return {}
+    end
+
+    self.getSellableItemsByType = function(itemType)
+        itemType = string.lower(itemType or 'unknown')
+
+        local results = {}
+
+        for category, categoryValue in pairs(self.sellableItems) do
+            for _, sellableItem in pairs(categoryValue.items or {}) do
+                if (sellableItem.getType() == itemType) then
+                    table.insert(results, {
+                        name = sellableItem.getName(),
+                        code = sellableItem.getSpawnCode(),
+                        label = sellableItem.getLabel(),
+                        type = sellableItem.getType(),
+                        buyPrice = sellableItem.getBuyPrice(),
+                        sellPrice = sellableItem.getSellPrice(),
+                        brand = sellableItem.getBrand()
+                    })
+                end
+            end
+        end
+
+        return results
+    end
+
+    self.getShowroom = function(index)
+        for _, showroom in pairs(self.showrooms or {}) do
+            if (showroom.getIndex() == index) then
+                return showroom or nil
+            end
+        end
+
+        return nil
+    end
+
+    self.getShowroomSpots = function(index)
+        for _, showroom in pairs(self.showrooms or {}) do
+            if (showroom.getIndex() == index) then
+                return showroom.getSpots() or {}
+            end
+        end
+
+        return {}
+    end
+
+    self.getShowroomSpotType = function(showroomIndex, spotIndex)
+        for _, showroom in pairs(self.showrooms or {}) do
+            if (showroom.getIndex() == showroomIndex) then
+                return showroom.getSpotType(spotIndex) or 'unknown'
+            end
+        end
+
+        return 'unknown'
     end
 
     self.getBank = function()

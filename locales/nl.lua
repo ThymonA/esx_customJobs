@@ -4,6 +4,7 @@ Locales['nl'] = {
     ['open_wardrobe'] = 'Druk op ~INPUT_CONTEXT~ om de kledingkast van ~y~%s~s~ te openen',
     ['open_vehicles'] = 'Druk op ~INPUT_CONTEXT~ om een voertuig van ~y~%s~s~ te pakken',
     ['open_parkings'] = 'Druk op ~INPUT_CONTEXT~ om uw voertuig te despawnen bij ~y~%s~s~',
+    ['open_showroom'] = 'Druk op ~INPUT_CONTEXT~ om uw showroom van ~y~%s~s~ te openen',
 
     ['job_added_title'] = '%s is toegevoegd aan de organisatie',
     ['job_added_description'] = '**%s** is aan **%s** toegevoegd als **%s** (%s)',
@@ -89,6 +90,7 @@ Locales['nl'] = {
     ['weapons'] = 'Wapens',
     ['vehicles'] = 'Voertuigen',
     ['close'] = 'Sluiten',
+    ['none'] = 'Geen',
 
     ['action_menu'] = 'Acties',
     ['handcuff'] = 'Tiewrap gebruiken',
@@ -152,6 +154,11 @@ Locales['nl'] = {
     ['female'] = 'Vrouw',
     ['your_identitycard_has_been_taken'] = 'Iemand pakte je ID-kaart',
     ['you_have_identitycard'] = 'Je hebt iemands identiteitskaart',
+
+    ['showroom'] = 'Showroom',
+    ['showroom_add'] = 'Item plaatsen in showroom',
+    ['showroom_remove'] = 'Item verwijderen uit showroom',
+    ['showroom_spot_updated'] = 'U heeft showroom spot %s bijgewerkt met object %s',
 
     ['item'] = '<strong>%s</strong> %s',
     ['weapon'] = '<strong>%s</strong> %s kogels',

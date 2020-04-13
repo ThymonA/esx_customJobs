@@ -18,10 +18,12 @@ Jobs.LoadJob = function(rawData)
         items = {},
         weapons = {},
         buyableItems = {},
+        sellableItems = {},
         clothes = {},
         vehicles = {},
         plate = {},
         blips = {},
+        showrooms = {},
         menu = rawData.Menu or {},
         permissionSystem = CreatePermissions()
     }
@@ -72,8 +74,36 @@ Jobs.LoadJob = function(rawData)
             color = position.Color or { r = 255, g = 0, b = 0 },
             size = position.Size or { x = 1.5, y = 1.5, z = 0.5 },
             marker = position.Marker or 25,
-            addonData = addonData or {}
+            addonData = addonData or {},
+            index = _,
+            key = position.Key or 'x'
         })
+
+        if (positionType == 'showroom') then
+            if (jobData.showrooms == nil) then
+                jobData.showrooms = {}
+            end
+
+            local showroomSpots = {}
+
+            for __, spot in pairs((position.AddonData or {}).Spots or {}) do
+                local spotLabel = spot.Label or 'Unknown'
+                local spotPosition = spot.Position or {}
+                local spotType = spot.Type or 'unknown'
+                local spotIndex = __
+
+                table.insert(showroomSpots, {
+                    label = spotLabel,
+                    position = spotPosition,
+                    type = spotType,
+                    index = spotIndex
+                })
+            end
+
+            local showroom = CreateShowroom(_, (position.Key or 'x'), (position.Name or 'Unknown'), jobData.name, showroomSpots)
+
+            table.insert(jobData.showrooms, showroom)
+        end
     end
 
     jobData.clothes['male'] = {}
@@ -504,6 +534,81 @@ Jobs.LoadJob = function(rawData)
     end)
 
     table.insert(jobTasks, function(cb)
+        jobData.sellableItems = {}
+        jobData.sellableItems['none'] = {
+            label = _U('none'),
+            items = {}
+        }
+
+        for _, category in pairs((rawData.SellableItems or {}).Categories or {}) do
+            local name = string.lower(category.name or 'unknown')
+
+            jobData.sellableItems[name] = {
+                label = category.Label or 'Unknown',
+                items = {}
+            }
+        end
+
+        for _, vehicle in pairs((rawData.SellableItems or {}).Vehicles or {}) do
+            local brand = vehicle.brand or 'Unknown'
+            local name = vehicle.name or 'Unknown'
+            local code = vehicle.code or 'unknown'
+            local buyPrice = vehicle.buyPrice or 0
+            local sellPrice = vehicle.sellPrice or 0
+            local category = string.lower(vehicle.category or 'none')
+            local discountAllowed = vehicle.discountAllowed or false
+            local discountCodes = vehicle.discountCodes or {}
+
+            if (jobData.sellableItems == nil or jobData.sellableItems[category] == nil) then
+                category = 'none'
+            end
+
+            local sellableItem = CreateSellableItem(code, name, 'car', {
+                brand = brand,
+                name = name,
+                code = code,
+                buyPrice = buyPrice,
+                sellPrice = sellPrice,
+                category = category,
+                discountAllowed = discountAllowed,
+                discountCodes = discountCodes
+            })
+
+            table.insert(jobData.sellableItems[category].items, sellableItem)
+        end
+
+        for _, aircraft in pairs((rawData.SellableItems or {}).Aircrafts or {}) do
+            local brand = aircraft.brand or 'Unknown'
+            local name = aircraft.name or 'Unknown'
+            local code = aircraft.code or 'unknown'
+            local buyPrice = aircraft.buyPrice or 0
+            local sellPrice = aircraft.sellPrice or 0
+            local category = string.lower(aircraft.category or 'none')
+            local discountAllowed = aircraft.discountAllowed or false
+            local discountCodes = aircraft.discountCodes or {}
+
+            if (jobData.sellableItems == nil or jobData.sellableItems[category] == nil) then
+                category = 'none'
+            end
+
+            local sellableItem = CreateSellableItem(code, name, 'aircraft', {
+                brand = brand,
+                name = name,
+                code = code,
+                buyPrice = buyPrice,
+                sellPrice = sellPrice,
+                category = category,
+                discountAllowed = discountAllowed,
+                discountCodes = discountCodes
+            })
+
+            table.insert(jobData.sellableItems[category].items, sellableItem)
+        end
+
+        cb()
+    end)
+
+    table.insert(jobTasks, function(cb)
         for _, blip in pairs(rawData.Blips or {}) do
             table.insert(jobData.blips, {
                 title = blip.Title or 'Unknown',
@@ -514,6 +619,28 @@ Jobs.LoadJob = function(rawData)
                 scale = blip.Scale or 1.0,
                 colour = blip.Colour or 1
             })
+
+            if (blip.VisibleForEveryone or false) then
+                if (Jobs.JobPublics == nil) then
+                    Jobs.JobPublics = {}
+                end
+
+                if (Jobs.JobPublics['blips'] == nil) then
+                    Jobs.JobPublics['blips'] = {}
+                end
+
+                table.insert(Jobs.JobPublics['blips'], {
+                    title = blip.Title or 'Unknown',
+                    visibleForEveryone = blip.VisibleForEveryone or false,
+                    position = blip.Position or { x = 0, y = 0, z = 0 },
+                    sprite = blip.Sprite or 1.0,
+                    display = blip.Display or 4,
+                    scale = blip.Scale or 1.0,
+                    colour = blip.Colour or 1,
+                    job = jobData.name,
+                    jobLabel = jobData.label
+                })
+            end
         end
 
         cb()
@@ -529,5 +656,5 @@ Jobs.LoadJob = function(rawData)
         Citizen.Wait(10)
     end
 
-    return CreateJob(jobData.name, jobData.label, jobData.members, jobData.permissions, jobData.webhooks, jobData.grades, jobData.positions, jobData.accounts, jobData.items, jobData.weapons, jobData.buyableItems, jobData.clothes, jobData.vehicles, jobData.plate, jobData.blips, jobData.menu, jobData.permissionSystem, Jobs.Version or '0.0.0')
+    return CreateJob(jobData, Jobs.Version or '0.0.0')
 end

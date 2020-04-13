@@ -38,6 +38,10 @@ function CreatePermissions()
             ['action.menu.search'] = { 'action_menu' },
             ['action.menu.steal'] = { 'action_menu' },
             ['action.menu.hijackvehicle'] = { 'action_menu' },
+        },
+        ['showroom.*'] = {
+            ['showroom.add'] = { 'showroom' },
+            ['showroom.remove'] = { 'showroom' }
         }
     }
 

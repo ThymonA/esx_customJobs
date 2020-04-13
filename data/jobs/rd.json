@@ -1,0 +1,297 @@
+{
+    "JobName": "R&D Exclusives Motors LTD",
+    "Job": "rd",
+    "Grades": [
+        {
+            "Grade": 0,
+            "Name": "salejunior",
+            "Label": "Junior Verkoper",
+            "Salary": 700,
+            "Denied": [
+                "safe.item.buy",
+                "safe.weapon.*",
+                "safe.account.remove"
+            ]
+        },
+        {
+            "Grade": 1,
+            "Name": "salesenior",
+            "Label": "Senior Verkoper",
+            "Salary": 750,
+            "Denied": [
+                "safe.item.buy",
+                "safe.weapon.*",
+                "safe.account.remove"
+            ]
+        },
+        {
+            "Grade": 2,
+            "Name": "manager",
+            "Label": "Manager",
+            "Salary": 800,
+            "Denied": [
+                "safe.item.buy",
+                "safe.weapon.*",
+                "safe.account.remove"
+            ]
+        },
+        {
+            "Grade": 3,
+            "Name": "boss",
+            "Label": "CEO",
+            "Salary": 850,
+            "Denied": []
+        }
+    ],
+    "Wehbooks": {
+        "Actions": [
+            "https://discordapp.com/api/webhooks/698881858926280704/oZfqgrB0Db71EUY44RPuR-hRMGTVZUR-KIGdtSP3gNe-kJy_IqYxkKoe0nktnb9g0RuI"
+        ],
+        "Safe": [
+            "https://discordapp.com/api/webhooks/698882156365086821/H0jWw5GXt6YCGvwG9I61uSNQQpKMpnsJYHRX2vTkoX2MFrhWKtBuFZGgi1w6me98d6EN"
+        ],
+        "Money": [
+            "https://discordapp.com/api/webhooks/698882223155183626/xBpyt8m_oWSQchUmN4xfyrUC1SvTZQ4przFzAsLmmjgrO-0Njk71QfWz9XEt772ZlG8G"
+        ],
+        "Weapon": [
+            "https://discordapp.com/api/webhooks/698882300733292594/O5qZusLraBUH-YhBaKbcdlFvjs7-RW7xs5JanGkMmn0zCRfwTTOjMF-BRGt-isOAaOPD"
+        ],
+        "Employee": [
+            "https://discordapp.com/api/webhooks/698882366378082324/4U35tnKMV6LT1ysnuk_yGjkQglcm1hQAIptDI4SvcM3YAPsOe7NXdT0pv6c_clef20Lh"
+        ],
+        "MoneyTransactions": [
+            "https://discordapp.com/api/webhooks/698882442760552448/hZ0yNRl2vMXKba5hfc4CIz8qaQenYCe4XGDmCxZ77A4YaVmxpDqnm8z9YDUq1GjJXP0Z"
+        ],
+        "ItemTransactions": [
+            "https://discordapp.com/api/webhooks/698882529989492808/mgqflKvRNJsYgSufxZ-e5FzaSZhpIOhgjHYqxjyOd2-aRvJ9mTtsRp_ntN-3D0T8lHBa"
+        ],
+        "WeaponTransactions": [
+            "https://discordapp.com/api/webhooks/698882599598424094/iLIahubwlJ9UXnTxyppFmxvOR9CMmN4GQjdFVTGeQvxqb2mjnD6wWfrtocdFWy8UU70o"
+        ]
+    },
+    "Allowed": [
+        "safe.item.*",
+        "safe.weapon.*",
+        "safe.account.*",
+        "wardrobe.*",
+        "vehicle.*",
+        "action.menu.*",
+        "showroom.*"
+    ],
+    "Positions": [
+        {
+            "Type": "safe_items",
+            "Name": "Item Kluis #1",
+            "Denied": [],
+            "Public": false,
+            "Position": { "x": -791.03, "y": -213.99, "z": 36.08 },
+            "Color": { "r": 255, "g": 0, "b": 0 },
+            "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
+            "Marker": 1
+        },
+        {
+            "Type": "safe_weapons",
+            "Name": "Wapen Kluis #1",
+            "Denied": [],
+            "Public": false,
+            "Position": { "x": -766.78, "y": -232.98, "z": 36.08 },
+            "Color": { "r": 255, "g": 0, "b": 0 },
+            "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
+            "Marker": 1
+        },
+        {
+            "Type": "wardrobe",
+            "Name": "Kledingkast #1",
+            "Denied": [],
+            "Public": false,
+            "Position": { "x": -787.45, "y": -216.16, "z": 36.08 },
+            "Color": { "r": 255, "g": 255, "b": 0 },
+            "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
+            "Marker": 1
+        },
+        {
+            "Type": "vehicles",
+            "Name": "Garage #1",
+            "Denied": [],
+            "Public": false,
+            "Position": { "x": -774.4, "y": -244.41, "z": 36.19 },
+            "Color": { "r": 0, "g": 255, "b": 255 },
+            "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
+            "Marker": 1,
+            "AddonData": {
+                "Spawn": { "x": -773.89, "y": -253.58, "z": 36.11, "h": 110.5 }
+            }
+        },
+        {
+            "Type": "parkings",
+            "Name": "Parking #1",
+            "Denied": [],
+            "Public": false,
+            "Position": { "x": -758.47, "y": -234.76, "z": 36.28 },
+            "Color": { "r": 255, "g": 0, "b": 0 },
+            "Size": { "x": 2.5, "y": 2.5, "z": 1.5 },
+            "Marker": 1
+        },
+        {
+            "Key": "b378f3bb4t",
+            "Type": "showroom",
+            "Name": "Showroom #1",
+            "Denied": [],
+            "Public": false,
+            "Position": { "x": -792.7, "y": -223.41, "z": 36.09 },
+            "Color": { "r": 255, "g": 0, "b": 0 },
+            "Size": { "x": 2.5, "y": 2.5, "z": 1.5 },
+            "Marker": 1,
+            "AddonData": {
+                "Spots": [
+                    {
+                        "Label": "Window #1",
+                        "Position": { "x": -786.07, "y": -245.27, "z": 36.08, "h": 75.5 },
+                        "Type": "car"
+                    },
+                    {
+                        "Label": "Window #2",
+                        "Position": { "x": -788.52, "y": -240.42, "z": 36.08, "h": 79.5 },
+                        "Type": "car"
+                    },
+                    {
+                        "Label": "Window #3",
+                        "Position": { "x": -791.41, "y": -235.5, "z": 36.08, "h": 78.5 },
+                        "Type": "car"
+                    },
+                    {
+                        "Label": "Main Showroom",
+                        "Position": { "x": -783.78, "y": -223.68, "z": 36.32, "h": 136.5 },
+                        "Type": "car"
+                    }
+                ]
+            }
+        }
+    ],
+    "Menu": {
+        "PrimaryColor": { "r": 255, "g": 0, "b": 0 },
+        "SecondaryColor": { "r": 0, "g": 0, "b": 0 },
+        "HeaderImage": "rd.jpg"
+    },
+    "BuyableItems": [
+    ],
+    "SellableItems": {
+        "Categories": [
+            {
+                "name": "aircraft",
+                "label": "Luchtvoertuigen"
+            },
+            {
+                "name": "sports",
+                "label": "Sports"
+            }
+        ],
+        "Vehicles": [
+            {
+                "brand": "Audi",
+                "name": "RS7",
+                "code": "rs7",
+                "buyPrice": 50000,
+                "sellPrice": 75000,
+                "category": "sports",
+                "discountAllowed": true,
+                "discountCodes": {
+                    "vip": 15
+                }
+            }
+        ],
+        "Aircrafts": [
+            {
+                "brand": "Buckingham",
+                "name": "Swift Deluxe",
+                "code": "swift2",
+                "buyPrice": 125000,
+                "sellPrice": 175000,
+                "category": "aircraft",
+                "discountAllowed": true,
+                "discountCodes": {
+                    "vip": 15
+                }
+            }
+        ]
+    },
+    "Clothes": [
+        {
+            "Name": "Security",
+            "Allowed": [],
+            "Skin": {
+                "tshirt_1": 38,
+                "tshirt_2": 0,
+                "torso_1": 81,
+                "torso_2": 0,
+                "decals_1": 0,
+                "decals_2": 0,
+                "arms": 30,
+                "arms_2": 0,
+                "pants_1": 50,
+                "pants_2": 2,
+                "shoes_1": 10,
+                "shoes_2": 0,
+                "bproof_1": 0,
+                "bproof_2": 0,
+                "chain_1": 6,
+                "chain_2": 0,
+                "helmet_1": -1,
+                "helmet_2": 0,
+                "glasses": 0,
+                "glasses_1": 5,
+                "glasses_2": 5,
+                "watches_1": -1,
+                "watches_2": 0,
+                "bracelets_1": -1,
+                "bracelets_2": 0,
+                "bags_1": 44,
+                "bags_2": 0
+            },
+            "Gender": "M"
+        }
+    ],
+    "Vehicles": {
+        "VehicleProps": {
+            "modArmor": 1,
+            "modEngine": 3,
+            "modBrakes": 2,
+            "modTransmission": 2,
+            "modSuspension": 3,
+            "modTurbo": true,
+            "color1": 28,
+            "color2": 0,
+            "pearlescentColor": 28,
+            "plateIndex": 1,
+            "modAPlate": 5,
+            "modWindows": 1,
+            "modXenon": true
+        },
+        "Vehicles": [
+            {
+                "Name": "Audi RS7",
+                "Model": "rs7",
+                "CustomTuning": {
+                    "color2": 28
+                },
+                "Allowed": []
+            }
+        ],
+        "LicensePlate": {
+            "Prefix": "RD",
+            "SpaceBetween": true,
+            "Length": 5
+        }
+    },
+    "Blips": [
+        {
+            "Title": "R&D Exclusives Motors LTD",
+            "VisibleForEveryone": true,
+            "Position": { "x": -794.27, "y": -218.99, "z": 36.09 },
+            "Sprite": 523,
+            "Display": 6,
+            "Scale": 1.0,
+            "Colour": 1
+        }
+    ]
+}

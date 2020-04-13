@@ -63,6 +63,10 @@ Jobs.GetCurrentData = function()
     return Jobs.CurrentActionInfo or {}
 end
 
+Jobs.GetCurrentMarkerIndex = function()
+    return Jobs.MarkerIndex or -1
+end
+
 Jobs.TriggerServerCallback = function(name, cb, ...)
     Jobs.ServerCallbacks[Jobs.RequestId] = cb
 
