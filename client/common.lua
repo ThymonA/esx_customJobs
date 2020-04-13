@@ -32,6 +32,9 @@ Jobs.HoldingById            = 0
 Jobs.Variation              = 0
 Jobs.LabelDisplaying        = {}
 
+-- Extras
+Jobs.Camera                 = nil
+
 Citizen.CreateThread(function()
     while Jobs.ESX == nil do
         TriggerEvent('esx:getSharedObject', function(object)

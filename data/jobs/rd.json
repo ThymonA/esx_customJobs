@@ -162,11 +162,6 @@
                         "Label": "Window #3",
                         "Position": { "x": -791.41, "y": -235.5, "z": 36.08, "h": 78.5 },
                         "Type": "car"
-                    },
-                    {
-                        "Label": "Main Showroom",
-                        "Position": { "x": -783.78, "y": -223.68, "z": 36.32, "h": 136.5 },
-                        "Type": "car"
                     }
                 ]
             }
@@ -192,7 +187,15 @@
             "Marker": 27,
             "AddonData": {
                 "Spawn": { "x": -783.78, "y": -223.68, "z": 36.32, "h": 136.5 },
-                "Type": "car"
+                "Type": "car",
+                "Camera": {
+                    "x": -784.97,
+                    "y": -228.47,
+                    "z": 38.6,
+                    "rotationX": -25.0,
+                    "rotationY": 0.0,
+                    "rotationZ": -12.5
+                }
             }
         }
     ],
@@ -219,6 +222,30 @@
                 "brand": "Audi",
                 "name": "RS7",
                 "code": "rs7",
+                "buyPrice": 50000,
+                "sellPrice": 75000,
+                "category": "sports",
+                "discountAllowed": true,
+                "discountCodes": {
+                    "vip": 15
+                }
+            },
+            {
+                "brand": "Truffade",
+                "name": "Adder",
+                "code": "adder",
+                "buyPrice": 50000,
+                "sellPrice": 75000,
+                "category": "sports",
+                "discountAllowed": true,
+                "discountCodes": {
+                    "vip": 15
+                }
+            },
+            {
+                "brand": "Karin",
+                "name": "Sultan RS",
+                "code": "sultanrs",
                 "buyPrice": 50000,
                 "sellPrice": 75000,
                 "category": "sports",

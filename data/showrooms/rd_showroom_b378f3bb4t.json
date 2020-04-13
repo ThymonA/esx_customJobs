@@ -1,66 +1,51 @@
 {
   "spots":[{
-      "locked":false,
-      "label":"Window #1",
+      "code":"unknown",
+      "showroomIndex":6,
       "index":1,
+      "label":"Window #1",
+      "locked":false,
       "key":"b378f3bb4t",
+      "job":"rd",
+      "type":"car",
       "position":{
+        "y":-245.27,
         "z":36.08,
         "h":75.5,
-        "x":-786.07,
-        "y":-245.27
-      },
+        "x":-786.07
+      }
+    },{
       "code":"unknown",
       "showroomIndex":6,
-      "job":"rd",
-      "type":"car"
-    },{
-      "locked":false,
-      "label":"Window #2",
       "index":2,
+      "label":"Window #2",
+      "locked":false,
       "key":"b378f3bb4t",
+      "job":"rd",
+      "type":"car",
       "position":{
+        "y":-240.42,
         "z":36.08,
         "h":79.5,
-        "x":-788.52,
-        "y":-240.42
-      },
+        "x":-788.52
+      }
+    },{
       "code":"unknown",
       "showroomIndex":6,
-      "job":"rd",
-      "type":"car"
-    },{
-      "locked":false,
-      "label":"Window #3",
       "index":3,
+      "label":"Window #3",
+      "locked":false,
       "key":"b378f3bb4t",
+      "job":"rd",
+      "type":"car",
       "position":{
+        "y":-235.5,
         "z":36.08,
         "h":78.5,
-        "x":-791.41,
-        "y":-235.5
-      },
-      "code":"unknown",
-      "showroomIndex":6,
-      "job":"rd",
-      "type":"car"
-    },{
-      "locked":false,
-      "label":"Main Showroom",
-      "index":4,
-      "key":"b378f3bb4t",
-      "position":{
-        "z":36.32,
-        "h":136.5,
-        "x":-783.78,
-        "y":-223.68
-      },
-      "code":"unknown",
-      "showroomIndex":6,
-      "job":"rd",
-      "type":"car"
+        "x":-791.41
+      }
     }],
-  "name":"Showroom #1",
   "job":"rd",
+  "name":"Showroom #1",
   "key":"b378f3bb4t"
 }
