@@ -124,9 +124,29 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
 
     local publicBlips = Jobs.GetJobPublicsByType('blips')
     local publicShowrooms = Jobs.GetJobPublicsByType('showrooms')
+    local publicPositions = Jobs.GetJobPublicsByType('positions')
+    local publicPermissions = Jobs.GetJobPublicsByType('permissions')
 
     for _, blip in pairs(publicBlips or {}) do
         table.insert(jobInfo.job.blips, blip)
+    end
+
+    for _, permission in pairs(publicPermissions or {}) do
+        table.insert(jobInfo.job.permissions, permission)
+    end
+
+    for positionType, positionValue in pairs(publicPositions or {}) do
+        if (jobInfo.job.positions == nil) then
+            jobInfo.job.positions = {}
+        end
+
+        if (jobInfo.job.positions[positionType] == nil) then
+            jobInfo.job.positions[positionType] = {}
+        end
+
+        for _, position in pairs(positionValue or {}) do
+            table.insert(jobInfo.job.positions[positionType], position)
+        end
     end
 
     jobInfo.job.showrooms = publicShowrooms
@@ -193,6 +213,52 @@ Jobs.TriggerServerEvent = function(name, source, ...)
 
     local jobName = (xPlayer.job or {}).name or 'unknown'
     local xJob = Jobs.GetJobFromName(jobName)
+
+    if (xJob == nil) then
+        return
+    end
+
+    Jobs.ServerEvents[name](xPlayer, xJob, ...)
+end
+
+Jobs.TriggerServerCallbackWithCustomJob = function(name, source, job, cb, ...)
+    if (Jobs.ServerCallbacks == nil or Jobs.ServerCallbacks[name] == nil) then
+        Jobs.Trace(('Server callback "%s" does not exist.'):format(name))
+        return
+    end
+
+    local xPlayer = Jobs.ESX.GetPlayerFromId(source)
+
+    if (xPlayer == nil) then
+        return
+    end
+
+    job = job or ((xPlayer.job or {}).name or 'unknown')
+
+    local xJob = Jobs.GetJobFromName(job)
+
+    if (xJob == nil) then
+        return
+    end
+
+    Jobs.ServerCallbacks[name](xPlayer, xJob, cb, ...)
+end
+
+Jobs.TriggerServerEventWithCustomJob = function(name, source, job, ...)
+    if (Jobs.ServerEvents == nil or Jobs.ServerEvents[name] == nil) then
+        Jobs.Trace(('Server event "%s" does not exist.'):format(name))
+        return
+    end
+
+    local xPlayer = Jobs.ESX.GetPlayerFromId(source)
+
+    if (xPlayer == nil) then
+        return
+    end
+
+    job = job or ((xPlayer.job or {}).name or 'unknown')
+
+    local xJob = Jobs.GetJobFromName(job)
 
     if (xJob == nil) then
         return

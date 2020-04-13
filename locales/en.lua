@@ -5,6 +5,8 @@ Locales['en'] = {
     ['open_vehicles'] = 'Press ~INPUT_CONTEXT~ to spawn a vehicle of ~y~%s~',
     ['open_parkings'] = 'Press ~INPUT_CONTEXT~ to despawn your vehicle at ~y~%s~',
     ['open_showroom'] = 'Press ~INPUT_CONTEXT~ to open the showroom of ~y~%s~',
+    ['open_sells'] = 'Press ~INPUT_CONTEXT~ to open the sales menu of ~y~%s~',
+    ['open_catalogues'] = 'Press ~INPUT_CONTEXT~ to open ~y~%s~ catalogue',
 
     ['job_added_title'] = '%s has been added to the organisation',
     ['job_added_description'] = '**%s** is added to **%s** as **%s** (%s)',
@@ -161,6 +163,8 @@ Locales['en'] = {
     ['showroom_spot_updated'] = 'You have updated showroom spot ~g~%s~s~ with object ~g~%s~s~',
     ['showroom_spot_cleared'] = 'You have cleared showroom spot ~g~%s~s~',
     ['showroom_add_object'] = 'Place your object in showroom',
+
+    ['catalogues'] = 'Catalogues',
 
     ['item'] = '<strong>%s</strong> %s',
     ['weapon'] = '<strong>%s</strong> %s bullets',

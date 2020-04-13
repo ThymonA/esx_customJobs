@@ -9,12 +9,11 @@ Jobs.ServerCallbacks        = {}
 Jobs.RequestId              = 0
 
 -- Markers
+Jobs.DrawMarkers            = {}
 Jobs.CurrentAction          = nil
 Jobs.LastAction             = nil
-Jobs.CurrentActionInfo      = {}
 Jobs.IsInMarker             = false
-Jobs.DrawMarkers            = {}
-Jobs.MarkerIndex            = -1
+Jobs.Marker                 = {}
 
 -- Menus
 Jobs.Menus                  = {}

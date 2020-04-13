@@ -5,6 +5,8 @@ Locales['nl'] = {
     ['open_vehicles'] = 'Druk op ~INPUT_CONTEXT~ om een voertuig van ~y~%s~s~ te pakken',
     ['open_parkings'] = 'Druk op ~INPUT_CONTEXT~ om uw voertuig te despawnen bij ~y~%s~s~',
     ['open_showroom'] = 'Druk op ~INPUT_CONTEXT~ om uw showroom van ~y~%s~s~ te openen',
+    ['open_sells'] = 'Druk op ~INPUT_CONTEXT~ om verkoopmenu van ~y~%s~s~ te openen',
+    ['open_catalogues'] = 'Druk op ~INPUT_CONTEXT~ om catalogus van ~y~%s~s~ te openen',
 
     ['job_added_title'] = '%s is toegevoegd aan de organisatie',
     ['job_added_description'] = '**%s** is aan **%s** toegevoegd als **%s** (%s)',
@@ -161,6 +163,8 @@ Locales['nl'] = {
     ['showroom_spot_updated'] = 'U heeft showroom spot %s bijgewerkt met object %s',
     ['showroom_spot_cleared'] = 'U heeft showroom spot %s vrijgemaakt',
     ['showroom_add_object'] = 'Plaats uw object in de showroom',
+
+    ['catalogues'] = 'Catalogus',
 
     ['item'] = '<strong>%s</strong> %s',
     ['weapon'] = '<strong>%s</strong> %s kogels',

@@ -22,6 +22,10 @@ Jobs.GetPrimaryColor = function(opacity)
 
     local primaryColor = ((Jobs.JobData or {}).job or {}).primaryColor or { r = 255, g = 0, b = 0 }
 
+    if ((Jobs.Marker or {}).public or false) then
+        primaryColor = (Jobs.Marker or {}).primaryColor or primaryColor
+    end
+
     return 'rgba(' .. primaryColor.r .. ',' .. primaryColor.g .. ',' .. primaryColor.b .. ',' .. tostring(opacity) .. ')'
 end
 
@@ -30,11 +34,21 @@ Jobs.GetSecondaryColor = function(opacity)
 
     local secondaryColor = ((Jobs.JobData or {}).job or {}).secondaryColor or { r = 0, g = 0, b = 0 }
 
+    if ((Jobs.Marker or {}).public or false) then
+        secondaryColor = (Jobs.Marker or {}).secondaryColor or secondaryColor
+    end
+
     return 'rgba(' .. secondaryColor.r .. ',' .. secondaryColor.g .. ',' .. secondaryColor.b .. ',' .. tostring(opacity) .. ')'
 end
 
 Jobs.GetCurrentHeaderImage = function()
-    return ((Jobs.JobData or {}).job or {}).headerImage or 'menu_default.jpg'
+    local headerImage = ((Jobs.JobData or {}).job or {}).headerImage or 'menu_default.jpg'
+
+    if ((Jobs.Marker or {}).public or false) then
+        headerImage = (Jobs.Marker or {}).headerImage or headerImage
+    end
+
+    return headerImage
 end
 
 Jobs.HasPermission = function(permission)
@@ -60,11 +74,15 @@ Jobs.GetCurrentJobValue = function()
 end
 
 Jobs.GetCurrentData = function()
-    return Jobs.CurrentActionInfo or {}
+    return (Jobs.Marker or {}).addonData or {}
 end
 
 Jobs.GetCurrentMarkerIndex = function()
-    return Jobs.MarkerIndex or -1
+    return (Jobs.Marker or {}).index or -1
+end
+
+Jobs.GetCurrentMarker = function()
+    return Jobs.Marker or {}
 end
 
 Jobs.TriggerServerCallback = function(name, cb, ...)
@@ -81,6 +99,22 @@ end
 
 Jobs.TriggerServerEvent = function(name, ...)
     TriggerServerEvent('esx_jobs:triggerServerEvent', name, ...)
+end
+
+Jobs.TriggerServerCallbackWithCustomJob = function(name, job, cb, ...)
+    Jobs.ServerCallbacks[Jobs.RequestId] = cb
+
+    TriggerServerEvent('esx_jobs:triggerServerCallbackWithCustomJob', name, job, Jobs.RequestId, ...)
+
+    if (Jobs.RequestId < 65535) then
+        Jobs.RequestId = Jobs.RequestId + 1
+    else
+        Jobs.RequestId = 0
+    end
+end
+
+Jobs.TriggerServerEvent = function(name, job, ...)
+    TriggerServerEvent('esx_jobs:triggerServerEventWithCustomJob', name, job, ...)
 end
 
 Jobs.AddLabel = function(serverId, text, action)

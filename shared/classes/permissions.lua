@@ -42,6 +42,12 @@ function CreatePermissions()
         ['showroom.*'] = {
             ['showroom.add'] = { 'showroom' },
             ['showroom.remove'] = { 'showroom' }
+        },
+        ['sells.*'] = {
+            ['sells.menu.sell'] = { 'sells' }
+        },
+        ['catalogues.*'] = {
+            ['catalogues.use'] = { 'catalogues' }
         }
     }
 

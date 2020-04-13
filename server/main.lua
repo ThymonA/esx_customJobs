@@ -22,6 +22,23 @@ AddEventHandler('esx_jobs:triggerServerEvent', function(name, ...)
     Jobs.TriggerServerEvent(name, playerId, ...)
 end)
 
+RegisterServerEvent('esx_jobs:triggerServerCallbackWithCustomJob')
+AddEventHandler('esx_jobs:triggerServerCallbackWithCustomJob', function(name, job, requestId, ...)
+    local playerId = source
+
+    Jobs.TriggerServerCallbackWithCustomJob(name, playerId, job, function(...)
+        TriggerClientEvent('esx_jobs:serverCallback', playerId, requestId, ...)
+    end, ...)
+end)
+
+
+RegisterServerEvent('esx_jobs:triggerServerEventWithCustomJob')
+AddEventHandler('esx_jobs:triggerServerEventWithCustomJob', function(name, job, ...)
+    local playerId = source
+
+    Jobs.TriggerServerEventWithCustomJob(name, playerId, job, ...)
+end)
+
 AddEventHandler('onResourceStart', function(resource)
 	if resource == GetCurrentResourceName() then
         local players = GetPlayers()

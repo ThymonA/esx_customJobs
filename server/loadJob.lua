@@ -11,6 +11,7 @@ Jobs.LoadJob = function(rawData)
         name = rawData.Job or '',
         members = {},
         permissions = {},
+        publicPermissions = {},
         webhooks = {},
         grades = {},
         positions = {},
@@ -48,6 +49,34 @@ Jobs.LoadJob = function(rawData)
         end
     end
 
+    if (Jobs.JobPublics == nil) then
+        Jobs.JobPublics = {}
+    end
+
+    if (Jobs.JobPublics['permissions'] == nil) then
+        Jobs.JobPublics['permissions'] = {}
+    end
+
+    for _, allowedPermission in pairs(rawData.PublicAllowed or {}) do
+        if (allowedPermission ~= nil) then
+            allowedPermission = tostring(allowedPermission)
+
+            if (jobData.permissionSystem.isPermissionGroup(allowedPermission)) then
+                local permissionGroup = jobData.permissionSystem.getPermissionGroup(allowedPermission)
+
+                for __, subPermission in pairs(permissionGroup.permissions or {}) do
+                    table.insert(jobData.permissions, subPermission)
+                    table.insert(jobData.publicPermissions, subPermission)
+                    table.insert(Jobs.JobPublics['permissions'], subPermission)
+                end
+            else
+                table.insert(jobData.permissions, allowedPermission)
+                table.insert(jobData.publicPermissions, allowedPermission)
+                table.insert(Jobs.JobPublics['permissions'], allowedPermission)
+            end
+        end
+    end
+
     for _, position in pairs(rawData.Positions or {}) do
         local positionType = string.lower(position.Type or 'unknown')
 
@@ -76,7 +105,12 @@ Jobs.LoadJob = function(rawData)
             marker = position.Marker or 25,
             addonData = addonData or {},
             index = _,
-            key = position.Key or 'x'
+            key = position.Key or 'x',
+            job = jobData.name,
+            jobLabel = jobData.label,
+            primaryColor = (jobData.menu or {}).PrimaryColor or { r = 255, g = 0, b = 0 },
+            secondaryColor = (jobData.menu or {}).SecondaryColor or { r = 0, g = 0, b = 0 },
+            headerImage = (jobData.menu or {}).HeaderImage or 'menu_default.jpg'
         })
 
         if (positionType == 'showroom') then
@@ -116,6 +150,39 @@ Jobs.LoadJob = function(rawData)
             for _, showroomSpot in pairs(spots) do
                 table.insert(Jobs.JobPublics['showrooms'], showroomSpot)
             end
+        end
+
+        if (position.Public or false) then
+            if (Jobs.JobPublics == nil) then
+                Jobs.JobPublics = {}
+            end
+
+            if (Jobs.JobPublics['positions'] == nil) then
+                Jobs.JobPublics['positions'] = {}
+            end
+
+            if (Jobs.JobPublics['positions'][positionType] == nil) then
+                Jobs.JobPublics['positions'][positionType] = {}
+            end
+
+            table.insert(Jobs.JobPublics['positions'][positionType], {
+                type = positionType,
+                name = position.Name or 'Unknown',
+                denied = position.Denied or {},
+                public = position.Public or false,
+                position = position.Position or { x = 0, y = 0, z = 0 },
+                color = position.Color or { r = 255, g = 0, b = 0 },
+                size = position.Size or { x = 1.5, y = 1.5, z = 0.5 },
+                marker = position.Marker or 25,
+                addonData = addonData or {},
+                index = _,
+                key = position.Key or 'x',
+                job = jobData.name,
+                jobLabel = jobData.label,
+                primaryColor = (jobData.menu or {}).PrimaryColor or { r = 255, g = 0, b = 0 },
+                secondaryColor = (jobData.menu or {}).SecondaryColor or { r = 0, g = 0, b = 0 },
+                headerImage = (jobData.menu or {}).HeaderImage or 'menu_default.jpg'
+            })
         end
     end
 

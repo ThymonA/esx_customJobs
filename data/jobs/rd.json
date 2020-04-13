@@ -76,7 +76,11 @@
         "wardrobe.*",
         "vehicle.*",
         "action.menu.*",
-        "showroom.*"
+        "showroom.*",
+        "sells.*"
+    ],
+    "PublicAllowed": [
+        "catalogues.*"
     ],
     "Positions": [
         {
@@ -87,7 +91,7 @@
             "Position": { "x": -791.03, "y": -213.99, "z": 36.08 },
             "Color": { "r": 255, "g": 0, "b": 0 },
             "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
-            "Marker": 1
+            "Marker": 27
         },
         {
             "Type": "safe_weapons",
@@ -97,7 +101,7 @@
             "Position": { "x": -766.78, "y": -232.98, "z": 36.08 },
             "Color": { "r": 255, "g": 0, "b": 0 },
             "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
-            "Marker": 1
+            "Marker": 27
         },
         {
             "Type": "wardrobe",
@@ -107,7 +111,7 @@
             "Position": { "x": -787.45, "y": -216.16, "z": 36.08 },
             "Color": { "r": 255, "g": 255, "b": 0 },
             "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
-            "Marker": 1
+            "Marker": 27
         },
         {
             "Type": "vehicles",
@@ -117,7 +121,7 @@
             "Position": { "x": -774.4, "y": -244.41, "z": 36.19 },
             "Color": { "r": 0, "g": 255, "b": 255 },
             "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
-            "Marker": 1,
+            "Marker": 27,
             "AddonData": {
                 "Spawn": { "x": -773.89, "y": -253.58, "z": 36.11, "h": 110.5 }
             }
@@ -130,7 +134,7 @@
             "Position": { "x": -758.47, "y": -234.76, "z": 36.28 },
             "Color": { "r": 255, "g": 0, "b": 0 },
             "Size": { "x": 2.5, "y": 2.5, "z": 1.5 },
-            "Marker": 1
+            "Marker": 27
         },
         {
             "Key": "b378f3bb4t",
@@ -140,8 +144,8 @@
             "Public": false,
             "Position": { "x": -792.7, "y": -223.41, "z": 36.09 },
             "Color": { "r": 255, "g": 0, "b": 0 },
-            "Size": { "x": 2.5, "y": 2.5, "z": 1.5 },
-            "Marker": 1,
+            "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
+            "Marker": 27,
             "AddonData": {
                 "Spots": [
                     {
@@ -165,6 +169,30 @@
                         "Type": "car"
                     }
                 ]
+            }
+        },
+        {
+            "Type": "sells",
+            "Name": "Sell #1",
+            "Denied": [],
+            "Public": false,
+            "Position": { "x": -794.33, "y": -218.94, "z": 36.08 },
+            "Color": { "r": 255, "g": 0, "b": 0 },
+            "Size": { "x": 2.5, "y": 2.5, "z": 1.5 },
+            "Marker": 27
+        },
+        {
+            "Type": "catalogues",
+            "Name": "Catalogue #1",
+            "Denied": [],
+            "Public": true,
+            "Position": { "x": -786.48, "y": -229.7, "z": 36.08 },
+            "Color": { "r": 0, "g": 255, "b": 255 },
+            "Size": { "x": 1.5, "y": 1.5, "z": 1.5 },
+            "Marker": 27,
+            "AddonData": {
+                "Spawn": { "x": -783.78, "y": -223.68, "z": 36.32, "h": 136.5 },
+                "Type": "car"
             }
         }
     ],

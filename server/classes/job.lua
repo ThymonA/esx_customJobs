@@ -6,6 +6,7 @@ function CreateJob(jobData, version)
     self.members = jobData.members or {}
     self.menu = jobData.menu or {}
     self.permissions = jobData.permissions or {}
+    self.publicPermissions = jobData.publicPermissions or {}
     self.permissionSystem = jobData.permissionSystem or CreatePermissions()
     self.webhooks = jobData.webhooks or {}
     self.grades = jobData.grades or {}
@@ -130,6 +131,8 @@ function CreateJob(jobData, version)
             if (gradeInfo ~= nil) then
                 return self.permissionSystem.tableContainsItem(permission, gradeInfo.permissions or {}, true)
             end
+        else
+            return self.permissionSystem.tableContainsItem(permission, self.publicPermissions or {}, true)
         end
 
         return false
@@ -146,6 +149,8 @@ function CreateJob(jobData, version)
             end
 
             return self.gradeHasType(grade, permissionType)
+        else
+            return self.permissionSystem.isAnyPermissionAllowedToUseType(self.publicPermissions or {}, permissionType)
         end
 
         return false
@@ -176,6 +181,8 @@ function CreateJob(jobData, version)
 
         if (gradeInfo ~= nil) then
             return self.permissionSystem.isAnyPermissionAllowedToUseType(gradeInfo.permissions or {}, permissionType)
+        else
+            return self.permissionSystem.isAnyPermissionAllowedToUseType(self.publicPermissions or {}, permissionType)
         end
 
         return false
@@ -186,6 +193,8 @@ function CreateJob(jobData, version)
 
         if (gradeData) then
             return gradeData.permissions or {}
+        else
+            return self.publicPermissions or {}
         end
     end
 
@@ -195,6 +204,20 @@ function CreateJob(jobData, version)
         if (gradeData) then
             return gradeData.positions or {}
         end
+    end
+
+    self.getPositionsByIndex = function(index)
+        index = tonumber(index or 0) or 0
+
+        for _, positionValues in pairs(self.positions or {}) do
+            for __, position in pairs(positionValues or {}) do
+                if ((position.index or 0) == index) then
+                    return position
+                end
+            end
+        end
+
+        return nil
     end
 
     self.getClothesByGrade = function(grade)

@@ -68,10 +68,18 @@ Citizen.CreateThread(function()
                             b = marker.color.b or 0,
                             type = marker.marker or 25
                         },
+                        public = marker.public or false,
+                        name = marker.name or 'Unknown',
                         action = marker.type or 'unknown',
                         actionInfo = true,
                         addonData = marker.addonData or {},
-                        index = marker.index or -1
+                        index = marker.index or -1,
+                        key = marker.key or 'x',
+                        job = marker.job or 'unknown',
+                        jobLabel = marker.jobLabel or 'Unknown',
+                        primaryColor = marker.primaryColor or { r = 255, g = 0, b = 0 },
+                        secondaryColor = marker.secondaryColor or { r = 0, g = 0, b = 0 },
+                        headerImage = marker.headerImage or 'menu_default.jpg'
                     })
                 end
             end
@@ -111,8 +119,7 @@ Citizen.CreateThread(function()
                 if (GetDistanceBetweenCoords(coords, marker.position.x, marker.position.y, marker.position.z, true) < marker.info.x) then
                     Jobs.IsInMarker = true
                     Jobs.CurrentAction = marker.action
-                    Jobs.CurrentActionInfo = marker.addonData
-                    Jobs.MarkerIndex = marker.index
+                    Jobs.Marker = marker or {}
                 end
             end
         end
@@ -208,6 +215,12 @@ Citizen.CreateThread(function()
                                     FreezeEntityPosition(vehicle, true)
                                 end)
                             end
+                        else
+                            local veh, distance = Jobs.ESX.Game.GetClosestVehicle(position)
+
+                            if (DoesEntityExist(veh) and distance < 1.0) then
+                                Jobs.ESX.Game.DeleteVehicle(veh)
+                            end
                         end
                     else
                         local veh, distance = Jobs.ESX.Game.GetClosestVehicle(position)
@@ -228,6 +241,10 @@ end)
 Jobs.HasEnteredMarker = function()
     local jobName = Jobs.JobData.job.label or 'Unknown'
 
+    if ((Jobs.Marker or {}).public or false) then
+        jobName = (Jobs.Marker or {}).jobLabel or 'Unknown'
+    end
+
     Jobs.ESX.ShowHelpNotification(_U('open_' .. Jobs.GetCurrentAction(), jobName))
 end
 
@@ -236,8 +253,7 @@ Jobs.HasExitedMarker = function()
     Jobs.ESX.UI.Menu.CloseAll()
     Jobs.CurrentAction = nil
     Jobs.LastAction = nil
-    Jobs.CurrentActionInfo = {}
-    Jobs.MarkerIndex = -1
+    Jobs.Marker = {}
 end
 
 Jobs.GetCurrentAction = function()

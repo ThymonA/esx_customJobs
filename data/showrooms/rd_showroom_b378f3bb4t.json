@@ -1,66 +1,66 @@
 {
-  "job":"rd",
-  "name":"Showroom #1",
   "spots":[{
-      "index":1,
-      "position":{
-        "z":36.08,
-        "y":-245.27,
-        "x":-786.07,
-        "h":75.5
-      },
+      "locked":false,
       "label":"Window #1",
+      "index":1,
+      "key":"b378f3bb4t",
+      "position":{
+        "z":36.08,
+        "h":75.5,
+        "x":-786.07,
+        "y":-245.27
+      },
       "code":"unknown",
       "showroomIndex":6,
       "job":"rd",
-      "type":"car",
-      "locked":false,
-      "key":"b378f3bb4t"
+      "type":"car"
     },{
-      "index":2,
-      "position":{
-        "z":36.08,
-        "y":-240.42,
-        "x":-788.52,
-        "h":79.5
-      },
+      "locked":false,
       "label":"Window #2",
+      "index":2,
+      "key":"b378f3bb4t",
+      "position":{
+        "z":36.08,
+        "h":79.5,
+        "x":-788.52,
+        "y":-240.42
+      },
       "code":"unknown",
       "showroomIndex":6,
       "job":"rd",
-      "type":"car",
-      "locked":false,
-      "key":"b378f3bb4t"
+      "type":"car"
     },{
+      "locked":false,
+      "label":"Window #3",
       "index":3,
+      "key":"b378f3bb4t",
       "position":{
         "z":36.08,
-        "y":-235.5,
+        "h":78.5,
         "x":-791.41,
-        "h":78.5
+        "y":-235.5
       },
-      "label":"Window #3",
-      "code":"rs7",
+      "code":"unknown",
       "showroomIndex":6,
       "job":"rd",
-      "type":"car",
-      "locked":true,
-      "key":"b378f3bb4t"
+      "type":"car"
     },{
+      "locked":false,
+      "label":"Main Showroom",
       "index":4,
+      "key":"b378f3bb4t",
       "position":{
         "z":36.32,
-        "y":-223.68,
+        "h":136.5,
         "x":-783.78,
-        "h":136.5
+        "y":-223.68
       },
-      "label":"Main Showroom",
-      "code":"rs7",
+      "code":"unknown",
       "showroomIndex":6,
       "job":"rd",
-      "type":"car",
-      "locked":true,
-      "key":"b378f3bb4t"
+      "type":"car"
     }],
+  "name":"Showroom #1",
+  "job":"rd",
   "key":"b378f3bb4t"
 }
