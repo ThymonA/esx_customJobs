@@ -159,6 +159,8 @@ Locales['nl'] = {
     ['showroom_add'] = 'Item plaatsen in showroom',
     ['showroom_remove'] = 'Item verwijderen uit showroom',
     ['showroom_spot_updated'] = 'U heeft showroom spot %s bijgewerkt met object %s',
+    ['showroom_spot_cleared'] = 'U heeft showroom spot %s vrijgemaakt',
+    ['showroom_add_object'] = 'Plaats uw object in de showroom',
 
     ['item'] = '<strong>%s</strong> %s',
     ['weapon'] = '<strong>%s</strong> %s kogels',

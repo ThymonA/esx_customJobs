@@ -437,6 +437,23 @@ AddEventHandler('esx_jobs:removeLabel', function(serverId, action)
     Jobs.RemoveActionLabel(serverId, action)
 end)
 
+RegisterNetEvent('esx_jobs:updateShowroomSpot')
+AddEventHandler('esx_jobs:updateShowroomSpot', function(job, key, index, locked, code)
+    job = string.lower(job or 'unknown')
+    key = key or 'x'
+    index = tonumber(index or 0) or 0
+    locked = locked or false
+    code = code or 'unknown'
+
+    for _, spot in pairs(((Jobs.JobData or {}).job or {}).showrooms or {}) do
+        if ((spot.key or 'x') == key and (spot.job or 'unknown') == job and (tonumber(spot.index or 0) or 0) == index) then
+            Jobs.JobData.job.showrooms[_].locked = locked
+            Jobs.JobData.job.showrooms[_].code = code
+            break
+        end
+    end
+end)
+
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
     Jobs.PlayerData.job     = job

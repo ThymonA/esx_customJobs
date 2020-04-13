@@ -47,9 +47,44 @@ Jobs.RegisterServerEvent('esx_jobs:addOrUpdateSpotObject', function(xPlayer, xJo
                 showroom.updateSpotObject(spotIndex, item.code)
 
                 TriggerClientEvent('esx:showNotification', xPlayer.source, _U('showroom_spot_updated', showroom.getName(), item.label))
+
+                local jobName = xJob.name
+                local showroomKey = showroom.getKey()
+                local locked = not showroom.isSpotAvailable(spotIndex)
+
+                TriggerClientEvent('esx_jobs:updateShowroomSpot', -1, jobName, showroomKey, spotIndex, locked, code)
             end
 
             break
         end
+    end
+end)
+
+Jobs.RegisterServerEvent('esx_jobs:removeSpotObject', function(xPlayer, xJob, showroomIndex, spotIndex)
+    if (not xJob.memberHasPermission(xPlayer.identifier, 'showroom.remove')) then
+        TriggerClientEvent('esx:showNotification', xPlayer.source, _U('error_no_permission'))
+        return
+    end
+
+    showroomIndex = tonumber(showroomIndex or -1)
+    spotIndex = tonumber(spotIndex or -1)
+
+    local showroom = xJob.getShowroom(showroomIndex)
+
+    if (showroom ~= nil) then
+        showroom.removeSpotObject(spotIndex)
+
+        TriggerClientEvent('esx:showNotification', xPlayer.source, _U('showroom_spot_cleared', showroom.getSpotName(spotIndex)))
+
+        local jobName = xJob.name
+        local showroomKey = showroom.getKey()
+        local locked = not showroom.isSpotAvailable(spotIndex)
+        local code = 'unknown'
+
+        if (not locked) then
+            code = showroom.getSpotObjectName(spotIndex)
+        end
+
+        TriggerClientEvent('esx_jobs:updateShowroomSpot', -1, jobName, showroomKey, spotIndex, locked, code)
     end
 end)

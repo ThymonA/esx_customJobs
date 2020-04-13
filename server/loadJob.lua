@@ -101,8 +101,21 @@ Jobs.LoadJob = function(rawData)
             end
 
             local showroom = CreateShowroom(_, (position.Key or 'x'), (position.Name or 'Unknown'), jobData.name, showroomSpots)
+            local spots = showroom.getSpots() or {}
+
+            if (Jobs.JobPublics == nil) then
+                Jobs.JobPublics = {}
+            end
+
+            if (Jobs.JobPublics['showrooms'] == nil) then
+                Jobs.JobPublics['showrooms'] = {}
+            end
 
             table.insert(jobData.showrooms, showroom)
+
+            for _, showroomSpot in pairs(spots) do
+                table.insert(Jobs.JobPublics['showrooms'], showroomSpot)
+            end
         end
     end
 

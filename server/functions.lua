@@ -34,7 +34,8 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
             hasBuyableItem = false,
             hasBuyableWeapon = false,
             blips = {},
-            plate = {}
+            plate = {},
+            showrooms = {}
         },
     }
 
@@ -122,10 +123,13 @@ Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
     end
 
     local publicBlips = Jobs.GetJobPublicsByType('blips')
+    local publicShowrooms = Jobs.GetJobPublicsByType('showrooms')
 
     for _, blip in pairs(publicBlips or {}) do
         table.insert(jobInfo.job.blips, blip)
     end
+
+    jobInfo.job.showrooms = publicShowrooms
 
     TriggerClientEvent('esx_jobs:setJobData', xPlayer.source, jobInfo, jobChanged)
 end

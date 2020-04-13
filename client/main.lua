@@ -166,6 +166,64 @@ Citizen.CreateThread(function()
     end
 end)
 
+-- Spawn showroom vehicles
+Citizen.CreateThread(function()
+    while true do
+        while not Jobs.JobDataLoaded do
+            Citizen.Wait(10)
+        end
+
+        local playerPed = GetPlayerPed(-1)
+        local coords = GetEntityCoords(playerPed)
+
+        for _, spot in pairs(((Jobs.JobData or {}).job or {}).showrooms or {}) do
+            local position = spot.position or nil
+
+            if (position ~= nil and position ~= {} and GetDistanceBetweenCoords(coords, position.x, position.y, position.z, true) < Config.DrawDistance) then
+                local spotType = string.lower(spot.type or 'unknown')
+
+                if (spotType == 'car') then
+                    if (spot.code ~= nil and spot.code ~= '' and string.lower(spot.code) ~= 'unknown' and string.lower(spot.code) ~= 'none') then
+                        local vehicleHash = (type(spot.code) == 'number' and spot.code or GetHashKey(spot.code))
+
+                        if (IsModelInCdimage(vehicleHash)) then
+                            local veh, distance = Jobs.ESX.Game.GetClosestVehicle(position)
+
+                            if (DoesEntityExist(veh) and distance < 1.0) then
+                                local currentVehicleModel = GetEntityModel(veh)
+
+                                if (currentVehicleModel ~= vehicleHash) then
+                                    Jobs.ESX.Game.DeleteVehicle(veh)
+
+                                    Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
+                                        FreezeEntityPosition(vehicle, true)
+                                    end)
+                                end
+                            elseif (DoesEntityExist(veh) and distance > 1.0) then
+                                Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
+                                    FreezeEntityPosition(vehicle, true)
+                                end)
+                            elseif (not DoesEntityExist(veh)) then
+                                Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
+                                    FreezeEntityPosition(vehicle, true)
+                                end)
+                            end
+                        end
+                    else
+                        local veh, distance = Jobs.ESX.Game.GetClosestVehicle(position)
+
+                        if (DoesEntityExist(veh) and distance < 1.0) then
+                            Jobs.ESX.Game.DeleteVehicle(veh)
+                        end
+                    end
+                end
+            end
+        end
+
+        Citizen.Wait(500)
+    end
+end)
+
 -- Trigger when player enters marker
 Jobs.HasEnteredMarker = function()
     local jobName = Jobs.JobData.job.label or 'Unknown'

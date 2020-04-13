@@ -11,6 +11,10 @@ function CreateShowroom(index, key, name, jobName, spots)
         return self.index or 0
     end
 
+    self.getKey = function()
+        return self.key or 'x'
+    end
+
     self.getName = function()
         return self.name or 'Unknown'
     end
@@ -29,6 +33,14 @@ function CreateShowroom(index, key, name, jobName, spots)
         end
 
         return false
+    end
+
+    self.getSpotName = function(index)
+        if (self.spotExists(index)) then
+            return self.spots[index].label or 'Unknown'
+        end
+
+        return 'Unknown'
     end
 
     self.getSpotObjectName = function(index)
@@ -103,7 +115,10 @@ function CreateShowroom(index, key, name, jobName, spots)
                 type = spot.type or 'unknown',
                 index = spot.index or -1,
                 locked = spot.locked or false,
-                code = spot.code or 'unknown'
+                code = spot.code or 'unknown',
+                job = self.jobName or 'unknown',
+                key = self.key or 'x',
+                showroomIndex = self.index or 0
             })
         end
 
@@ -112,6 +127,12 @@ function CreateShowroom(index, key, name, jobName, spots)
 
     self.initialize = function()
         local rawContent = LoadResourceFile(GetCurrentResourceName(), 'data/showrooms/' .. self.getFilename())
+
+        for _, spot in pairs(self.spots) do
+            spot.job = self.jobName or 'unknown'
+            spot.key = self.key or 'x'
+            spot.showroomIndex = self.index or 0
+        end
 
         if (not rawContent) then
             self.save()

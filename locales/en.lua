@@ -159,6 +159,8 @@ Locales['en'] = {
     ['showroom_add'] = 'Place item in showroom',
     ['showroom_remove'] = 'Remove item from showroom',
     ['showroom_spot_updated'] = 'You have updated showroom spot ~g~%s~s~ with object ~g~%s~s~',
+    ['showroom_spot_cleared'] = 'You have cleared showroom spot ~g~%s~s~',
+    ['showroom_add_object'] = 'Place your object in showroom',
 
     ['item'] = '<strong>%s</strong> %s',
     ['weapon'] = '<strong>%s</strong> %s bullets',
