@@ -203,15 +203,33 @@ Citizen.CreateThread(function()
                                     Jobs.ESX.Game.DeleteVehicle(veh)
 
                                     Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
+                                        local props = spot.props or {}
+
+                                        props.windowTint = props.modWindows or -1
+
+                                        Jobs.ESX.Game.SetVehicleProperties(vehicle, props)
+
                                         FreezeEntityPosition(vehicle, true)
                                     end)
                                 end
                             elseif (DoesEntityExist(veh) and distance > 1.0) then
                                 Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
+                                    local props = spot.props or {}
+
+                                    props.windowTint = props.modWindows or -1
+
+                                    Jobs.ESX.Game.SetVehicleProperties(vehicle, props)
+
                                     FreezeEntityPosition(vehicle, true)
                                 end)
                             elseif (not DoesEntityExist(veh)) then
                                 Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
+                                    local props = spot.props or {}
+
+                                    props.windowTint = props.modWindows or -1
+
+                                    Jobs.ESX.Game.SetVehicleProperties(vehicle, props)
+
                                     FreezeEntityPosition(vehicle, true)
                                 end)
                             end

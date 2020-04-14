@@ -164,6 +164,12 @@ Locales['en'] = {
     ['showroom_spot_cleared'] = 'You have cleared showroom spot ~g~%s~s~',
     ['showroom_add_object'] = 'Place your object in showroom',
 
+    ['sells'] = 'Sells',
+    ['sell_car'] = 'Sell Vehicle',
+    ['sell_aircraft'] = 'Sell Aircraft',
+    ['sell_item'] = 'Sell Item',
+    ['sell_weapon'] = 'Sell Weapon',
+
     ['catalogues'] = 'Catalogues',
     ['rotate_object_left'] = 'Rotate object to the left',
     ['rotate_object_right'] = 'Rotate object to the right',
@@ -171,6 +177,7 @@ Locales['en'] = {
     ['backspace_close'] = 'Close',
 
     ['item'] = '<strong>%s</strong> %s',
+    ['category'] = '<strong>%s</strong> (%s)',
     ['weapon'] = '<strong>%s</strong> %s bullets',
     ['negative'] = 'Value must not be negative, number must be 0 or greater.',
 
@@ -187,6 +194,8 @@ Locales['en'] = {
     ['error_must_driver'] = 'You must be the driver of the vehicle in order to park it',
     ['error_no_vehicle'] = 'You are not in a vehicle',
     ['error_invalid_model'] = 'Vehicle cannot be loaded',
+    ['error_invalid_type'] = 'You have specified a invalid type',
+    ['error_empty_type'] = 'You have no saleable objects in this category',
 
     ['weapon_knife'] = 'Knife',
     ['weapon_nightstick'] = 'Nightstick',

@@ -172,6 +172,12 @@ Jobs.RenderVehicleSpot = function(model)
                 if (currentVehicleModel ~= vehicleHash) then
                     Jobs.DeleteObject()
                     Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
+                        local props = (Jobs.GetCurrentData() or {}).vehicleprops or {}
+
+                        props.windowTint = props.modWindows or -1
+
+                        Jobs.ESX.Game.SetVehicleProperties(vehicle, props)
+
                         Jobs.CurrentVehicle = vehicle
                         Jobs.DoorsAreOpen = false
 
@@ -180,6 +186,12 @@ Jobs.RenderVehicleSpot = function(model)
                 end
             elseif (not DoesEntityExist(Jobs.CurrentVehicle)) then
                 Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
+                    local props = (Jobs.GetCurrentData() or {}).vehicleprops or {}
+
+                    props.windowTint = props.modWindows or -1
+
+                    Jobs.ESX.Game.SetVehicleProperties(vehicle, props)
+
                     Jobs.CurrentVehicle = vehicle
                     Jobs.DoorsAreOpen = false
 

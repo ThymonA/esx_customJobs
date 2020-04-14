@@ -42,7 +42,8 @@ server_scripts {
     'server/menus/safe_weapons.lua',
     'server/menus/action_menu.lua',
     'server/menus/showroom.lua',
-    'server/menus/catalogues.lua'
+    'server/menus/catalogues.lua',
+    'server/menus/sells.lua'
 }
 
 client_scripts {
@@ -72,6 +73,7 @@ client_scripts {
     'client/menus/action_menu.lua',
     'client/menus/showroom.lua',
     'client/menus/catalogues.lua',
+    'client/menus/sells.lua',
 
     'client/main.lua'
 }

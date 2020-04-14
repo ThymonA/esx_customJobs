@@ -67,6 +67,7 @@ Jobs.RegisterMenu('showroom_add', function()
             function(data, menu)
                 if (data.current.value == 'back') then
                     Jobs.TriggerMenu('showroom')
+                    return
                 end
 
                 local index = tonumber(data.current.value or 0)

@@ -113,7 +113,7 @@ Jobs.TriggerServerCallbackWithCustomJob = function(name, job, cb, ...)
     end
 end
 
-Jobs.TriggerServerEvent = function(name, job, ...)
+Jobs.TriggerServerEventkWithCustomJob = function(name, job, ...)
     TriggerServerEvent('esx_jobs:triggerServerEventWithCustomJob', name, job, ...)
 end
 

@@ -1,4 +1,4 @@
-function CreateShowroom(index, key, name, jobName, spots)
+function CreateShowroom(index, key, name, jobName, spots, props)
     local self = {}
 
     self.index = index or 0
@@ -6,6 +6,7 @@ function CreateShowroom(index, key, name, jobName, spots)
     self.name = name or 'Unknown'
     self.jobName = jobName or 'Unknown'
     self.spots = spots or {}
+    self.props = props or {}
 
     self.getIndex = function()
         return self.index or 0
@@ -21,6 +22,10 @@ function CreateShowroom(index, key, name, jobName, spots)
 
     self.getSpots = function()
         return self.spots or {}
+    end
+
+    self.getProps = function()
+        return self.props or {}
     end
 
     self.spotExists = function(index)

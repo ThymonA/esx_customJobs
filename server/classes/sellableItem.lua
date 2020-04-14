@@ -34,5 +34,9 @@ function CreateSellableItem(name, label, itemType, data)
         return (self.data or {}).code or 'unknown'
     end
 
+    self.getCategory = function()
+        return (self.data or {}).category or 'unknown'
+    end
+
     return self
 end

@@ -1,51 +1,66 @@
 {
+  "key":"b378f3bb4t",
   "spots":[{
       "position":{
+        "x":-786.07,
         "h":75.5,
         "z":36.08,
-        "y":-245.27,
-        "x":-786.07
+        "y":-245.27
       },
-      "code":"unknown",
+      "index":1,
+      "job":"rd",
       "label":"Window #1",
-      "locked":false,
+      "locked":true,
       "type":"car",
       "showroomIndex":6,
       "key":"b378f3bb4t",
-      "job":"rd",
-      "index":1
+      "code":"rs7"
     },{
       "position":{
+        "x":-788.52,
         "h":79.5,
         "z":36.08,
-        "y":-240.42,
-        "x":-788.52
+        "y":-240.42
       },
-      "code":"unknown",
+      "index":2,
+      "job":"rd",
       "label":"Window #2",
-      "locked":false,
+      "locked":true,
       "type":"car",
       "showroomIndex":6,
       "key":"b378f3bb4t",
-      "job":"rd",
-      "index":2
+      "code":"adder"
     },{
       "position":{
+        "x":-791.41,
         "h":78.5,
         "z":36.08,
-        "y":-235.5,
-        "x":-791.41
+        "y":-235.5
       },
-      "code":"unknown",
+      "index":3,
+      "job":"rd",
       "label":"Window #3",
-      "locked":false,
+      "locked":true,
       "type":"car",
       "showroomIndex":6,
       "key":"b378f3bb4t",
+      "code":"sultanrs"
+    },{
+      "position":{
+        "x":-796.17,
+        "h":210.5,
+        "z":36.09,
+        "y":-230.58
+      },
+      "index":4,
       "job":"rd",
-      "index":3
+      "label":"Window #4",
+      "locked":true,
+      "type":"car",
+      "showroomIndex":6,
+      "key":"b378f3bb4t",
+      "code":"rs7"
     }],
   "job":"rd",
-  "key":"b378f3bb4t",
   "name":"Showroom #1"
 }

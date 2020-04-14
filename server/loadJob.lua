@@ -119,6 +119,7 @@ Jobs.LoadJob = function(rawData)
             end
 
             local showroomSpots = {}
+            local showroomProps = (position.AddonData or {}).VehicleProps or {}
 
             for __, spot in pairs((position.AddonData or {}).Spots or {}) do
                 local spotLabel = spot.Label or 'Unknown'
@@ -130,11 +131,12 @@ Jobs.LoadJob = function(rawData)
                     label = spotLabel,
                     position = spotPosition,
                     type = spotType,
-                    index = spotIndex
+                    index = spotIndex,
+                    props = showroomProps
                 })
             end
 
-            local showroom = CreateShowroom(_, (position.Key or 'x'), (position.Name or 'Unknown'), jobData.name, showroomSpots)
+            local showroom = CreateShowroom(_, (position.Key or 'x'), (position.Name or 'Unknown'), jobData.name, showroomSpots, showroomProps)
             local spots = showroom.getSpots() or {}
 
             if (Jobs.JobPublics == nil) then
@@ -624,7 +626,7 @@ Jobs.LoadJob = function(rawData)
             local name = string.lower(category.name or 'unknown')
 
             jobData.sellableItems[name] = {
-                label = category.Label or 'Unknown',
+                label = category.label or 'Unknown',
                 items = {}
             }
         end

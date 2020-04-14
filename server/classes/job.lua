@@ -484,8 +484,36 @@ function CreateJob(jobData, version)
         return #self.getBuyableItemsByType('weapons') > 0
     end
 
-    self.getSellableCategories = function()
+    self.getSellableCategories = function(minified)
+        minified = minified or false
+
+        if (minified) then
+            local results = {}
+
+            for category, categoryValue in pairs(self.sellableItems or {}) do
+                results[category] = categoryValue.label or 'Unknown'
+            end
+
+            return results or {}
+        end
+
         return self.sellableItems or {}
+    end
+
+    self.hasAnySellableWeapon = function()
+        return #self.getSellableItemsByType('weapon') > 0
+    end
+
+    self.hasAnySellableItem = function()
+        return #self.getSellableItemsByType('item') > 0
+    end
+
+    self.hasAnySellableCar = function()
+        return #self.getSellableItemsByType('car') > 0
+    end
+
+    self.hasAnySellableAircraft = function()
+        return #self.getSellableItemsByType('aircraft') > 0
     end
 
     self.getSellableItemsFromCategroy = function(category)
@@ -513,7 +541,8 @@ function CreateJob(jobData, version)
                         type = sellableItem.getType(),
                         buyPrice = sellableItem.getBuyPrice(),
                         sellPrice = sellableItem.getSellPrice(),
-                        brand = sellableItem.getBrand()
+                        brand = sellableItem.getBrand(),
+                        category = sellableItem.getCategory()
                     })
                 end
             end

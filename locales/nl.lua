@@ -164,6 +164,12 @@ Locales['nl'] = {
     ['showroom_spot_cleared'] = 'U heeft showroom spot %s vrijgemaakt',
     ['showroom_add_object'] = 'Plaats uw object in de showroom',
 
+    ['sells'] = 'Verkopen',
+    ['sell_car'] = 'Voertuig verkopen',
+    ['sell_aircraft'] = 'Vliegtuig verkopen',
+    ['sell_item'] = 'Voorwerp verkopen',
+    ['sell_weapon'] = 'Wapen verkopen',
+
     ['catalogues'] = 'Catalogus',
     ['rotate_object_left'] = 'Object naar links draaien',
     ['rotate_object_right'] = 'Object naar rechts draaien',
@@ -171,6 +177,7 @@ Locales['nl'] = {
     ['backspace_close'] = 'Sluiten',
 
     ['item'] = '<strong>%s</strong> %s',
+    ['category'] = '<strong>%s</strong> (%s)',
     ['weapon'] = '<strong>%s</strong> %s kogels',
     ['negative'] = 'Waarde mag niet negative zijn, getal moet 0 of groter zijn.',
 
@@ -187,6 +194,8 @@ Locales['nl'] = {
     ['error_must_driver'] = 'U moet bestuurder van het voertuig zijn om dit voertuig te kunnen parkeren',
     ['error_no_vehicle'] = 'U zit niet in een voertuig',
     ['error_invalid_model'] = 'Voertuig kan niet geladen worden',
+    ['error_invalid_type'] = 'U heeft een niet bestaande type opgegeven',
+    ['error_empty_type'] = 'U heeft geen verkoopbare objecten in deze categorie',
 
     ['weapon_knife'] = 'Knife',
     ['weapon_nightstick'] = 'Nightstick',
