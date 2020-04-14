@@ -29,12 +29,19 @@ Jobs.RegisterMenu('catalogues', function()
         end
 
         Citizen.CreateThread(function()
-            local playerPed = GetPlayerPed(-1)
             local form = Jobs.SetupScaleform("instructional_buttons")
 
             while Jobs.Camera ~= nil do
                 DrawScaleformMovieFullscreen(form, 255, 255, 255, 255, 0)
 
+                Citizen.Wait(0)
+            end
+        end)
+
+        Citizen.CreateThread(function()
+            local playerPed = GetPlayerPed(-1)
+
+            while Jobs.Camera ~= nil do
                 FreezeEntityPosition(playerPed, true)
 
                 while IsControlPressed(0, 189) do
