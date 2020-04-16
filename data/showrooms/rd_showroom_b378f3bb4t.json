@@ -1,66 +1,66 @@
 {
   "name":"Showroom #1",
   "spots":[{
-      "type":"car",
-      "locked":true,
-      "index":1,
       "position":{
-        "x":-786.07,
         "y":-245.27,
         "z":36.08,
-        "h":75.5
+        "h":75.5,
+        "x":-786.07
       },
-      "label":"Window #1",
       "job":"rd",
-      "showroomIndex":6,
-      "code":"audis8om",
-      "key":"b378f3bb4t"
-    },{
-      "type":"car",
       "locked":true,
-      "index":2,
+      "code":"audis8om",
+      "label":"Window #1",
+      "showroomIndex":6,
+      "key":"b378f3bb4t",
+      "index":1,
+      "type":"car"
+    },{
       "position":{
-        "x":-788.52,
         "y":-240.42,
         "z":36.08,
-        "h":79.5
+        "h":79.5,
+        "x":-788.52
       },
-      "label":"Window #2",
       "job":"rd",
-      "showroomIndex":6,
+      "locked":true,
       "code":"rs7",
-      "key":"b378f3bb4t"
+      "label":"Window #2",
+      "showroomIndex":6,
+      "key":"b378f3bb4t",
+      "index":2,
+      "type":"car"
     },{
-      "type":"car",
-      "locked":false,
-      "index":3,
       "position":{
-        "x":-791.41,
         "y":-235.5,
         "z":36.08,
-        "h":78.5
+        "h":78.5,
+        "x":-791.41
       },
-      "label":"Window #3",
       "job":"rd",
-      "showroomIndex":6,
-      "code":"unknown",
-      "key":"b378f3bb4t"
-    },{
-      "type":"car",
       "locked":false,
-      "index":4,
+      "code":"unknown",
+      "label":"Window #3",
+      "showroomIndex":6,
+      "key":"b378f3bb4t",
+      "index":3,
+      "type":"car"
+    },{
       "position":{
-        "x":-796.17,
         "y":-230.58,
         "z":36.09,
-        "h":210.5
+        "h":210.5,
+        "x":-796.17
       },
-      "label":"Window #4",
       "job":"rd",
-      "showroomIndex":6,
+      "locked":false,
       "code":"unknown",
-      "key":"b378f3bb4t"
+      "label":"Window #4",
+      "showroomIndex":6,
+      "key":"b378f3bb4t",
+      "index":4,
+      "type":"car"
     }],
-  "job":"rd",
-  "key":"b378f3bb4t"
+  "key":"b378f3bb4t",
+  "job":"rd"
 }

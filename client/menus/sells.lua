@@ -138,8 +138,15 @@ Jobs.RegisterMenu('sells_objects', function(categoryType, category)
                             Citizen.Wait(0)
                         end
 
-                        if (DoesEntityExist(veh) and distance < 1.0) then
-                            Jobs.ESX.Game.DeleteVehicle(veh)
+                        if (Jobs.CurrentSellingVehicle ~= nil) then
+                            if (DoesEntityExist(Jobs.CurrentSellingVehicle)) then
+                                Jobs.ESX.Game.DeleteVehicle(Jobs.CurrentSellingVehicle)
+                            end
+                        end
+
+                        if (DoesEntityExist(Jobs.CurrentSellingVehicle) or (DoesEntityExist(veh) and distance < 1.0)) then
+                            Jobs.ESX.ShowNotification(_U('error_spawn_blocked'))
+                            return
                         end
 
                         Jobs.ESX.Game.SpawnVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
@@ -163,6 +170,8 @@ Jobs.RegisterMenu('sells_objects', function(categoryType, category)
                             Jobs.ESX.ShowNotification(_U('sell_car_spawned'))
 
                             Jobs.TriggerServerEvent('esx_customjobs:setCurrentVehicleSell', sellingInfo)
+
+                            menu.close()
                         end)
                     end
                 end
