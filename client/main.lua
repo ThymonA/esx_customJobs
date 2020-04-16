@@ -193,14 +193,20 @@ Citizen.CreateThread(function()
                     if (spot.code ~= nil and spot.code ~= '' and string.lower(spot.code) ~= 'unknown' and string.lower(spot.code) ~= 'none') then
                         local vehicleHash = (type(spot.code) == 'number' and spot.code or GetHashKey(spot.code))
 
-                        if (IsModelInCdimage(vehicleHash)) then
+                        if (spot.vehicle == nil and IsModelInCdimage(vehicleHash)) then
                             local veh, distance = Jobs.ESX.Game.GetClosestVehicle(position)
 
                             if (DoesEntityExist(veh) and distance < 1.0) then
                                 local currentVehicleModel = GetEntityModel(veh)
 
-                                if (currentVehicleModel ~= vehicleHash) then
+                                if (GetDisplayNameFromVehicleModel(currentVehicleModel) ~= GetDisplayNameFromVehicleModel(vehicleHash)) then
                                     Jobs.ESX.Game.DeleteVehicle(veh)
+
+                                    local vehicleLoaded = Jobs.WaitForVehicleIsLoaded(vehicleHash)
+
+                                    while not vehicleLoaded do
+                                        Citizen.Wait(0)
+                                    end
 
                                     Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
                                         local props = spot.props or {}
@@ -209,10 +215,24 @@ Citizen.CreateThread(function()
 
                                         Jobs.ESX.Game.SetVehicleProperties(vehicle, props)
 
+                                        SetEntityAsMissionEntity(vehicle, true, true)
+                                        SetVehicleOnGroundProperly(vehicle)
                                         FreezeEntityPosition(vehicle, true)
+                                        SetEntityInvincible(vehicle, true)
+                                        SetVehicleDoorsLocked(vehicle, 2)
+
+                                        spot.vehicle = vehicle
                                     end)
+                                else
+                                    spot.vehicle = veh
                                 end
-                            elseif (DoesEntityExist(veh) and distance > 1.0) then
+                            elseif (not DoesEntityExist(veh) or (DoesEntityExist(veh) and distance > 1.0)) then
+                                local vehicleLoaded = Jobs.WaitForVehicleIsLoaded(vehicleHash)
+
+                                while not vehicleLoaded do
+                                    Citizen.Wait(0)
+                                end
+
                                 Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
                                     local props = spot.props or {}
 
@@ -220,38 +240,39 @@ Citizen.CreateThread(function()
 
                                     Jobs.ESX.Game.SetVehicleProperties(vehicle, props)
 
+                                    SetEntityAsMissionEntity(vehicle, true, true)
+                                    SetVehicleOnGroundProperly(vehicle)
                                     FreezeEntityPosition(vehicle, true)
-                                end)
-                            elseif (not DoesEntityExist(veh)) then
-                                Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
-                                    local props = spot.props or {}
+                                    SetEntityInvincible(vehicle, true)
+                                    SetVehicleDoorsLocked(vehicle, 2)
 
-                                    props.windowTint = props.modWindows or -1
-
-                                    Jobs.ESX.Game.SetVehicleProperties(vehicle, props)
-
-                                    FreezeEntityPosition(vehicle, true)
+                                    spot.vehicle = vehicle
                                 end)
                             end
                         else
-                            local veh, distance = Jobs.ESX.Game.GetClosestVehicle(position)
+                            if (not DoesEntityExist(spot.vehicle)) then
+                                spot.vehicle = nil
+                            else
+                                local currentVehicleModel = GetEntityModel(spot.vehicle)
 
-                            if (DoesEntityExist(veh) and distance < 1.0) then
-                                Jobs.ESX.Game.DeleteVehicle(veh)
+                                if (GetDisplayNameFromVehicleModel(currentVehicleModel) ~= GetDisplayNameFromVehicleModel(vehicleHash)) then
+                                    spot.vehicle = nil
+                                end
                             end
                         end
-                    else
-                        local veh, distance = Jobs.ESX.Game.GetClosestVehicle(position)
-
-                        if (DoesEntityExist(veh) and distance < 1.0) then
-                            Jobs.ESX.Game.DeleteVehicle(veh)
+                    elseif (spot.vehicle ~= nil) then
+                        if (not DoesEntityExist(spot.vehicle)) then
+                            spot.vehicle = nil
+                        else
+                            Jobs.ESX.Game.DeleteVehicle(spot.vehicle)
+                            spot.vehicle = nil
                         end
                     end
                 end
             end
         end
 
-        Citizen.Wait(500)
+        Citizen.Wait(Config.IntervalShowroomMustCheck)
     end
 end)
 

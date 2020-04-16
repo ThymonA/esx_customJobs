@@ -22,6 +22,7 @@ Jobs.LoadJob = function(rawData)
         sellableItems = {},
         clothes = {},
         vehicles = {},
+        testDrives = {},
         plate = {},
         blips = {},
         showrooms = {},
@@ -728,6 +729,28 @@ Jobs.LoadJob = function(rawData)
         cb()
     end)
 
+    table.insert(jobTasks, function(cb)
+        for _, testDrive in pairs(rawData.TestDrives or {}) do
+            local driveType = string.lower(testDrive.Type or 'unknown')
+
+            if (jobData.testDrives == nil) then
+                jobData.testDrives = {}
+            end
+
+            if (jobData.testDrives[driveType] == nil) then
+                jobData.testDrives[driveType] = {
+                    position = testDrive.Position or { x = 0, y = 0, z = 0 },
+                    type = driveType,
+                    duration = testDrive.Duration or 60000,
+                    price = testDrive.Price or 0,
+                    payForDamage = testDrive.PayForDamage or false
+                }
+            end
+        end
+
+        cb()
+    end)
+
     local jobInfoAdded = false
 
     Async.parallel(jobTasks, function(results)
@@ -738,5 +761,11 @@ Jobs.LoadJob = function(rawData)
         Citizen.Wait(10)
     end
 
-    return CreateJob(jobData, Jobs.Version or '0.0.0')
+    local jobValue = CreateJob(jobData, Jobs.Version or '0.0.0')
+
+    while jobValue == nil do
+        Citizen.Wait(10)
+    end
+
+    return jobValue
 end

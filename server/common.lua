@@ -12,6 +12,8 @@ Jobs.Hostages                   = {}
 Jobs.Dragges                    = {}
 Jobs.JobPlayers                 = {}
 Jobs.JobPublics                 = {}
+Jobs.VehicleSales               = {}
+Jobs.BuyInProgress              = {}
 
 TriggerEvent('esx:getSharedObject', function (object)
     Jobs.ESX = object
@@ -82,7 +84,13 @@ Jobs.LoadAllJobs = function()
 
                 if (jobName ~= nil) then
                     table.insert(jobTasks, function(cb)
-                        Jobs.Jobs[currentJob.Job or 'unknown'] = Jobs.LoadJob(currentJob)
+                        local data = Jobs.LoadJob(currentJob)
+
+                        while data == nil do
+                            Citizen.Wait(0)
+                        end
+
+                        Jobs.Jobs[data.getName()] = data
 
                         if (cb ~= nil) then
                             cb()

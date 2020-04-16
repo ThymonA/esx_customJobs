@@ -57,3 +57,54 @@ Jobs.GetRandomLetter = function(length)
 		return ''
 	end
 end
+
+Jobs.GenerateLicense = function(prefix, length, spaceBetween)
+    prefix = prefix or ''
+    length = length or 6
+    spaceBetween = spaceBetween or false
+
+    local firstLength = 0
+    local secondLength = 0
+    local plate = ''
+
+    if (length > 8) then
+        length = 8
+    end
+
+    if (spaceBetween) then
+        firstLength = Jobs.Formats.Round(length / 2, 0)
+        secondLength = length - firstLength
+
+        if ((firstLength + secondLength) > 7 and spaceBetween) then
+            firstLength = 4
+            secondLength = 3
+        elseif ((firstLength + secondLength) > 8 and not spaceBetween) then
+            firstLength = 4
+            secondLength = 4
+        end
+    else
+        firstLength = length
+    end
+
+    if (string.len(prefix) > firstLength) then
+        prefix = string.sub(prefix, 1, firstLength)
+    end
+
+    local firstLengthToGenerate = firstLength - string.len(prefix)
+
+    if (firstLengthToGenerate <= 0) then
+        plate = prefix
+    else
+        plate = prefix .. Jobs.RandomString(firstLengthToGenerate)
+    end
+
+    if (spaceBetween) then
+        plate = plate .. ' '
+    end
+
+    if (secondLength > 0) then
+        plate = plate .. Jobs.RandomString(secondLength)
+    end
+
+    return string.upper(plate)
+end

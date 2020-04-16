@@ -123,6 +123,49 @@ Jobs.RegisterMenu('sells_objects', function(categoryType, category)
                     Jobs.TriggerMenu('sells_categories', categoryType)
                     return
                 end
+
+                local vehicleName = string.lower((data.current or {}).value or 'unknown')
+
+                if (vehicleName ~= nil and vehicleName ~= '' and string.lower(vehicleName) ~= 'unknown' and string.lower(vehicleName) ~= 'none') then
+                    local position = Jobs.GetCurrentData().spawn or {}
+                    local vehicleHash = (type(vehicleName) == 'number' and vehicleName or GetHashKey(vehicleName))
+
+                    if (position ~= nil and position ~= {} and IsModelInCdimage(vehicleHash)) then
+                        local veh, distance = Jobs.ESX.Game.GetClosestVehicle(position)
+                        local vehicleLoaded = Jobs.WaitForVehicleIsLoaded(vehicleHash)
+
+                        while not vehicleLoaded do
+                            Citizen.Wait(0)
+                        end
+
+                        if (DoesEntityExist(veh) and distance < 1.0) then
+                            Jobs.ESX.Game.DeleteVehicle(veh)
+                        end
+
+                        Jobs.ESX.Game.SpawnVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
+                            Jobs.CurrentSellingVehicle = vehicle
+
+                            local sellingInfo = {
+                                category = 'sports',
+                                code = vehicleName,
+                                vehicle = vehicle,
+                                position = position,
+                                hash = vehicleHash,
+                                currentPostion = nil,
+                                props = Jobs.ESX.Game.GetVehicleProperties(vehicle)
+                            }
+
+                            SetVehicleNumberPlateText(vehicle, 'NONE')
+                            SetVehicleOnGroundProperly(vehicle)
+                            FreezeEntityPosition(vehicle, true)
+                            SetVehicleDoorsLocked(vehicle, 2)
+
+                            Jobs.ESX.ShowNotification(_U('sell_car_spawned'))
+
+                            Jobs.TriggerServerEvent('esx_customjobs:setCurrentVehicleSell', sellingInfo)
+                        end)
+                    end
+                end
             end,
             function(data, menu)
                 Jobs.TriggerMenu('sells_categories', categoryType)

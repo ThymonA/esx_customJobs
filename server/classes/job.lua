@@ -18,6 +18,7 @@ function CreateJob(jobData, version)
     self.sellableItems = jobData.sellableItems or {}
     self.clothes = jobData.clothes or {}
     self.vehicles = jobData.vehicles or {}
+    self.testDrives = jobData.testDrives or {}
     self.showrooms = jobData.showrooms or {}
     self.blips = jobData.blips or {}
     self.plate = jobData.plate or {}
@@ -551,6 +552,29 @@ function CreateJob(jobData, version)
         return results
     end
 
+    self.getSellableVehicle = function(code)
+        code = string.lower(code or 'unknown')
+
+        for category, categoryValue in pairs(self.sellableItems) do
+            for _, sellableItem in pairs(categoryValue.items or {}) do
+                if (string.lower(sellableItem.getType() or 'unknown') == 'car' and string.lower(sellableItem.getSpawnCode() or 'none') == code) then
+                    return {
+                        name = sellableItem.getName(),
+                        code = sellableItem.getSpawnCode(),
+                        label = sellableItem.getLabel(),
+                        type = sellableItem.getType(),
+                        buyPrice = sellableItem.getBuyPrice(),
+                        sellPrice = sellableItem.getSellPrice(),
+                        brand = sellableItem.getBrand(),
+                        category = sellableItem.getCategory()
+                    }
+                end
+            end
+        end
+
+        return nil
+    end
+
     self.getShowroom = function(index)
         for _, showroom in pairs(self.showrooms or {}) do
             if (showroom.getIndex() == index) then
@@ -579,6 +603,16 @@ function CreateJob(jobData, version)
         end
 
         return 'unknown'
+    end
+
+    self.getTestDriveByType = function(driveType)
+        driveType = string.lower(driveType or 'unknown')
+
+        if (self.testDrives ~= nil and self.testDrives[driveType] ~= nil) then
+            return self.testDrives[driveType] or {}
+        end
+
+        return nil
     end
 
     self.getBank = function()

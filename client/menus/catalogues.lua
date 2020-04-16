@@ -181,10 +181,15 @@ Jobs.RenderVehicleSpot = function(model)
                         Jobs.CurrentVehicle = vehicle
                         Jobs.DoorsAreOpen = false
 
+                        SetEntityAsMissionEntity(vehicle, true, true)
+                        SetVehicleOnGroundProperly(vehicle)
                         FreezeEntityPosition(vehicle, true)
+                        SetEntityInvincible(vehicle, true)
+                        SetVehicleDoorsLocked(vehicle, 2)
                     end)
                 end
             elseif (not DoesEntityExist(Jobs.CurrentVehicle)) then
+                Jobs.DeleteObject()
                 Jobs.ESX.Game.SpawnLocalVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
                     local props = (Jobs.GetCurrentData() or {}).vehicleprops or {}
 
@@ -195,7 +200,11 @@ Jobs.RenderVehicleSpot = function(model)
                     Jobs.CurrentVehicle = vehicle
                     Jobs.DoorsAreOpen = false
 
+                    SetEntityAsMissionEntity(vehicle, true, true)
+                    SetVehicleOnGroundProperly(vehicle)
                     FreezeEntityPosition(vehicle, true)
+                    SetEntityInvincible(vehicle, true)
+                    SetVehicleDoorsLocked(vehicle, 2)
                 end)
             end
         else
@@ -238,10 +247,6 @@ Jobs.RotateEntity = function(direction, added)
 
         SetEntityHeading(Jobs.CurrentVehicle, entityHeading)
     end
-end
-
-Jobs.GetPosition = function()
-    return (Jobs.GetCurrentData() or {}).spawn or { x = 0, y = 0, z = 0, h = 0 }
 end
 
 Jobs.SetupScaleform = function(scaleform)

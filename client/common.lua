@@ -36,6 +36,12 @@ Jobs.LabelDisplaying        = {}
 Jobs.Camera                 = nil
 Jobs.CurrentVehicle         = nil
 Jobs.DoorsAreOpen           = false
+Jobs.CurrentSellingVehicle  = nil
+Jobs.CurrentSellingVehicles = {}
+Jobs.CurrentTextDrawing     = {}
+Jobs.CurrentTestDrive       = nil
+Jobs.DurationTime           = 0
+Jobs.Drawing                = false
 
 Citizen.CreateThread(function()
     while Jobs.ESX == nil do
@@ -95,6 +101,97 @@ Citizen.CreateThread(function()
                                 Jobs.TriggerServerEvent('esx_jobs:undragPlayer', tonumber(playerServerId))
                             end
                         end
+                    end
+                end
+            end
+        end
+
+        Citizen.Wait(0)
+    end
+end)
+
+-- Show vehicle sell labels
+Citizen.CreateThread(function()
+    while true do
+        local playerPed = GetPlayerPed(-1)
+        local coords = GetEntityCoords(playerPed)
+
+        Jobs.CurrentTextDrawing = {}
+
+        for key, sellingInfo in pairs(Jobs.CurrentSellingVehicles or {}) do
+            if (sellingInfo ~= nil) then
+                if (sellingInfo.cashedPosition == nil or sellingInfo.cashedPosition == {}) then
+                    local position = sellingInfo.position or { x = 0, y = 0, z = 0, h = 0 }
+                    local vehicle, vehicleDistance = Jobs.ESX.Game.GetClosestVehicle(position)
+
+                    if (DoesEntityExist(vehicle) and vehicleDistance <= 1.0) then
+                        sellingInfo.cashedPosition = GetEntityCoords(vehicle)
+                        sellingInfo.cashedHash = GetEntityModel(vehicle)
+                    else
+                        sellingInfo = nil
+                        Jobs.CurrentSellingVehicles[key] = nil
+                    end
+                end
+
+                if (sellingInfo ~= nil) then
+                    local position = sellingInfo.cashedPosition or { x = 0, y = 0, z = 0, h = 0 }
+
+                    if (GetDistanceBetweenCoords(coords, (position.x or 0), (position.y or 0), (position.z or 0), true) < Config.DrawShopDisplayDistance) then
+                        Jobs.CurrentTextDrawing[key] = true
+                    end
+                end
+            end
+        end
+
+        Citizen.Wait(2500)
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        for key, show in pairs(Jobs.CurrentTextDrawing or {}) do
+            show = show or false
+
+            if (show) then
+                Jobs.GenerateSellingVehicleLabel(key)
+
+                local buyVehicle = Jobs.GetActionKey('sell_buy')
+                local testDriveVehicle = Jobs.GetActionKey('sell_testdrive')
+                local declineVehicle = Jobs.GetActionKey('sell_declined')
+
+                if (buyVehicle ~= nil and IsControlJustPressed(0, buyVehicle.key)) then
+                    local vehicleInfo = (Jobs.CurrentSellingVehicles or {})[key] or {}
+
+                    if (vehicleInfo == nil or vehicleInfo == {}) then
+                        Jobs.ESX.ShowNotification(_U('error_vehicle_not_for_sale'))
+                    else
+                        local job = vehicleInfo.job or 'unknown'
+
+                        Jobs.TriggerServerEventkWithCustomJob('esx_customjobs:buyVehicle', job, key)
+                    end
+                end
+
+                if (testDriveVehicle ~= nil and IsControlJustPressed(0, testDriveVehicle.key)) then
+                    local vehicleInfo = (Jobs.CurrentSellingVehicles or {})[key] or {}
+
+                    if (vehicleInfo == nil or vehicleInfo == {}) then
+                        Jobs.ESX.ShowNotification(_U('error_vehicle_not_for_sale'))
+                    else
+                        local job = vehicleInfo.job or 'unknown'
+
+                        Jobs.TriggerServerEventkWithCustomJob('esx_customjobs:testDriveVehicle', job, key)
+                    end
+                end
+
+                if (declineVehicle ~= nil and IsControlJustPressed(0, declineVehicle.key)) then
+                    local vehicleInfo = (Jobs.CurrentSellingVehicles or {})[key] or {}
+
+                    if (vehicleInfo == nil or vehicleInfo == {}) then
+                        Jobs.ESX.ShowNotification(_U('error_vehicle_not_for_sale'))
+                    else
+                        local job = vehicleInfo.job or 'unknown'
+
+                        Jobs.TriggerServerEventkWithCustomJob('esx_customjobs:declineVehicle', job, key)
                     end
                 end
             end
@@ -458,6 +555,106 @@ AddEventHandler('esx_jobs:updateShowroomSpot', function(job, key, index, locked,
     end
 end)
 
+RegisterNetEvent('esx_jobs:updateSellVehicle')
+AddEventHandler('esx_jobs:updateSellVehicle', function(key, action, info)
+    key = string.lower(key or 'x')
+    action = string.lower(action or 'remove')
+    info = info or {}
+
+    if (Jobs.CurrentSellingVehicles == nil) then
+        Jobs.CurrentSellingVehicles = {}
+    end
+
+    if (action == 'update') then
+        Jobs.CurrentSellingVehicles[key] = info
+    else
+        Jobs.CurrentSellingVehicles[key] = nil
+    end
+end)
+
+RegisterNetEvent('esx_jobs:removeSellingVehicle')
+AddEventHandler('esx_jobs:removeSellingVehicle', function(isError)
+    isError = isError or false
+
+    if (Jobs.CurrentSellingVehicle ~= nil and DoesEntityExist(Jobs.CurrentSellingVehicle)) then
+        Jobs.ESX.Game.DeleteVehicle(Jobs.CurrentSellingVehicle)
+
+        Jobs.CurrentSellingVehicle = nil
+
+        if (isError) then
+            Jobs.ESX.ShowNotification('error_vehicle_removed')
+        end
+    end
+end)
+
+RegisterNetEvent('esx_jobs:startTestDriveVehicle')
+AddEventHandler('esx_jobs:startTestDriveVehicle', function(key, duration, position, props)
+    if (Jobs.CurrentSellingVehicles == nil or Jobs.CurrentSellingVehicles[key] == nil) then
+        Jobs.ESX.ShowNotification(_U('error_no_test_drive'))
+        return
+    end
+
+    local info = Jobs.CurrentSellingVehicles[key]
+    local veh, distance = Jobs.ESX.Game.GetClosestVehicle(position)
+    local code = info.code or 'unknown'
+
+    if (DoesEntityExist(veh) and distance < 1.0) then
+        Jobs.ESX.ShowNotification(_U('error_no_test_drive'))
+        return
+    end
+
+    local playerPed = GetPlayerPed(-1)
+    local vehicleHash = (type(code) == 'number' and code or GetHashKey(code))
+    local vehicleLoaded = Jobs.WaitForVehicleIsLoaded(vehicleHash)
+
+    while not vehicleLoaded do
+        Citizen.Wait(0)
+    end
+
+    Jobs.ESX.Game.SpawnVehicle(vehicleHash, position, position.h or 75.0, function(vehicle)
+        Jobs.CurrentTestDrive = vehicle
+        Jobs.DurationTime = duration or 120
+
+        Jobs.ESX.Game.SetVehicleProperties(vehicle, props)
+
+        SetVehicleOnGroundProperly(vehicle)
+        SetVehicleDoorsLocked(vehicle, 2)
+        SetVehicleNumberPlateText(vehicle, 'TESTDRIV')
+
+        TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
+
+        Citizen.CreateThread(function()
+            while true do
+                Citizen.Wait(1000)
+
+                if (Jobs.CurrentTestDrive ~= nil and DoesEntityExist(Jobs.CurrentTestDrive)) then
+                    Jobs.DurationTime = Jobs.DurationTime - 1
+
+                    if (Jobs.DurationTime <= 0) then
+                        Jobs.ESX.Game.DeleteVehicle(Jobs.CurrentTestDrive)
+                        Jobs.ESX.ShowNotification(_U('vehicle_test_drive_over'))
+
+                        return
+                    end
+                else
+                    Jobs.CurrentTestDrive = nil
+                    Jobs.DurationTime = 0
+
+                    return
+                end
+            end
+        end)
+
+        Citizen.CreateThread(function()
+            while Jobs.DurationTime > 0 do
+                Jobs.DrawOnScreenText(_U('time_left', Jobs.DurationTime), 185, 185, 185, 255)
+
+                Citizen.Wait(0)
+            end
+        end)
+    end)
+end)
+
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
     Jobs.PlayerData.job     = job
@@ -467,4 +664,16 @@ end)
 AddEventHandler("playerSpawned", function()
     TriggerEvent('esx_jobs:stopHostage')
     TriggerEvent('esx_jobs:unhandcuffPlayer')
+end)
+
+AddEventHandler('onResourceStop', function(resourceName)
+    if (GetCurrentResourceName() == resourceName) then
+        if (Jobs.CurrentSellingVehicle ~= nil and DoesEntityExist(Jobs.CurrentSellingVehicle)) then
+            Jobs.ESX.Game.DeleteVehicle(Jobs.CurrentSellingVehicle)
+        end
+
+        if (Jobs.CurrentTestDrive ~= nil and DoesEntityExist(Jobs.CurrentTestDrive)) then
+            Jobs.ESX.Game.DeleteVehicle(Jobs.CurrentTestDrive)
+        end
+    end
 end)

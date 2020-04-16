@@ -1,6 +1,8 @@
-Config                  = {}
-Config.Locale           = 'nl'
-Config.DrawDistance     = 25
+Config                              = {}
+Config.Locale                       = 'nl'
+Config.DrawDistance                 = 25
+Config.DrawShopDisplayDistance      = 3.5
+Config.IntervalShowroomMustCheck    = 1000
 
 -- Blacklisted Weapons for taking soming as hostage
 Config.BlacklsitedHostageWeapons = {
@@ -63,6 +65,18 @@ Config.Keys = {
         label = 'E'
     },
     ['drag'] = {
+        key = 47,
+        label = 'G'
+    },
+    ['sell_buy'] = {
+        key = 38,
+        label = 'E'
+    },
+    ['sell_testdrive'] = {
+        key = 23,
+        label = 'F'
+    },
+    ['sell_declined'] = {
         key = 47,
         label = 'G'
     }

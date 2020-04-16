@@ -201,3 +201,89 @@ end
 Jobs.GetButton = function(button)
     N_0xe83a3e3557a56640(button)
 end
+
+Jobs.GetPosition = function()
+    return (Jobs.GetCurrentData() or {}).spawn or { x = 0, y = 0, z = 0, h = 0 }
+end
+
+Jobs.DrawText3D = function(position, text, extraHeight)
+    extraHeight = tonumber(tostring(extraHeight or 0))
+
+    if (not Jobs.Drawing) then
+        Jobs.Drawing = true
+
+        local onScreen, x, y = GetScreenCoordFromWorldCoord((position.x or 0), (position.y or 0), (position.z or 0) + extraHeight)
+        local playerX, playerY, playerZ = table.unpack(GetGameplayCamCoord())
+        local distance = GetDistanceBetweenCoords(playerX, playerY, playerZ, (position.x or 0), (position.y or 0), (position.z or 0) + extraHeight, 1)
+        local scale = ((1 / distance) * 2) * (1 / GetGameplayCamFov()) * 100
+
+        if (onScreen) then
+            SetTextColour(255, 255, 255, 215)
+            SetTextScale(0.0 * scale, 0.35 * scale)
+            SetTextFont(0)
+            SetTextProportional(1)
+            SetTextCentre(true)
+
+            BeginTextCommandWidth("STRING")
+            AddTextComponentString(text)
+
+            local height = GetTextScaleHeight(0.50 * scale, 4)
+            local width = EndTextCommandGetWidth(0)
+
+            SetTextEntry("STRING")
+            AddTextComponentString(text)
+            EndTextCommandDisplayText(x, y)
+
+            DrawRect(x, y + scale / 90, width, height, 0, 0, 0, 100)
+        end
+
+        Jobs.Drawing = false
+    end
+end
+
+Jobs.DrawOnScreenText = function(text, red, green, blue, alpha)
+    SetTextFont(4)
+	SetTextProportional(1)
+	SetTextScale(0.64, 0.64)
+	SetTextColour(red, green, blue, alpha)
+	SetTextDropShadow(0, 0, 0, 0, 255)
+	SetTextEdge(1, 0, 0, 0, 255)
+	SetTextDropShadow()
+	SetTextOutline()
+	SetTextEntry("STRING")
+	AddTextComponentString(text)
+    DrawText(0.155, 0.935)
+end
+
+Jobs.WaitForVehicleIsLoaded = function(vehicleHash)
+	vehicleHash = (type(vehicleHash) == 'number' and vehicleHash or GetHashKey(vehicleHash))
+
+	if not HasModelLoaded(vehicleHash) then
+		RequestModel(vehicleHash)
+
+		while not HasModelLoaded(vehicleHash) do
+			Citizen.Wait(0)
+		end
+
+        return true
+    else
+        return true
+	end
+end
+
+Jobs.GenerateSellingVehicleLabel = function(key)
+    local sellingInfo = (Jobs.CurrentSellingVehicles or {})[key] or nil
+
+    if (sellingInfo == nil) then
+        return
+    end
+
+    local position = sellingInfo.cashedPosition or { x = 0, y = 0, z = 0, h = 0 }
+    local vehicle = GetDisplayNameFromVehicleModel(sellingInfo.cashedHash or 0)
+    local price = Jobs.Formats.NumberToCurrancy(sellingInfo.price or 0)
+
+    Jobs.DrawText3D(position, _U('sell_veh_line1', vehicle, price), 1.00)
+    Jobs.DrawText3D(position, _U('sell_veh_line2', Config.Keys['sell_buy'].label), 0.875)
+    Jobs.DrawText3D(position, _U('sell_veh_line3', Config.Keys['sell_testdrive'].label), 0.75)
+    Jobs.DrawText3D(position, _U('sell_veh_line4', Config.Keys['sell_declined'].label), 0.625)
+end

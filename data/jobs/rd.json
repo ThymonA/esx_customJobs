@@ -59,6 +59,9 @@
         "Employee": [
             "https://discordapp.com/api/webhooks/698882366378082324/4U35tnKMV6LT1ysnuk_yGjkQglcm1hQAIptDI4SvcM3YAPsOe7NXdT0pv6c_clef20Lh"
         ],
+        "Sale": [
+            "https://discordapp.com/api/webhooks/700280621477658674/LZBKvJUD0B8iZuuQJm7dtxyvg-5OygzuGRYQNYTRZsFVCVezsKXsAKzQJV0yjjzg-YOx"
+        ],
         "MoneyTransactions": [
             "https://discordapp.com/api/webhooks/698882442760552448/hZ0yNRl2vMXKba5hfc4CIz8qaQenYCe4XGDmCxZ77A4YaVmxpDqnm8z9YDUq1GjJXP0Z"
         ],
@@ -194,7 +197,10 @@
             "Position": { "x": -794.33, "y": -218.94, "z": 36.08 },
             "Color": { "r": 255, "g": 0, "b": 0 },
             "Size": { "x": 2.5, "y": 2.5, "z": 1.5 },
-            "Marker": 27
+            "Marker": 27,
+            "AddonData": {
+                "Spawn": { "x": -773.58, "y": -234.51, "z": 36.08, "h": 210.5 }
+            }
         },
         {
             "Type": "catalogues",
@@ -258,7 +264,7 @@
                 "name": "RS7",
                 "code": "rs7",
                 "buyPrice": 50000,
-                "sellPrice": 75000,
+                "sellPrice": 15000000,
                 "category": "sports",
                 "discountAllowed": true,
                 "discountCodes": {
@@ -266,23 +272,11 @@
                 }
             },
             {
-                "brand": "Truffade",
-                "name": "Adder",
-                "code": "adder",
-                "buyPrice": 50000,
-                "sellPrice": 75000,
-                "category": "sports",
-                "discountAllowed": true,
-                "discountCodes": {
-                    "vip": 15
-                }
-            },
-            {
-                "brand": "Karin",
-                "name": "Sultan RS",
-                "code": "sultanrs",
-                "buyPrice": 50000,
-                "sellPrice": 75000,
+                "brand": "Audi",
+                "name": "S8",
+                "code": "audis8om",
+                "buyPrice": 45000,
+                "sellPrice": 65000,
                 "category": "sports",
                 "discountAllowed": true,
                 "discountCodes": {
@@ -349,9 +343,9 @@
             "modTransmission": 2,
             "modSuspension": 3,
             "modTurbo": true,
-            "color1": 28,
+            "color1": 0,
             "color2": 0,
-            "pearlescentColor": 28,
+            "pearlescentColor": 0,
             "plateIndex": 1,
             "modAPlate": 5,
             "modWindows": 1,
@@ -361,9 +355,13 @@
             {
                 "Name": "Audi RS7",
                 "Model": "rs7",
-                "CustomTuning": {
-                    "color2": 28
-                },
+                "CustomTuning": {},
+                "Allowed": []
+            },
+            {
+                "Name": "Audi s8",
+                "Model": "audis8om",
+                "CustomTuning": {},
                 "Allowed": []
             }
         ],
@@ -382,6 +380,15 @@
             "Display": 6,
             "Scale": 1.0,
             "Colour": 1
+        }
+    ],
+    "TestDrives": [
+        {
+            "Position":  { "x": -768.87, "y": -244.38, "z": 36.24, "h": 201.5 },
+            "Type": "car",
+            "Duration": 120,
+            "Price": 0,
+            "PayForDamage": false
         }
     ]
 }

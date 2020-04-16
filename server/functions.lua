@@ -7,7 +7,11 @@ Jobs.Trace = function(msg)
 end
 
 Jobs.GetJobFromName = function(jobName)
-    return Jobs.Jobs[jobName]
+    for key, value in pairs(Jobs.Jobs) do
+        if (string.lower(key or 'unknown') == string.lower(jobName or 'unknown')) then
+            return value
+        end
+    end
 end
 
 Jobs.UpdatePlayerJobData = function(xPlayer, jobChanged)
@@ -208,6 +212,10 @@ Jobs.TriggerServerCallback = function(name, source, cb, ...)
 end
 
 Jobs.TriggerServerEvent = function(name, source, ...)
+    while not Jobs.JobsLoaded do
+        Citizen.Wait(0)
+    end
+
     if (Jobs.ServerEvents == nil or Jobs.ServerEvents[name] == nil) then
         Jobs.Trace(('Server event "%s" does not exist.'):format(name))
         return
@@ -376,4 +384,27 @@ Jobs.GetJobPublicsByType = function(jobType)
     end
 
     return {}
+end
+
+Jobs.GetVehicleForSale = function(key)
+    key = string.lower(key or 'unknown')
+
+    for _, vehicleSale in pairs(Jobs.VehicleSales or {}) do
+        if (string.lower(vehicleSale.key or 'none') == key) then
+            return vehicleSale
+        end
+    end
+
+    return nil
+end
+
+Jobs.RemoveVehicleForSale = function(key)
+    key = string.lower(key or 'unknown')
+
+    for _, vehicleSale in pairs(Jobs.VehicleSales or {}) do
+        if (string.lower(vehicleSale.key or 'none') == key) then
+            table.remove(Jobs.VehicleSales, _)
+            return
+        end
+    end
 end
